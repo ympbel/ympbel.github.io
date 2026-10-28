@@ -40,3 +40,32 @@ def test_slugify():
 
 def test_html_to_markdown_strips_spans():
     assert html_to_markdown('<p><span style="x">Hi</span> <b>there</b></p>') == 'Hi **there**'
+
+
+def test_html_to_markdown_escapes_angle_brackets():
+    assert html_to_markdown('<p>&lt;Juyoung Lee&gt;</p>') == '&lt;Juyoung Lee&gt;'
+    assert html_to_markdown('<p>a &gt; b</p><p>&gt; not a quote</p>') == 'a &gt; b\n\n&gt; not a quote'
+    # Autolinks keep their brackets; `-` and `#` are not escaped.
+    assert html_to_markdown('<p><a href="http://x.kr/">http://x.kr/</a> - #1</p>') == '<http://x.kr/> - #1'
+
+
+def test_html_to_markdown_merges_adjacent_bold():
+    md = html_to_markdown('<p><b>PROs :</b><b>Hyo</b></p>')
+    assert '****' not in md
+    assert md == '**PROs :** **Hyo**'
+    # Bold inside bold is one run.
+    assert html_to_markdown('<p><b><b>- Topic : X</b> </b></p><p><strong><b>Y</b></strong></p>') == '**- Topic : X**\n\n**Y**'
+
+
+def test_html_to_markdown_drops_empty_bold():
+    assert html_to_markdown('<p><b>​</b>★</p>') == '★'
+    assert html_to_markdown('<p>a<b> </b>b<b>﻿ </b>c</p>') == 'a b c'
+    # Zero-width characters are dropped from text.
+    assert html_to_markdown('<p>A​B‌‍C</p>') == 'ABC'
+
+
+def test_html_to_markdown_bold_across_line_breaks():
+    # A bold run cannot span a blank line: one run per line (seminar 199).
+    assert html_to_markdown('<p><b>- Presenter : Kim<br><br>- Topic :</b><b>Unfolding</b></p>') == (
+        '**- Presenter : Kim**  \n  \n**- Topic :** **Unfolding**')
+

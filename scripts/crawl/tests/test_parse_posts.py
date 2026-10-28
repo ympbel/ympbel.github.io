@@ -128,6 +128,10 @@ def test_event_date_from_body_date_line():
     # Only a `Date` label: not "Update".
     v = parse_post_view(view_html('X &gt; Seminar | MPBEL | x', con='<p>Update : 2020/03/30</p>'))
     assert v.event_date is None
+    # A zero-width space before the colon (seminar 156) is ignored, as for the presenter.
+    v = parse_post_view(view_html('X &gt; Seminar | MPBEL | x',
+                                  con='<p><b>- Date\u200b: 2022/06/20</b></p><p>Presenter\u200b: Kim</p>'))
+    assert (v.event_date, v.presenter) == ('2022-06-20', 'Kim')
 
 
 def test_event_date_priority_and_invalid_candidates():

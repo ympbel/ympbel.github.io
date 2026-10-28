@@ -8,6 +8,7 @@ from urllib.parse import urljoin, urlsplit
 from bs4 import Tag
 
 from .config import BASE_URL
+from .markdown import strip_zero_width
 from .parse_common import (PAGE_URL, block_text, clean_text, full_title, original_image_path, path_of, soup,
                            wr_id_of)
 from .parse_publications import parse_detail_files
@@ -118,8 +119,9 @@ def parse_post_view(html: str) -> PostView:
     date = '20' + '-'.join(posted.groups())
     con = s.select_one('#bo_v_con') or soup('<div></div>').div
     image_paths = _take_images(s.select_one('#bo_v_img'), con)
-    text = block_text(con)
-    event_date = _event_date({'lec_date': clean_text(s.select_one('.lec_date')), 'title': title, 'body': text})
+    text = strip_zero_width(block_text(con))
+    event_date = _event_date({'lec_date': strip_zero_width(clean_text(s.select_one('.lec_date'))),
+                              'title': strip_zero_width(title), 'body': text})
     presenter = re.search(r'Presenter\s*:\s*(.+?)\s*$', text, re.MULTILINE | re.IGNORECASE)
     return PostView(title=title, date=date, category=clean_text(s.select_one('.bo_v_cate')) or None,
                     body_html=con.decode_contents(), image_paths=image_paths, files=parse_detail_files(html),
