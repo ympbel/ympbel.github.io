@@ -7,9 +7,15 @@ import { exists, page } from './helpers.mjs';
 const MEMBERS = fileURLToPath(new URL('../../src/content/members/ko/', import.meta.url));
 const BOARDS = ['researchers', 'collaborators', 'alumni', 'internship'];
 
-/** Number of member entries of a board (templates `_*.md` excluded, as in the collection loader). */
+/** Member entries of a board as `<board>/<slug>` (templates `_*.md` excluded, as in the collection loader). */
+function memberFiles(board) {
+  return readdirSync(MEMBERS + board)
+    .filter((f) => f.endsWith('.md') && !f.startsWith('_'))
+    .map((f) => `${board}/${f.slice(0, -3)}`);
+}
+
 function fileCount(board) {
-  return readdirSync(MEMBERS + board).filter((f) => f.endsWith('.md') && !f.startsWith('_')).length;
+  return memberFiles(board).length;
 }
 
 /** Raw frontmatter text of `src/content/members/ko/<file>.md`. */
@@ -99,4 +105,49 @@ test('multi-line field value renders <br> between its lines', () => {
   assert.equal(dd.length, 1);
   assert.equal(dd.find('br').length, lines.length - 1);
   assert.equal(dd.text(), lines.join(''));
+});
+
+test('researchers: the active tab carries the skin highlight id', () => {
+  const $ = page('member/researchers');
+  assert.equal($('#bo_cate a#bo_cate_on').length, 1);
+  assert.equal($('#bo_cate a#bo_cate_on').text().trim(), '전체');
+});
+
+test('collaborators: an empty-label dt drops its padding', () => {
+  const $ = page('member/collaborators');
+  const dt = $('.mb_peple').first().find('dt').first();
+  assert.equal(dt.text(), '');
+  assert.equal(dt.attr('style'), 'padding-left:0');
+});
+
+/** One wrapper per page; one `.member_list` per category plus one for the uncategorised members, if any. */
+function assertSections(board) {
+  const $ = page(`member/${board}`);
+  assert.equal($('#member_professor').length, 1);
+  assert.equal($('#gall_ul').length, 1);
+  const files = memberFiles(board);
+  const categories = new Set(files.map((f) => scalar(f, 'category')).filter(Boolean));
+  const uncategorised = files.some((f) => !scalar(f, 'category')) ? 1 : 0;
+  assert.equal($('#gall_ul .member_list').length, categories.size + uncategorised);
+  assert.equal($('#gall_ul h3.mb_cate_title').length, categories.size);
+  $('#gall_ul h3.mb_cate_title').each((_, h) => assert.ok($(h).next().is('.member_list'), $(h).text()));
+}
+
+test('researchers: unique list ids, one list per category', () => {
+  assertSections('researchers');
+  assert.equal(page('member/researchers')('#gall_ul .member_list').length, 2);
+});
+
+test('alumni: unique list ids, one list per category plus the uncategorised one', () => {
+  assertSections('alumni');
+  assert.equal(page('member/alumni')('#gall_ul .member_list').length, 3);
+});
+
+test('boards without categories: one wrapper and one list', () => {
+  for (const board of ['collaborators', 'internship']) {
+    const $ = page(`member/${board}`);
+    assert.equal($('#member_professor').length, 1, board);
+    assert.equal($('#gall_ul').length, 1, board);
+    assert.equal($('#gall_ul .member_list').length, 1, board);
+  }
 });

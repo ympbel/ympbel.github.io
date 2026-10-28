@@ -6,6 +6,7 @@ interface Props {
 }
 
 const { tabs, variant } = Astro.props;
+// The legacy skins highlight the active tab through `#bo_cate #bo_cate_on`; `.active` has no rule of its own.
 ---
 
 <nav id="bo_cate">
@@ -13,7 +14,7 @@ const { tabs, variant } = Astro.props;
     {
       tabs.map((tab) => (
         <li>
-          <a href={tab.href} class={tab.active ? 'active' : undefined}>
+          <a href={tab.href} class={tab.active ? 'active' : undefined} id={tab.active ? 'bo_cate_on' : undefined}>
             {tab.label}
           </a>
         </li>

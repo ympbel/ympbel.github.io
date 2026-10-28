@@ -21,33 +21,36 @@ const members = sortMembers(
   await getCollection('members', (e) => localeOf(e.id) === locale && e.data.board === board),
 );
 
-// Categories in first-seen order; each becomes an in-page section the tabs jump to.
+// Categories in first-seen order; each becomes an in-page section the tabs jump to. Members without a category
+// (all of them on a board without categories) form a trailing section with no heading.
 const categories = [...new Set(members.map((m) => m.data.category).filter((c): c is string => !!c))];
 const anchorOf = (category: string) => `cat-${categorySlug(category)}`;
 const tabs = [
   { label: t(locale).board.all, href: currentHref, active: true },
   ...categories.map((c) => ({ label: c, href: `#${anchorOf(c)}`, active: false })),
 ];
-const uncategorised = members.filter((m) => !m.data.category);
+const sections = [
+  ...categories.map((c) => ({ category: c, members: members.filter((m) => m.data.category === c) })),
+  { category: undefined, members: members.filter((m) => !m.data.category) },
+].filter((s) => s.members.length > 0);
 ---
 
 <SubLayout title={title} sectionKey="member" currentHref={currentHref} locale={locale}>
-  {
-    categories.length === 0 ? (
-      <MemberList members={members} />
-    ) : (
-      <>
-        <CategoryTabs tabs={tabs} variant="members" />
-        {categories.map((c) => (
+  <div id="member_professor">
+    {categories.length > 0 && <CategoryTabs tabs={tabs} variant="members" />}
+    <div id="gall_ul">
+      {
+        sections.map(({ category, members }) => (
           <>
-            <h3 class="mb_cate_title" id={anchorOf(c)}>
-              {c}
-            </h3>
-            <MemberList members={members.filter((m) => m.data.category === c)} />
+            {category && (
+              <h3 class="mb_cate_title" id={anchorOf(category)}>
+                {category}
+              </h3>
+            )}
+            <MemberList members={members} />
           </>
-        ))}
-        {uncategorised.length > 0 && <MemberList members={uncategorised} />}
-      </>
-    )
-  }
+        ))
+      }
+    </div>
+  </div>
 </SubLayout>

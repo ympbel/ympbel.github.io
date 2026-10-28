@@ -9,10 +9,6 @@ interface Props {
 const { members } = Astro.props;
 ---
 
-<div id="member_professor">
-  <div id="gall_ul">
-    <div class="member_list">
-      {members.map((member) => <MemberCard member={member} />)}
-    </div>
-  </div>
+<div class="member_list">
+  {members.map((member) => <MemberCard member={member} />)}
 </div>
