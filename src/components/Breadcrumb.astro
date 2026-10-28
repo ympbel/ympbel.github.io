@@ -1,0 +1,24 @@
+---
+import { MENU, type SectionKey } from '../lib/menu.ts';
+import { t } from '../i18n/index.ts';
+import type { Locale } from '../lib/content.ts';
+
+interface Props {
+  sectionKey: SectionKey;
+  title: string;
+  locale: Locale;
+}
+
+const { sectionKey, title, locale } = Astro.props;
+const section = MENU[locale].find((s) => s.key === sectionKey);
+if (!section) throw new Error(`No menu section "${sectionKey}"`);
+const { home_nav } = t(locale);
+---
+
+<div class="loca">
+  <ul class="loc">
+    <li><img src="/images/site/sub/home.png" alt={home_nav} /></li>
+    <li>{section.label}</li>
+    <li class="last">{title}</li>
+  </ul>
+</div>

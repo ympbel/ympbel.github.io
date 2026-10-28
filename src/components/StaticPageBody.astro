@@ -1,0 +1,14 @@
+---
+// Static pages used the old site's `html` board skin, so its CSS is bundled only where this component renders.
+import '../styles/legacy/board-html.css';
+import { render, type CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry: CollectionEntry<'pages'>;
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Content />

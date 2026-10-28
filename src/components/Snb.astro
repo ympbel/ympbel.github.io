@@ -1,0 +1,29 @@
+---
+import { MENU, type SectionKey } from '../lib/menu.ts';
+import type { Locale } from '../lib/content.ts';
+
+interface Props {
+  sectionKey: SectionKey;
+  currentHref: string;
+  locale: Locale;
+}
+
+const { sectionKey, currentHref, locale } = Astro.props;
+const section = MENU[locale].find((s) => s.key === sectionKey);
+if (!section) throw new Error(`No menu section "${sectionKey}"`);
+---
+
+<div class="snb">
+  <p class="tit">{section.label}</p>
+  <div class="vNav">
+    <ul>
+      {
+        section.items.map((item) => (
+          <li class={item.href === currentHref ? 'active' : undefined}>
+            <a href={item.href}>{item.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+---
+import { getCollection, type CollectionEntry } from 'astro:content';
+import SubLayout from '../../layouts/SubLayout.astro';
+import StaticPageBody from '../../components/StaticPageBody.astro';
+import { localeOf, slugOf } from '../../lib/content.ts';
+import { researchPath } from '../../lib/menu.ts';
+
+export async function getStaticPaths() {
+  const pages = await getCollection('pages', (e) => localeOf(e.id) === 'ko' && e.data.section === 'research');
+  return pages.map((entry) => ({ params: { slug: slugOf(entry.id).replace(/^research-/, '') }, props: { entry } }));
+}
+
+interface Props {
+  entry: CollectionEntry<'pages'>;
+}
+
+const { entry } = Astro.props;
+---
+
+<SubLayout title={entry.data.title} sectionKey="research" currentHref={researchPath(slugOf(entry.id))}>
+  <StaticPageBody entry={entry} />
+</SubLayout>

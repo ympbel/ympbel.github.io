@@ -1,0 +1,12 @@
+---
+import { getEntry } from 'astro:content';
+import SubLayout from '../../layouts/SubLayout.astro';
+import StaticPageBody from '../../components/StaticPageBody.astro';
+
+const entry = await getEntry('pages', 'ko/professor');
+if (!entry) throw new Error('src/content/pages/ko/professor.md is missing');
+---
+
+<SubLayout title={entry.data.title} sectionKey="member" currentHref="/member/professor/">
+  <StaticPageBody entry={entry} />
+</SubLayout>

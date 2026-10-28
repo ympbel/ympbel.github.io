@@ -1,0 +1,36 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Snb from '../components/Snb.astro';
+import Breadcrumb from '../components/Breadcrumb.astro';
+import type { SectionKey } from '../lib/menu.ts';
+import type { Locale } from '../lib/content.ts';
+
+interface Props {
+  title: string;
+  sectionKey: SectionKey;
+  currentHref: string;
+  locale?: Locale;
+}
+
+const { title, sectionKey, currentHref, locale = 'ko' } = Astro.props;
+---
+
+<BaseLayout title={title} locale={locale}>
+  <div id="sub_container">
+    <div class="sub_visual">
+      <div class="wrap">
+        <img src="/images/site/sub/sub_slogan.png" alt="" />
+      </div>
+    </div>
+    <div id="sub_contents">
+      <Snb sectionKey={sectionKey} currentHref={currentHref} locale={locale} />
+      <div class="contentBox">
+        <h2 class="cnt_title">{title}</h2>
+        <Breadcrumb sectionKey={sectionKey} title={title} locale={locale} />
+        <div class="contents" style="overflow:hidden;">
+          <slot />
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
