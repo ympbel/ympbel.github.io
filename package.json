@@ -1,0 +1,22 @@
+{
+  "name": "ympbel.github.io",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=22.23.4"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test:unit": "node --test tests/unit/",
+    "test:dist": "node --test tests/dist/",
+    "test": "npm run test:unit && npm run build && npm run test:dist"
+  },
+  "dependencies": {
+    "astro": "^7.4.2"
+  },
+  "devDependencies": {
+    "cheerio": "^1.2.0"
+  }
+}
