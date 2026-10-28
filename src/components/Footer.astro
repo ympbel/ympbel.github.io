@@ -1,0 +1,16 @@
+---
+import { t } from '../i18n/index.ts';
+import type { Locale } from '../lib/content.ts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { footer } = t(Astro.props.locale);
+---
+
+<div id="footer">
+  <p class="ft_name">{footer.name}</p>
+  <p class="ft_address">{footer.address}<br />{footer.tel}</p>
+  <p class="ft_copy">{footer.copyright}<span>{footer.copyrightName}</span>{footer.copyrightTail}</p>
+</div>

@@ -1,0 +1,12 @@
+/* Inline <style> blocks of the old pages, collected here. */
+
+/* Board pages (bbs/board.php) */
+.board_list{position:relative;}
+.board_list .down_pdf{background: #ffffff;padding: 10px 0;border: 1px solid #ddd; width: 140px; text-align: center; color: #333; float: right; position: absolute; top: 30px; right: 0;z-index:200;}
+.pfwrap .downloadpf{display:none;}
+
+/* Current page in the side navigation (was "페이지인식" #pageN #menuNN > .boxN_N_N per page) */
+.snb .vNav li.active > a { display:block; color:#1563b4; background:#f5f5f5; }
+
+/* Mobile navigation toggle: hidden on desktop (shown by the responsive layer) */
+.nav-toggle { display:none; }

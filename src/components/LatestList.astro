@@ -1,0 +1,30 @@
+---
+interface Props {
+  title: string;
+  href: string;
+  items: Array<{ title: string; href: string; date: string }>;
+  more: string;
+  /** Inline style of the wrapper, kept where the old markup had one. */
+  style?: string;
+}
+
+const { title, href, items, more, style } = Astro.props;
+---
+
+<div class="main_notice" style={style}>
+  <div class="lat">
+    <h2 class="lat_title"><a href={href}>{title}</a></h2>
+    <hr class="underTit" />
+    <ul>
+      {
+        items.map((item) => (
+          <li>
+            <a href={item.href}>{item.title}</a>
+            <span class="lt_date">{item.date.slice(5)}</span>
+          </li>
+        ))
+      }
+    </ul>
+    <a href={href} class="lt_more"><span class="sound_only">{title}</span><img src="/images/site/main/ico_more.png" alt="" /><span class="sound_only"> {more}</span></a>
+  </div>
+</div>

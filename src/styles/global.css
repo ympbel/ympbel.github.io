@@ -1,0 +1,14 @@
+@import './legacy/default.css';
+@import './legacy/design.css';
+@import './legacy/latest-basic.css';
+@import './legacy/board-html.css';
+@import './legacy/board-student.css';
+@import './legacy/board-collaborators.css';
+@import './legacy/board-alumni.css';
+@import './legacy/board-patent.css';
+@import './legacy/board-patent2.css';
+@import './legacy/board-patent3.css';
+@import './legacy/board-lecture.css';
+@import './legacy/board-basic.css';
+@import './legacy/board-gallery.css';
+@import './legacy/inline.css';

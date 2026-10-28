@@ -1,0 +1,376 @@
+@charset "utf-8";
+/* SIR 지운아빠 */
+
+/* ### 기본 스타일 커스터마이징 시작 ### */
+
+/* 게시판 버튼 */
+/* 목록 버튼 */
+#bo_list a.btn_b01 {}
+#bo_list a.btn_b01:focus, #bo_list a.btn_b01:hover {}
+#bo_list a.btn_b02 {}
+#bo_list a.btn_b02:focus, #bo_list a.btn_b02:hover {}
+#bo_list a.btn_admin {} /* 관리자 전용 버튼 */
+#bo_list a.btn_admin:focus, #bo_list .btn_admin:hover {}
+
+/* 읽기 버튼 */
+#bo_v a.btn_b01 {}
+#bo_v a.btn_b01:focus, #bo_v a.btn_b01:hover {color:#666;}
+#bo_v a.btn_b02 {}
+#bo_v a.btn_b02:focus, #bo_v a.btn_b02:hover {}
+#bo_v a.btn_admin {} /* 관리자 전용 버튼 */
+#bo_v a.btn_admin:focus, #bo_v a.btn_admin:hover {}
+
+/* 쓰기 버튼 */
+#bo_w .btn_confirm {} /* 서식단계 진행 */
+#bo_w .btn_submit {}
+#bo_w button.btn_submit {}
+#bo_w fieldset .btn_submit {}
+#bo_w .btn_cancel {}
+#bo_w button.btn_cancel {}
+#bo_w .btn_cancel:focus, #bo_w .btn_cancel:hover {}
+#bo_w a.btn_frmline, #bo_w button.btn_frmline {} /* 우편번호검색버튼 등 */
+#bo_w button.btn_frmline {}
+
+/* 기본 테이블 */
+/* 목록 테이블 */
+#bo_list .tbl_head01 {}
+#bo_list .tbl_head01 caption {}
+#bo_list .tbl_head01 thead th {}
+#bo_list .tbl_head01 thead a {}
+#bo_list .tbl_head01 thead th input {} /* middle 로 하면 게시판 읽기에서 목록 사용시 체크박스 라인 깨짐 */
+#bo_list .tbl_head01 tfoot th {}
+#bo_list .tbl_head01 tfoot td {}
+#bo_list .tbl_head01 tbody th {}
+#bo_list .tbl_head01 td {}
+#bo_list .tbl_head01 a {}
+#bo_list td.empty_table {}
+
+/* 읽기 내 테이블 */
+#bo_v .tbl_head01 {}
+#bo_v .tbl_head01 caption {}
+#bo_v .tbl_head01 thead th {}
+#bo_v .tbl_head01 thead a {}
+#bo_v .tbl_head01 thead th input {} /* middle 로 하면 게시판 읽기에서 목록 사용시 체크박스 라인 깨짐 */
+#bo_v .tbl_head01 tfoot th {}
+#bo_v .tbl_head01 tfoot td {}
+#bo_v .tbl_head01 tbody th {}
+#bo_v .tbl_head01 td {}
+#bo_v .tbl_head01 a {}
+#bo_v td.empty_table {}
+
+/* 쓰기 테이블 */
+#bo_w table {}
+#bo_w caption {}
+#bo_w .frm_info {}
+#bo_w .frm_address {}
+#bo_w .frm_file {}
+
+#bo_w .tbl_frm01 {}
+#bo_w .tbl_frm01 th {}
+#bo_w .tbl_frm01 td {}
+#bo_w .tbl_frm01 textarea, #bo_w tbl_frm01 .frm_input {}
+#bo_w .tbl_frm01 textarea {}
+/*
+#bo_w .tbl_frm01 #captcha {}
+#bo_w .tbl_frm01 #captcha input {}
+*/
+#bo_w .tbl_frm01 a {}
+
+/* 필수입력 */
+#bo_w .required, #bo_w textarea.required {}
+
+#bo_w .cke_sc {}
+#bo_w button.btn_cke_sc{}
+#bo_w .cke_sc_def {}
+#bo_w .cke_sc_def dl {}
+#bo_w .cke_sc_def dl:after {}
+#bo_w .cke_sc_def dt, #bo_w .cke_sc_def dd {}
+#bo_w .cke_sc_def dt {}
+#bo_w .cke_sc_def dd {}
+
+/* ### 기본 스타일 커스터마이징 끝 ### */
+
+/* 게시판 목록 */
+#bo_list .td_board {width:120px;text-align:center}
+#bo_list .td_chk {width:30px;text-align:center}
+#bo_list .td_date {width:60px;text-align:center}
+#bo_list .td_datetime {width:110px;text-align:center}
+#bo_list .td_group {width:100px;text-align:center}
+#bo_list .td_mb_id {width:100px;text-align:center}
+#bo_list .td_mng {width:80px;text-align:center}
+#bo_list .td_name {width:100px;text-align:left}
+#bo_list .td_nick {width:100px;text-align:center}
+#bo_list .td_num {width:50px;text-align:center}
+#bo_list .td_numbig {width:80px;text-align:center}
+
+#bo_list .txt_active {color:#5d910b}
+#bo_list .txt_expired {color:#ccc}
+
+#bo_cate h2 {position:absolute;font-size:0;line-height:0;overflow:hidden}
+#bo_cate ul {margin-bottom:10px;padding-left:1px;zoom:1}
+#bo_cate ul:after {display:block;visibility:hidden;clear:both;content:""}
+#bo_cate li {float:left;margin-bottom:-1px}
+#bo_cate a {display:block;position:relative;margin-left:-1px;padding:6px 0 5px;width:90px;border:1px solid #ddd;background:#fff;color:#888;text-align:center;line-height:18px;cursor:pointer}
+#bo_cate a:focus, #bo_cate a:hover, #bo_cate a:active {text-decoration:none}
+#bo_cate #bo_cate_on {z-index:2;border:1px solid #565e60;background:#fff;color:#565e60;font-weight:600}
+
+.td_subject img {margin-left:3px}
+
+/* 게시판 목록 공통 */
+.bo_fx {margin-bottom:5px; width:100%; position:relative; zoom:1}
+.bo_fx:after {display:block;visibility:hidden;clear:both;content:""}
+.bo_fx ul {margin:0;padding:0;list-style:none}
+#bo_list_total {position:absolute; left:0; bottom:0;}
+.btn_bo_user {float:right;margin:0;padding:0;list-style:none}
+.btn_bo_user li {float:left;margin-left:5px}
+.btn_bo_adm {float:left}
+.btn_bo_adm li {float:left;margin-right:5px}
+.btn_bo_adm input {background: #7d7d7d; border: 1px solid #858585; color: #fff; font-size: 12px; font-weight: 500; letter-spacing: 1px; padding: 7px 15px; cursor:pointer;}
+.btn_bo_adm input:hover {background:#9d9d9d; border:1px solid #9d9d9d;}
+.bo_notice td {background:#f5f6fa}
+.bo_notice td a {font-weight:600}
+.td_num strong {color:#000}
+.bo_cate_link {display:inline-block;margin:0 3px 0 0;padding:0 6px 0 0;border-right:1px solid #e7f1ed;color:#999 !important;font-weight:600;text-decoration:none} /* 글제목줄 분류스타일 */
+.bo_current {color:#7d7d7d}
+#bo_list .cnt_cmt {display:inline-block;margin:0 0 0 3px;font-weight:600}
+
+#bo_sch {display: none; margin-bottom:10px;padding-top:5px;text-align:center}
+#bo_sch legend {position:absolute;margin:0;padding:0;font-size:0;line-height:0;text-indent:-9999em;overflow:hidden}
+
+/* 게시판 쓰기 */
+#char_count_desc {display:block;margin:0 0 5px;padding:0}
+#char_count_wrap {margin:5px 0 0;text-align:right}
+#char_count {font-weight:600}
+
+#autosave_wrapper {position:relative}
+#autosave_pop {display:none;z-index:10;position:absolute;top:24px;right:117px;padding:8px;width:350px;height:auto !important;height:180px;max-height:180px;border:1px solid #565656;background:#fff;overflow-y:scroll}
+html.no-overflowscrolling #autosave_pop {height:auto;max-height:10000px !important} /* overflow 미지원 기기 대응 */
+#autosave_pop strong {position:absolute;font-size:0;line-height:0;overflow:hidden}
+#autosave_pop div {text-align:right}
+#autosave_pop button {margin:0;padding:0;border:0;background:transparent}
+#autosave_pop ul {margin:10px 0;padding:0;border-top:1px solid #e7e7e7;list-style:none}
+#autosave_pop li {padding:8px 5px;border-bottom:1px solid #e7e7e7;zoom:1}
+#autosave_pop li:after {display:block;visibility:hidden;clear:both;content:""}
+#autosave_pop a {display:block;float:left}
+#autosave_pop span {display:block;float:right}
+.autosave_close {cursor:pointer}
+.autosave_content {display:none}
+
+/* 게시판 읽기 */
+#bo_v {margin-bottom:20px;padding-bottom:20px}
+
+#bo_v_table {display:none;}
+
+#bo_v_title {padding:10px 0; font-size:24px; font-weight:600;    width: 400px;}
+
+#bo_v_info {padding:0 0 10px;border-bottom:1px solid #ddd}
+#bo_v_info h2 {position:absolute;font-size:0;line-height:0;overflow:hidden}
+#bo_v_info strong {display:inline-block;margin:0 15px 0 5px;font-weight:normal}
+#bo_v_info .sv_member,
+#bo_v_info .sv_guest,
+#bo_v_info .member,
+#bo_v_info .guest {font-weight:600}
+
+#bo_v_file {}
+#bo_v_file h2 {position:absolute;font-size:0;line-height:0;overflow:hidden}
+#bo_v_file ul {margin:0;padding:0;list-style:none}
+#bo_v_file li {padding:0 10px;border-bottom:1px solid #eee;background:#f5f6fa}
+#bo_v_file a {display:inline-block;padding:8px 0 7px;width:100%;color:#000;word-wrap:break-word}
+#bo_v_file a:focus, #bo_v_file a:hover, #bo_v_file a:active {text-decoration:none}
+#bo_v_file img {float:left;margin:0 10px 0 0}
+.bo_v_file_cnt {display:inline-block;margin:0 0 3px 16px}
+
+#bo_v_link {}
+#bo_v_link h2 {position:absolute;font-size:0;line-height:0;overflow:hidden}
+#bo_v_link ul {margin:0;padding:0;list-style:none}
+#bo_v_link li {padding:0 10px;border-bottom:1px solid #eee;background:#f5f6fa}
+#bo_v_link a {display:inline-block;padding:8px 0 7px;width:100%;color:#000;word-wrap:break-word}
+#bo_v_link a:focus, #bo_v_link a:hover, #bo_v_link a:active {text-decoration:none}
+.bo_v_link_cnt {display:inline-block;margin:0 0 3px 16px}
+
+#bo_v_top {margin:0 0 25px;padding:10px 0;zoom:1}
+#bo_v_top:after {display:block;visibility:hidden;clear:both;content:""}
+#bo_v_top h2 {position:absolute;font-size:0;line-height:0;overflow:hidden}
+#bo_v_top ul {margin:0;padding:0;list-style:none}
+
+#bo_v_bot {zoom:1}
+#bo_v_bot:after {display:block;visibility:hidden;clear:both;content:""}
+#bo_v_bot h2 {position:absolute;font-size:0;line-height:0;overflow:hidden}
+#bo_v_bot ul {margin:0;padding:0;list-style:none}
+
+.bo_v_nb {float:left}
+.bo_v_nb li {float:left;margin-right:5px}
+.bo_v_com {float:right}
+.bo_v_com li {float:left;margin-left:5px}
+
+#bo_v_atc {min-height:200px;height:auto !important;height:200px}
+#bo_v_atc_title {position:absolute;font-size:0;line-height:0;overflow:hidden}
+
+#bo_v_img {margin:0 0 10px;width:100%;overflow:hidden;zoom:1}
+#bo_v_img:after {display:block;visibility:hidden;clear:both;content:""}
+#bo_v_img img {margin-bottom:20px;max-width:100%;height:auto}
+
+#bo_v_con {margin-bottom:30px;width:100%;line-height:1.7em;word-break:break-all;overflow:hidden}
+#bo_v_con a {color:#000;text-decoration:underline}
+#bo_v_con img {max-width:100%;height:auto}
+
+#bo_v_act {margin-bottom:30px;text-align:center}
+#bo_v_act .bo_v_act_gng {position:relative}
+#bo_v_act a {margin-right:5px;vertical-align:middle}
+#bo_v_act strong {color:#ff3061}
+#bo_v_act_good, #bo_v_act_nogood {display:none;position:absolute;top:30px;left:0;padding:10px 0;width:165px;background:#ff3061;color:#fff;text-align:center}
+
+#bo_v_sns {margin:0 0 20px;padding:0;list-style:none;zoom:1}
+#bo_v_sns:after {display:block;visibility:hidden;clear:both;content:""}
+#bo_v_sns li {float:left;margin:0 5px 0 0}
+
+/* 게시판 댓글 */
+#bo_vc {margin:0 0 20px;padding:20px 20px 10px;border:1px solid #e7e7e7;background:#fafafa}
+#bo_vc h2 {margin-bottom:10px}
+#bo_vc article {padding:0 0 10px;border-top:1px dotted #ccc}
+#bo_vc header {position:relative;padding:15px 0 5px}
+#bo_vc header .icon_reply {position:absolute;top:15px;left:-20px}
+#bo_vc .sv_wrap {margin-right:15px}
+#bo_vc .member, #bo_vc .guest, #bo_vc .sv_member, #bo_vc .sv_guest {font-weight:600}
+.bo_vc_hdinfo {display:inline-block;margin:0 15px 0 5px}
+#bo_vc h1 {position:absolute;font-size:0;line-height:0;overflow:hidden}
+#bo_vc a {color:#000;text-decoration:none}
+#bo_vc p {padding:0 0 5px;line-height:1.8em}
+#bo_vc p a {text-decoration:underline}
+#bo_vc p a.s_cmt {text-decoration:none}
+#bo_vc_empty {margin:0;padding:20px !important;text-align:center}
+#bo_vc #bo_vc_winfo {float:left}
+#bo_vc footer {zoom:1}
+#bo_vc footer:after {display:block;visibility:hidden;clear:both;content:""}
+
+.bo_vc_act {float:right;margin:0;list-style:none;zoom:1}
+.bo_vc_act:after {display:block;visibility:hidden;clear:both;content:""}
+.bo_vc_act li {float:left;margin-left:5px}
+
+#bo_vc_w {position:relative;margin:0 0 10px;padding:0 0 20px;border-bottom:1px solid #e7e7e7}
+#bo_vc_w h2 {position:absolute;font-size:0;line-height:0;overflow:hidden}
+#bo_vc_w #char_cnt {display:block;margin:0 0 5px}
+
+#bo_vc_sns {margin:0;padding:0;list-style:none;zoom:1}
+#bo_vc_sns:after {display:block;visibility:hidden;clear:both;content:""}
+#bo_vc_sns li {float:left;margin:0 20px 0 0}
+#bo_vc_sns input {margin:0 0 0 5px}
+
+
+/************Professor********************/
+
+li{list-style:none;}
+dt{margin: 0;}
+
+.prof_info .line{width:100%;margin-top:35px;height:20px;position:relative;background:#fff;}
+.prof_info .line::after{position:absolute; width:600px; height:1px; background:#ddd; content:"";} 
+
+.pfwrap{width:900px;    margin-top: 30px;}
+.pfwrap>div{margin:10px 0;}
+ .prof_info:after{content:'';display:block;clear:both;overflow:hidden;}
+ .prof_info{margin:10px 0 10px !important;position:relative;}
+ .prof_info div{float:left;}
+ .pro_txt{margin-left:50px;    margin-top: 18px;width:60%;}
+ .pro_txt ul{padding-left:5px !important;font-size:13px;}
+ .pro_txt li{margin-bottom:5px;}
+ .pro_txt h3{padding: 0 0 0 20px; color: #05367b;font-size:20px !important; font-weight: 600 !important; background: url(/images/site/sub/ico_tit1.gif) 5px 50% no-repeat; margin: 0 0 20px 0;}
+ .prof_img img{width:250px;}
+ 
+ .prof_resu {    padding: 10px 0;}
+ .prof_resu p{    font-size: 13px;
+    margin-top: 20px;
+    line-height: 25px;}
+ .prof_resu ul{font-size:13px;padding-left:15px !important;}
+ .prof_resu li, .prof_resu h5{    margin-bottom: 5px; overflow: hidden; padding: 0 0 0 12px; color: #333; font-size: 13px;  line-height: 16px;   background: url(/images/site/sub/bullet.png) 0px 7px no-repeat;  background-size: 4px;}
+ .prof_resu ul li dl{margin-left:-5px;    margin: 10px 0;}
+ .prof_resu ul li dl dd{    margin: 5px 0 0 8px; color: #757575; background: url('/images/site/sub/ddbul.jpg') 10px 8px no-repeat;  text-indent: 20px;    background-size: 2px 2px;}
+.mt15{margin-top:5px !important;}
+.mb7{margin-bottom:7px !important;}
+ .prof_resu h4{    padding: 0 0 0 18px;
+    color: #05367b;
+    font-size: 16px;
+    font-weight: 600;
+    background: url('/images/site/sub/ico_tit1.gif') 5px 50% no-repeat;
+    margin: 0 0 15px 0;}
+ 
+ .dtclass{font-weight:600;margin:5px;    background: url('/images/site/sub/ddbul.jpg') 0px 8px no-repeat;text-indent:13px;background-size: 6px;}
+ .line{width:900px; height:1px; background:#ddd;}
+.pfwrap .downloadpf{background: #ffffff;
+    padding: 10px 0;
+    border: 1px solid #ddd;
+    width: 140px;
+    text-align: center;
+    color: #333;float:right;position:absolute; top:0; right:0;}
+.pfwrap .downloadpf a{text-decoration:none ! important; display:block;}
+.pfwrap .s_pro_txt{ font-size: 16px !important;  margin-left: 10px; font-weight: 400 !important;}
+
+ /************  research 1-4 공통  ********************/
+
+
+ .research{    font-size: 15px;    margin-top: 20px;width:900px;word-break:keep-all;}
+ .research p,  .research span{ word-break:keep-all;}
+ .research:after{overflow:hidden;content:'';display:block;clear:both;}
+	.research div.mb_20 img{    margin-bottom: 20px;width:100%}
+	.research h3{ margin-bottom: 20px; background: url(/images/site/sub/ico_rtit.jpg) no-repeat 0 66%; text-indent: 20px;font-size: 18px;font-weight:600 !important;}
+	.research p{ line-height: 30px;font-size:15px;}
+	.research .pt_10{padding-top: 10px;}
+	.research .mt_30{margin-top: 30px;}
+	.research .mt_10{margin-top: 10px;}
+	.research .mt_10:after{overflow:hidden;content:'';display:block;clear:both;}
+	.research li.mt_10{color: #333;background: url(/images/site/sub/ico_rtit2.jpg) no-repeat 0 61%; font-weight:600;text-indent:10px;font-size:15px;line-height: 30px;margin-top:6px}
+	.research li{list-style:none;}
+	.research .method{padding:0;}
+	.research .method li{background: url(/images/site/sub/ico_rtit2.jpg) no-repeat 0 12px;text-indent: 10px;line-height: 25px; margin: 5px 0 5px 5px;
+}	
+	.research img{    width: 100%;margin:10px 0;}
+	 .research img.w70{    width:70% !important;margin:0!important;}
+	.research p.r_tit{ 
+    font-size: 22px;
+    font-weight: 600;    margin: 30px 0;}
+	
+	.cBlue{color:#176cbd;}
+
+.research_02 img{max-width:100%;}
+.research img{max-width:100%;}
+
+ /************  research 01 ********************/
+
+ .r1img2 img{width:900px;margin-top:10px;}
+ /*.r1img3, .r1img4{    float: left;     margin: 10px 10px 20px 0;}*/
+ .r1img3 img{width: 100%;margin-right:10px;}
+ .r1img4 img{  width: 100%;}
+
+
+ /************  research 02 ********************/
+
+ .research_02{    font-size: 15px;    margin-top: 20px;width:900px;word-break:keep-all;}
+ .research_02 p,  .research_02 span{ word-break:keep-all;}
+	.research_02 div.mb_20 img{    margin-bottom: 20px;width:100%}
+	.research_02 h3{margin-bottom: 20px;background: url(/images/site/sub/ico_rtit.jpg) no-repeat 0 66%; text-indent: 20px;font-size: 18px;font-weight:600 !important;}
+	.research_02 p{    line-height: 30px;font-size:15px;}
+	.research_02 li:first-child{    line-height: 30px;}
+	.research_02 .pt_10{padding-top: 10px;}
+	.research_02 .mt_30{margin-top: 30px;}
+	.research_02 .mt_10{margin-top: 10px;}
+	.research_02 li.mt_10{color: #333;background: url(/images/site/sub/ico_rtit2.jpg) no-repeat 0 61%; font-weight:600;text-indent:10px;font-size:13px;margin-top:6px}
+	.research_02 li{list-style:none;}
+	.research_02 .result{padding:0;}
+	.research_02 p.r_tit{ 
+    font-size: 22px;
+    font-weight: 600;    margin: 30px 0;}
+.research_02 img.w70{    width:70% !important;margin:10px 0;}
+
+ /************  research 04 ********************/
+
+ .imgBox img{width:100%; max-width:1200px; margin-top:10px;}
+ .imgBox img:first-child{margin-top:20px !important;}
+
+
+/***************** research 05 - grant list *******************/
+.research_05{    font-size: 14px;}
+	.research_05:after{content:'';display:block;clear:both;overflow:hidden;}
+	.research_05 ul{    padding: 0;}
+	.research_05 h5{    background: url(/images/site/sub/ico_rtit2.jpg) no-repeat 0 50%;text-indent:10px; font-size: 14px; margin: 25px 0 20px;    font-weight: 400;}
+	.research_05 li{color:#777;list-style:none;font-size:13px;margin-top:8px}
+
+	.research_05 div.line{margin:20px 0 10px;}

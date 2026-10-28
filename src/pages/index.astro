@@ -1,13 +1,96 @@
 ---
+import { getCollection, getEntry, render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import LatestList from '../components/LatestList.astro';
+import { isLocale, slugOf, sortPosts } from '../lib/content.ts';
+import { t } from '../i18n/index.ts';
+
+const locale = 'ko';
+const { home: s, more } = t(locale);
+
+const home = await getEntry('pages', 'ko/home');
+if (!home) throw new Error('src/content/pages/ko/home.md is missing');
+const { Content } = await render(home);
+
+type Post = { id: string; data: { title: string; date: string } };
+const latest = (posts: Post[], base: string) =>
+  posts.slice(0, 4).map((p) => ({ title: p.data.title, href: `${base}${slugOf(p.id)}/`, date: p.data.date }));
+
+const news = sortPosts(await getCollection('news', isLocale(locale))).filter((p) => !p.data.pinned);
+const seminars = sortPosts(await getCollection('seminars', isLocale(locale)));
 ---
-<html lang="ko">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>MPBEL | 연세 의학물리 및 의공학 연구실</title>
-  </head>
-  <body>
-    <h1>MPBEL</h1>
-  </body>
-</html>
+
+<BaseLayout locale={locale} bodyClass="main">
+  <div class="visual">
+    <div class="wrap">
+      <p class="slogan"><img src="/images/site/main/slogan.png" alt="" /></p>
+    </div>
+  </div>
+
+  <div class="about">
+    <div class="tit"><p><span>{s.introBrand}</span>{s.introWord}</p></div>
+    <div class="txt">
+      <Content />
+    </div>
+  </div>
+
+  <div class="research_wrap">
+    <div class="bg_gray"></div>
+    <ul>
+      {
+        s.research.map((r, i) => (
+          <li class={r.cls}>
+            <a href={r.href}>
+              {i % 2 === 1 && <div class="img" />}
+              <div class="tit">
+                <span>{r.num}</span>
+                <p set:html={r.label} />
+              </div>
+              {i % 2 === 0 && <div class="img" />}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+
+  <div class="main_board">
+    <div class="l_bo">
+      <LatestList title={s.news} href="/notice/news/" items={latest(news, '/notice/news/')} more={more} />
+      <div class="link">
+        <ul>
+          {
+            home.data.links.map((link, i) => (
+              <li class={i % 2 === 1 ? 'bor_l' : undefined}>
+                <a href={link.url} target="_blank" rel="noopener" class={i % 2 === 0 ? 'oneline' : undefined}>
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+    <div class="r_bo">
+      <LatestList
+        title={s.seminar}
+        href="/notice/seminar/"
+        items={latest(seminars, '/notice/seminar/')}
+        more={more}
+        style="margin-bottom: 20px;"
+      />
+      <div class="publication">
+        <div class="tit">{s.publication}</div>
+        <ul>
+          {
+            s.pubLinks.map((p) => (
+              <li class={p.cls}>
+                <a href={p.href}><img src={p.icon} alt="" /><span>{p.label}</span></a>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

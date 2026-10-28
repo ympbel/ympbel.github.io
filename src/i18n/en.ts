@@ -1,0 +1,53 @@
+import type { ko } from './ko.ts';
+
+export const en: typeof ko = {
+  siteTitle: 'MPBEL | Yonsei Medical Physics and Biomedical Engineering Lab.',
+  logoAlt: 'Yonsei Medical Physics and Biomedical Engineering Lab.',
+  more: 'More',
+  footer: {
+    name: 'Yonsei Medical Physics and Biomedical Engineering Lab.',
+    address: 'Yonsei University, 50 Yonsei-ro, Seodaemun-gu, Seoul 03722, Korea',
+    tel: 'TEL. +82-2-2228-8118 / FAX. +82-2-2227-7823',
+    copyright: 'COPYRIGHT @2018',
+    copyrightName: 'MPBEL',
+    copyrightTail: 'ALL RIGHT RESERVED.',
+  },
+  home: {
+    introBrand: 'MPBEL',
+    introWord: 'Introduction',
+    accName: 'Yonsei Medical Physics and Biomedical Engineering Lab.',
+    accTail: '',
+    research: [
+      { cls: 'rs1', num: 'RESEARCH 01', label: 'Advanced CT<br>Reconstruction', href: '/research/ct-reconstruction/' },
+      { cls: 'rs2', num: 'RESEARCH 02', label: 'Medical Artificial<br>Intelligence', href: '/research/ai/' },
+      { cls: 'rs3', num: 'RESEARCH 03', label: 'Radiation<br>Therapy', href: '/research/radiation-therapy/' },
+      { cls: 'rs4', num: 'RESEARCH 04', label: 'Particle<br>Therapy', href: '/research/particle-therapy/' },
+    ],
+    news: 'News',
+    seminar: 'Seminar',
+    publication: 'Publication',
+    pubLinks: [
+      { cls: 'bg1', icon: '/images/site/main/ico_1.png', label: 'Paper', href: '/publication/paper/' },
+      { cls: 'bg2', icon: '/images/site/main/ico_2.png', label: 'Presentation', href: '/publication/presentation/' },
+      { cls: 'bg3', icon: '/images/site/main/ico_3.png', label: 'Patent', href: '/publication/patent/' },
+    ],
+  },
+  board: {
+    total: (n: number) => `Total ${n}`,
+    pageOf: (p: number) => `Page ${p}`,
+    num: 'No.',
+    subject: 'Subject',
+    author: 'Author',
+    date: 'Date',
+    lectureDate: 'Lecture date',
+    authorName: 'YMPBEL',
+    pinned: 'Notice',
+    list: 'List',
+    prev: 'Previous',
+    next: 'Next',
+    presenter: 'Presenter',
+    all: 'All',
+  },
+  preparing: 'Coming soon.',
+  home_nav: 'home',
+};

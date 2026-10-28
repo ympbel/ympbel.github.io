@@ -1,0 +1,53 @@
+---
+import { MENU } from '../lib/menu.ts';
+import { t } from '../i18n/index.ts';
+import type { Locale } from '../lib/content.ts';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const { logoAlt } = t(locale);
+const languages: Array<{ locale: Locale; label: string; href: string }> = [
+  { locale: 'ko', label: 'KR', href: '/' },
+  { locale: 'en', label: 'EN', href: '/en/' },
+];
+---
+
+<div class="topmenu">
+  <div class="logo"><a href="/"><img src="/images/site/logo.png" alt={logoAlt} /></a></div>
+  <div class="langbut">
+    <ul>
+      {languages.map((l) => <li class={l.locale === locale ? 'active' : undefined}><a href={l.href}>{l.label}</a></li>)}
+    </ul>
+  </div>
+  <button type="button" class="nav-toggle" aria-label="메뉴" aria-expanded="false" aria-controls="navi"></button>
+  <div id="navi">
+    <ul id="nav">
+      {
+        MENU[locale].map((section, i) => (
+          <li class={`menu${i + 1}`}>
+            <a href={section.href} class="on">{section.label}</a>
+            <ul class={`sub${i + 1}`}>
+              {section.items.map((item) => (
+                <li><a href={item.href}>{item.label}</a></li>
+              ))}
+            </ul>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>
+<script is:inline>
+  (function () {
+    var toggle = document.querySelector('.nav-toggle');
+    var navi = document.getElementById('navi');
+    if (!toggle || !navi) return;
+    toggle.addEventListener('click', function () {
+      var open = navi.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  })();
+</script>
