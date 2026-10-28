@@ -75,6 +75,12 @@ test('built CSS: drawer and member rules sit inside the media blocks', () => {
   assert.ok(mediaBodies(squashed, '(max-width:600px)').some((b) => b.includes('.mb_peple{width:100%')));
 });
 
+test('built CSS: professor photo stacks above the text and paragraphs break between words on phones', () => {
+  assert.ok(mediaBodies(squashed, '(max-width:600px)').some((b) => b.includes('.prof_img{float:none')));
+  // Whitespace is squashed, so the selector `#footer p` reads `#footerp`.
+  assert.ok(mediaBodies(squashed, '(max-width:1024px)').some((b) => /#footerp[,{][^}]*word-break:normal/.test(b)));
+});
+
 test('responsive.css source: no rule outside @media blocks (desktop unchanged)', () => {
   assert.ok(existsSync(SOURCE));
   let css = readFileSync(SOURCE, 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');

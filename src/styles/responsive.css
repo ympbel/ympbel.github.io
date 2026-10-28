@@ -71,7 +71,12 @@
   .contentBox .contents { margin: 30px auto; }
 
   /* Static pages (board-html skin): the 900 px content blocks follow the content width. */
-  #sub_contents .research, #sub_contents .research_02, #sub_contents .pfwrap, #sub_contents .line { width: auto; }
+  #sub_contents .research, #sub_contents .research_02, #sub_contents .pfwrap { width: auto; }
+  /* max-width, not width:auto: the floated `.prof_info .line` must keep its width:100% (auto would shrink it to 0). */
+  #sub_contents .line { max-width: 100%; }
+
+  /* Paragraphs break between words; the legacy `p{word-break:break-all}` splits words mid-way on a narrow screen. */
+  #footer p, .contentBox p, .main .about p { word-break: normal; overflow-wrap: anywhere; }
 
   /* Members: two cards per row, photo above the text. */
   #sub_contents #member_professor .member_list { display: flex; flex-wrap: wrap; border-top: 1px solid #ddd; }
@@ -100,6 +105,8 @@
   .main_board .r_bo .publication ul li { width: 100%; }
 
   #sub_contents .wTxt { float: none; width: auto; }
+  /* Professor: the photo stops floating so the text goes below it instead of a narrow column beside it. */
+  #sub_contents .prof_info .prof_img { float: none; }
   #sub_contents .pro_txt { float: none; width: auto; margin-left: 0; }
 
   #sub_contents #member_professor .mb_peple { width: 100%; }
