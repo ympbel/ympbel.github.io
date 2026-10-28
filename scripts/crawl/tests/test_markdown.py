@@ -17,6 +17,17 @@ def test_write_entry_keeps_date_string(tmp_path):
     assert type(fm['date']) is str
 
 
+def test_write_entry_writes_multiline_strings_as_literal_blocks(tmp_path):
+    # Hand-editable: one line per line, instead of a quoted scalar where a blank line means a newline.
+    path = tmp_path / 'entry.md'
+    frontmatter = {'fields': [{'label': 'Research Interest',
+                               'value': 'Neuroscience\nUndergraduate @Brown University'}]}
+    write_entry(path, frontmatter, '')
+    assert ('- label: Research Interest\n  value: |-\n    Neuroscience\n    Undergraduate @Brown University\n'
+            in path.read_text(encoding='utf-8'))
+    assert read_frontmatter(path) == frontmatter
+
+
 def test_slugify():
     title = 'Anatomical Position-Guided Auto-segmentation and Dosimetric Evaluation'
     # The brief paired max_words=5 with this 6-word slug; that contradicts the rule and Task 6's

@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from crawl.config import BASE_URL
-from crawl.parse_common import page_count, soup
+from crawl.parse_common import block_text, page_count, soup
 from crawl.parse_members import Member, member_filename, original_photo_url, parse_member_list
 
 FIXTURES = Path(__file__).resolve().parent / 'fixtures'
@@ -59,3 +59,26 @@ def test_member_filename():
 def test_page_count_members():
     assert page_count(soup(fixture('sub2_3_p1'))) == 2
     assert len(parse_member_list(fixture('sub2_3_p1'))) + len(parse_member_list(fixture('sub2_3_p2'))) >= 16
+
+
+def test_block_text_keeps_paragraphs():
+    dd = soup('<dd><p>Particle Therapy</p><p>MS Student majoring in particle physics '
+              '@Gangneung-Wonju National University</p></dd>').dd
+    assert block_text(dd) == ('Particle Therapy\n'
+                              'MS Student majoring in particle physics @Gangneung-Wonju National University')
+    assert block_text(soup('<dd><p>Medical Physics<br>Radiologic  Technician&nbsp;@SNU<br/></p></dd>').dd) == (
+        'Medical Physics\nRadiologic Technician @SNU')
+    nested = soup(fixture('sub2_3_p1')).select_one('div.mb_peple .cnt dl').find_all('dd', recursive=False)[2]
+    assert block_text(nested) == 'Medical Physics'
+    assert block_text(None) == ''
+
+
+def test_multi_paragraph_values_keep_line_breaks():
+    alumni = {m.wr_id: dict(m.fields) for m in parse_member_list(fixture('sub2_4'))}
+    assert alumni[33]['Research Interest'] == (
+        'Particle Therapy\nMS Student majoring in particle physics @Gangneung-Wonju National University')
+    interns = {m.wr_id: dict(m.fields) for m in parse_member_list(fixture('sub2_5'))}
+    assert interns[12]['Research Interest'] == 'Neuroscience\nUndergraduate @Brown University'
+    # A trailing <br> inside the paragraph adds no empty line.
+    researchers = {m.wr_id: dict(m.fields) for m in parse_member_list(fixture('sub2_3_p1'))}
+    assert researchers[55]['Research Interest'] == 'Monte Carlo simulation, Medical Physics'

@@ -6,7 +6,7 @@ from dataclasses import dataclass
 from urllib.parse import urljoin
 
 from .markdown import slugify
-from .parse_common import PAGE_URL, clean_text, soup, wr_id_of
+from .parse_common import PAGE_URL, block_text, clean_text, soup, wr_id_of
 
 _THUMB_SIZE = re.compile(r'_\d+x\d+(\.[^.]+)$')
 
@@ -25,7 +25,8 @@ def parse_member_list(html: str, category: str | None = None) -> list[Member]:
 
     `fields` pairs each `dt` of the card's first `dl` with the `dd` after it; a `dd` without a
     `dt` gets label '' (collaborator cards leave the label empty), an empty value is dropped.
-    clean_text flattens the Word-paste markup some values carry (`<dd><dd><p><span>`).
+    Values keep one line per paragraph or `<br>` (block_text); the Word-paste markup some values
+    carry (`<dd><dd><p><span>`) still gives a single line.
     """
     members = []
     for card in soup(html).select('div.mb_peple'):
@@ -43,7 +44,7 @@ def parse_member_list(html: str, category: str | None = None) -> list[Member]:
             if el.name == 'dt':
                 label = clean_text(el)
                 continue
-            value = clean_text(el)
+            value = block_text(el)
             if value:
                 fields.append((label, value))
             label = ''

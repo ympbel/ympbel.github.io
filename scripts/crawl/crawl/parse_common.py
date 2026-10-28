@@ -4,7 +4,8 @@ from __future__ import annotations
 import re
 from urllib.parse import parse_qs, urljoin, urlsplit
 
-from bs4 import BeautifulSoup, Tag
+from bs4 import BeautifulSoup, NavigableString, Tag
+from bs4.element import PreformattedString
 
 from .config import BASE_URL
 
@@ -51,6 +52,37 @@ def clean_text(el: Tag | None) -> str:
     if el is None:
         return ''
     return re.sub(r'\s+', ' ', el.get_text(' ', strip=True).replace('\xa0', ' ')).strip()
+
+
+BLOCK_TAGS = frozenset({'p', 'div', 'li', 'dd', 'tr', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'})
+
+
+def block_text(el: Tag | None) -> str:
+    """Visible text of `el`, one line per block (`p`, `div`, `li`, `dd`, `tr`, `h1`-`h6`) and per
+    `<br>`; each line collapsed like clean_text, empty lines dropped ('' for a missing element)."""
+    if el is None:
+        return ''
+    lines: list[list[str]] = [[]]
+
+    def walk(node: Tag) -> None:
+        for child in node.children:
+            if isinstance(child, PreformattedString):  # comments, CDATA, doctype
+                continue
+            if isinstance(child, NavigableString):
+                lines[-1].append(child)
+            elif child.name == 'br':
+                lines.append([])
+            elif child.name in BLOCK_TAGS:
+                lines.append([])
+                walk(child)
+                lines.append([])
+            else:
+                walk(child)
+
+    walk(el)
+    joined = (' '.join(part.strip() for part in parts if part.strip()) for parts in lines)
+    cleaned = (re.sub(r'\s+', ' ', line.replace('\xa0', ' ')).strip() for line in joined)
+    return '\n'.join(line for line in cleaned if line)
 
 
 def full_title(s: BeautifulSoup) -> str:

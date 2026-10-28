@@ -9,11 +9,23 @@ import yaml
 from markdownify import markdownify
 
 
+class _Dumper(yaml.SafeDumper):
+    """SafeDumper that writes a multi-line string as a literal block (`|-`, one line per line)
+    instead of a quoted scalar where a blank line stands for a newline."""
+
+
+def _represent_str(dumper: yaml.SafeDumper, value: str) -> yaml.ScalarNode:
+    return dumper.represent_scalar('tag:yaml.org,2002:str', value, style='|' if '\n' in value else None)
+
+
+_Dumper.add_representer(str, _represent_str)
+
+
 def write_entry(path: Path, frontmatter: dict, body: str) -> None:
-    # safe_dump quotes strings that YAML would otherwise read as dates/numbers/booleans,
+    # The safe dumper quotes strings that YAML would otherwise read as dates/numbers/booleans,
     # so '2025-10-22' stays a string for Astro's schema.
-    text = yaml.safe_dump(frontmatter, allow_unicode=True, sort_keys=False,
-                          default_flow_style=False, width=1000)
+    text = yaml.dump(frontmatter, Dumper=_Dumper, allow_unicode=True, sort_keys=False,
+                     default_flow_style=False, width=1000)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(f'---\n{text}---\n\n{body}\n', encoding='utf-8')
 

@@ -9,7 +9,9 @@ fields:
 - label: E-mail
   value: mbkook4883@gmail.com
 - label: Research Interest
-  value: Particle Therapy MS Student majoring in particle physics @Gangneung-Wonju National University
+  value: |-
+    Particle Therapy
+    MS Student majoring in particle physics @Gangneung-Wonju National University
 order: 16
 legacy_url: http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&wr_id=33
 legacy_id: 33
