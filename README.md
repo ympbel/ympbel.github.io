@@ -98,22 +98,22 @@ npm test        # 단위 테스트 → 빌드(dist/) → 빌드 결과 검사
    cp src/content/seminars/ko/_template.md src/content/seminars/ko/2026-11-04-journal-club.md
    ```
    옛 사이트에서 옮긴 글은 `<작성일>-<옛 글 번호>.md`(예: `2025-12-31-471.md`)입니다.
-2. frontmatter를 채우고, 쓰지 않는 줄과 `legacy_` 로 시작하는 줄을 모두 지웁니다.
+2. frontmatter를 채우고, 쓰지 않는 줄을 지웁니다. `legacy_`로 시작하는 줄과 그 아래 들여쓴 줄까지 모두 지웁니다.
 3. 두 번째 `---` 밑의 안내 문단 대신 본문을 마크다운으로 씁니다.
 4. `npm run dev`로 확인하고 `npm test` 후 commit, push 합니다 (7장).
 
 | 필드 | 필수 | 적는 법 | 화면 |
 |---|---|---|---|
-| `title` | 필수 | 글자. `:`나 `#`이 들어가거나 `[`로 시작하면 따옴표로 감쌉니다. 항상 작은따옴표로 감싸면 안전합니다(제목 안의 `'`는 `''`) | 목록과 글 제목 |
-| `date` | 필수 | `'YYYY-MM-DD'`, 작은따옴표 필수 | 목록의 날짜. 목록은 최신 날짜가 위 |
-| `category` | 선택 | 기존 값 중 하나 또는 새 연도. 새 값을 적으면 탭이 자동으로 생깁니다. 연도는 `'2026'`처럼 작은따옴표 필수 | 분류 탭과 목록의 분류 표시 |
+| `title` | 필수 | 글자. `:`나 `#`이 들어가거나 `[`로 시작하면 큰따옴표로 감쌉니다(제목 안의 `"`는 `\"`) | 목록과 글 제목 |
+| `date` | 필수 | `'YYYY-MM-DD'`, 작은따옴표로 감쌈(따옴표가 없으면 빌드 실패) | 목록의 날짜. 목록은 최신 날짜가 위 |
+| `category` | 선택 | 기존 값 중 하나 또는 새 연도. 새 값을 적으면 탭이 자동으로 생깁니다. 연도는 `'2026'`처럼 작은따옴표로 감쌈(따옴표가 없으면 빌드 실패) | 분류 탭과 목록의 분류 표시 |
 | `pinned` | 선택 | `true` 또는 `false` (기본 `false`) | `true`면 전체 목록 1쪽 맨 위에 공지로 고정 |
 | `presenter` | 선택 | 이름 | 글 위에 `Presenter: 이름` 줄 (본문에 이미 presenter 줄이 있으면 생략) |
-| `event_date` | 선택 | `'YYYY-MM-DD'`, 작은따옴표 필수 | 강의: 목록의 '강의날짜' 칸과 글 위. 뉴스·세미나: 기록만 |
+| `event_date` | 선택 | `'YYYY-MM-DD'`, 작은따옴표로 감쌈(따옴표가 없으면 빌드 실패) | 강의: 목록의 '강의날짜' 칸과 글 위. 뉴스·세미나: 기록만 |
 | 본문 | — | 두 번째 `---` 아래, 마크다운 (HTML도 가능) | 글 내용 |
 
 - 지금 쓰는 분류 값: 세미나 `'2022'`~`'2025'`(연도), 뉴스 `연구실소식`, `학회공지`, `학회소식`, `공지`, `'2022'`~`'2025'`. 탭은 연도가 먼저(최신순), 그다음 가나다순입니다. 분류 페이지 주소는 `/notice/<게시판>/c/<분류>/`입니다.
-- **강의 게시판에는 분류가 없습니다.** 강의 글에는 `category` 줄을 지웁니다. 적으면 없는 분류 페이지로 링크가 생겨 `npm test`가 실패합니다.
+- **강의 게시판에는 분류가 없습니다.** 강의 글에는 `category`를 적지 않습니다(템플릿에서도 주석 처리되어 있습니다). 적으면 없는 분류 페이지로 링크가 생겨 `npm test`가 실패합니다.
 - 날짜에 따옴표가 없으면 빌드가 실패합니다(YAML이 날짜나 숫자로 읽음). 연도 분류도 같습니다.
 - 본문에 글자 `<`, `>`를 쓰려면 `&lt;`, `&gt;`로 적습니다.
 - 본문 이미지는 `public/images/posts/<year>/`에 넣고 `![](/images/posts/<year>/<file>)`로 씁니다. 파일 이름은 영문 소문자로 합니다.
@@ -122,7 +122,7 @@ npm test        # 단위 테스트 → 빌드(dist/) → 빌드 결과 검사
 
 ```markdown
 ---
-title: '2026/11/04 [Research Seminar] Dose prediction with deep learning'
+title: "2026/11/04 [Research Seminar] Dose prediction with deep learning"
 date: '2026-11-04'
 category: '2026'
 pinned: false
@@ -153,7 +153,7 @@ cp src/content/papers/ko/_template.md src/content/papers/ko/2026-dose-prediction
 | 필드 | 필수 | 적는 법 |
 |---|---|---|
 | `year` | 필수 | 4자리 정수, 따옴표 없이 (예: `2026`). 새 연도를 적으면 연도 탭이 자동으로 생깁니다 |
-| `title` | 필수 | 제목. `:`나 `#`이 들어가면 따옴표로 감쌉니다 |
+| `title` | 필수 | 제목. `:`나 `#`이 들어가거나 `[`로 시작하면 큰따옴표로 감쌉니다 |
 | `authors` | 선택 | 저자를 쉼표로 구분 |
 | `venue` | 선택 | `venue: \|-` 다음 줄부터 두 칸 들여 한 줄씩. 줄마다 화면에서도 한 줄입니다 (논문: 학술지, 권·쪽, 날짜 / 특허: `등록국가: …`, `등록번호: …`, `등록일: …`) |
 | `link` | 선택 | 주소 (DOI 등). LINK 버튼으로 표시 |
@@ -165,7 +165,7 @@ cp src/content/papers/ko/_template.md src/content/papers/ko/2026-dose-prediction
 ```yaml
 ---
 year: 2026
-title: 'Dose prediction with deep learning: a feasibility study'
+title: "Dose prediction with deep learning: a feasibility study"
 authors: Gildong Hong, Jin Sung Kim
 venue: |-
   Medical Physics
@@ -273,20 +273,34 @@ gh run watch $(gh run list --workflow deploy.yml --limit 1 --json databaseId --j
    gh api repos/ympbel/ympbel.github.io/pages --jq .build_type    # workflow 가 나와야 함
    gh api -X PUT repos/ympbel/ympbel.github.io/pages -f build_type=workflow
    ```
-1. **(a) 전환 직전 새 글 반영.** 크롤러를 추가 모드로 한 번 더 돌려 그 사이 옛 사이트에 올라온 글을 가져옵니다 (처음이면 [`scripts/crawl/README.md`](scripts/crawl/README.md)의 "준비"로 `.venv`를 만듭니다).
-   ```bash
-   cd scripts/crawl && .venv/bin/python -m crawl --mode add
-   cd ../..
-   npm test
-   git add -A
-   git commit -m "content: 전환 직전 새 글 반영"
-   git push origin main
-   ```
+1. **(a) 전환 직전 새 글 반영.** 크롤러를 추가 모드로 한 번 더 돌려 그 사이 옛 사이트에 올라온 글·멤버·출판물을 가져옵니다 (처음이면 [`scripts/crawl/README.md`](scripts/crawl/README.md)의 "준비"로 `.venv`를 만듭니다).
+   1. 글·멤버·출판물만 추가합니다. 고정 페이지(`pages`)는 넣지 않습니다. 추가 모드는 이미 있는 파일(옛 글 번호 `legacy_id`로 판단)을 건드리지 않고 새 항목만 추가하며, 졸업 처리로 다른 게시판 폴더로 옮긴 멤버도 다시 만들지 않습니다.
+      ```bash
+      cd scripts/crawl && .venv/bin/python -m crawl --mode add --only members,publications,posts
+      cd ../..
+      ```
+   2. 옛 사이트의 고정 페이지(소개·교수·연구)를 1차 크롤링 이후에 고쳤다면 `--only pages`를 따로 실행하고 `git diff`로 확인합니다. 이 실행은 고정 페이지 8개(`home.md` 포함)를 모두 옛 사이트 내용으로 다시 쓰므로, 새 저장소에서 고친 내용(예: 홈 링크 라벨)이 되돌려집니다. 옛 사이트에서 고친 부분만 남깁니다.
+      ```bash
+      cd scripts/crawl && .venv/bin/python -m crawl --mode add --only pages
+      cd ../..
+      git diff src/content/pages/
+      ```
+   3. **커밋 전에 반드시 확인합니다.** `git status`와 `git diff`로 바뀐 파일을 모두 봅니다. 새 저장소에서 고친 내용이 되돌려졌으면 `git checkout -- <파일>`로 복구하고, 새로 추가된 글 중 새 저장소에 이미 손으로 올린 글과 겹치는 것은 지웁니다.
+      ```bash
+      git status
+      git diff
+      npm test
+      git add -A && git commit -m "content: 전환 직전 새 글 반영"
+      git push origin main
+      ```
+
    추가 모드와 `--only` 실행은 `reference/crawl-summary.json`을 그 실행의 일부 수치로 덮어씁니다. 전체 수치가 필요하면 `.venv/bin/python -m crawl --mode full --offline`(캐시만 사용)로 다시 만듭니다. 단, 전체 모드는 `src/content/`의 파일을 모두 다시 쓰므로 손으로 고친 내용이 있으면 덮어씁니다.
-2. **(b) DNS 요청.** 학교 DNS 담당자에게 다음 레코드를 요청합니다.
+2. **(b) DNS 요청.** 학교 DNS 담당자에게 다음 두 레코드를 함께 요청합니다.
    - `mpbel.yonsei.ac.kr  CNAME  ympbel.github.io`
-   - (선택, 도메인 인증) `_github-pages-challenge-ympbel.mpbel.yonsei.ac.kr  TXT  <값>`. 값은 GitHub 조직 ympbel의 Settings → Pages → Add a domain 화면에 나옵니다.
-3. **(c) 사이트 주소 변경.** DNS가 반영된 뒤(`dig mpbel.yonsei.ac.kr +short`에 `ympbel.github.io.`가 보이면) `astro.config.mjs`의 `site`를 `'https://mpbel.yonsei.ac.kr'`로 바꾸고 `public/CNAME` 파일을 추가합니다.
+   - `_github-pages-challenge-ympbel.mpbel.yonsei.ac.kr  TXT  <값>` (도메인 인증, 권장). 값은 GitHub 조직 ympbel의 Settings → Pages → Add a domain 화면에 나옵니다. 인증해 두면 다른 GitHub 계정이 이 도메인을 쓸 수 없습니다.
+
+   DNS 요청 후 반영까지 며칠 걸릴 수 있으니, (a)는 전환 직전에 다시 실행합니다.
+3. **(c) 사이트 주소 변경.** `dig mpbel.yonsei.ac.kr CNAME +short`에 `ympbel.github.io.`가 보이면 바로 (c)와 (d)를 합니다. DNS가 반영된 뒤 (d)를 마칠 때까지는 이 주소에 GitHub의 404 페이지가 보이기 때문입니다. `astro.config.mjs`의 `site`를 `'https://mpbel.yonsei.ac.kr'`로 바꾸고 `public/CNAME` 파일을 추가합니다.
    ```bash
    echo mpbel.yonsei.ac.kr > public/CNAME
    npm test
@@ -318,6 +332,7 @@ gh run watch $(gh run list --workflow deploy.yml --limit 1 --json databaseId --j
 ### 알려진 차이 (옛 사이트와 다른 점)
 
 - 멤버 사진 5장(연구원 이혜진·이원형, 졸업생 이주영·최민서, 인턴 이강훈)은 202×150 썸네일입니다. 옛 서버에 원본이 없었습니다. 새 사진을 받으면 같은 파일을 바꿔 넣습니다.
+- 멤버 카드의 글(이름·항목) 시작 위치가 카드마다 조금씩 다릅니다. 옛 사이트는 모든 사진을 202×150 썸네일로 보여 주었지만, 지금은 줄인 원본 사진을 쓰므로 사진마다 가로세로 비율이 달라 사진 폭이 다릅니다(위의 썸네일 5장만 옛 위치). 최종 수정 단계에서 고칠 예정입니다.
 - 홈 아래 링크 2번, 4번(연세암병원 의학물리팀 블로그, 방사선종양학과)의 라벨은 옛 사이트의 `<br>` 줄바꿈이 없어 단어 중간에서 줄이 바뀌고, 오른쪽 화살표가 글자 끝과 겹칩니다. 라벨은 `src/content/pages/ko/home.md`의 `links`에 있고 `src/pages/index.astro`가 표시합니다.
 - 연구(Research) 페이지의 왼쪽 메뉴는 현재 페이지 항목을 강조합니다. 옛 사이트는 한 칸 어긋나 있었습니다.
 - 화면 폭 1025~1199px에서는 1200px 데스크톱 배치를 그대로 씁니다(가로 스크롤). 1024px 이하부터 모바일 배치입니다.

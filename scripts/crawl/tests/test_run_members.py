@@ -178,6 +178,25 @@ def test_run_members_add_mode_skips_known_legacy_ids(tmp_path):
     assert read_frontmatter(researchers / 'yongdo-yun-23.md')['order'] == 2
 
 
+def test_run_members_add_mode_skips_a_card_moved_to_another_board(tmp_path):
+    # Researcher 55 graduated: the file was moved by hand to alumni/ and keeps its researchers legacy_url.
+    alumni = members_dir(tmp_path, 'alumni')
+    moved = alumni / 'moved-55.md'
+    write_entry(moved, {'board': 'alumni', 'name': 'moved', 'legacy_url': board_url('sub2_3', wr_id=55),
+                        'legacy_id': 55}, '')
+    # Alumni post 23 is not researcher 23: the old boards number their posts separately.
+    write_entry(alumni / 'other-23.md', {'board': 'alumni', 'name': 'other',
+                                         'legacy_url': board_url('sub2_4', wr_id=23), 'legacy_id': 23}, '')
+    before = moved.read_text(encoding='utf-8')
+    ctx = Context(FakeFetcher(), tmp_path, 'add')
+    assert run_members(ctx) == {'members': 22 + 1 + 9 + 3 - 1}
+    assert ctx.skipped == {'members': 1}
+
+    assert not list(members_dir(tmp_path, 'researchers').glob('*-55.md'))
+    assert moved.read_text(encoding='utf-8') == before
+    assert (members_dir(tmp_path, 'researchers') / 'yongdo-yun-23.md').exists()
+
+
 class PhotoFetcher:
     """Answers 302 for the URLs in `missing`, otherwise `data`."""
 
