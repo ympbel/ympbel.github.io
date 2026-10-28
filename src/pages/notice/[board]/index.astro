@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import BoardPage from '../../../components/BoardPage.astro';
+import '../../../styles/legacy/board-basic.css';
+import { BOARDS, isLocale, sortPosts } from '../../../lib/content.ts';
+
+export function getStaticPaths() {
+  return BOARDS.map((board) => ({ params: { board: board.board }, props: { board } }));
+}
+
+interface Props {
+  board: (typeof BOARDS)[number];
+}
+
+const { board } = Astro.props;
+const posts = sortPosts(await getCollection(board.collection, isLocale('ko')));
+---
+
+<BoardPage board={board} posts={posts} allPosts={posts} pageNo={1} />

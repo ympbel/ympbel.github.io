@@ -1,0 +1,71 @@
+---
+// One page of a board list (news, seminar, lecture): count line, category tabs, post table, pagination, laid out as
+// the old `basic` skin. Each route file imports the board's skin CSS (Astro bundles CSS per page from static
+// imports), so this component imports none.
+import SubLayout from '../layouts/SubLayout.astro';
+import CategoryTabs from './CategoryTabs.astro';
+import PostTable from './PostTable.astro';
+import Pagination from './Pagination.astro';
+import { BOARDS, LECTURE, categoriesOf, categorySlug, paginatePosts, type PostEntry } from '../lib/content.ts';
+import { sectionOf } from '../lib/menu.ts';
+import { t } from '../i18n/index.ts';
+
+interface Props {
+  board: (typeof BOARDS)[number] | typeof LECTURE;
+  /** The listed posts, sorted, already filtered to `category` when one is given. */
+  posts: PostEntry[];
+  /** Every post of the board, for the category tabs. */
+  allPosts: PostEntry[];
+  pageNo: number;
+  /** `categorySlug` of the listed category; the full list when absent. */
+  category?: string;
+  /** The lecture board's `강의날짜` column. */
+  showEventDate?: boolean;
+}
+
+const { board, posts, allPosts, pageNo, category, showEventDate = false } = Astro.props;
+const locale = 'ko';
+const s = t(locale).board;
+const section = sectionOf(board.base, locale);
+if (!section) throw new Error(`${board.base} is not in the menu`);
+
+const listBase = category === undefined ? board.base : `${board.base}c/${category}/`;
+const pages = paginatePosts(posts, category === undefined);
+const rows = pages[pageNo - 1];
+if (!rows) throw new Error(`${listBase} has no page ${pageNo}`);
+// Rows count down across pages; pinned rows take no number.
+const startNumber = pages
+  .slice(pageNo - 1)
+  .flat()
+  .filter((p) => !p.data.pinned).length;
+
+const categories = categoriesOf(allPosts);
+const tabs = [
+  { label: s.all, href: board.base, active: category === undefined },
+  ...categories.map((c) => ({
+    label: c,
+    href: `${board.base}c/${categorySlug(c)}/`,
+    active: categorySlug(c) === category,
+  })),
+];
+---
+
+<SubLayout title={board.label} sectionKey={section.key} currentHref={board.base} locale={locale}>
+  <div id="bo_list">
+    <div id="bo_btn_top">
+      <div id="bo_list_total" class="bo_count">
+        <span>{s.total(posts.length)}</span>{' '}{s.pageOf(pageNo)}
+      </div>
+    </div>
+    {categories.length > 0 && <CategoryTabs tabs={tabs} variant="board" heading={`${board.label} 카테고리`} />}
+    <PostTable
+      posts={rows}
+      base={board.base}
+      label={board.label}
+      startNumber={startNumber}
+      showEventDate={showEventDate}
+      locale={locale}
+    />
+  </div>
+  <Pagination current={pageNo} last={pages.length} hrefFor={(p) => (p === 1 ? listBase : `${listBase}page/${p}/`)} />
+</SubLayout>

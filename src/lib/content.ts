@@ -1,3 +1,5 @@
+import type { CollectionEntry } from 'astro:content';
+
 export type Locale = 'ko' | 'en';
 
 export const PAGE_SIZE = 20;
@@ -9,6 +11,22 @@ export const PUB_KINDS = [
   { kind: 'invited-talk', collection: 'talks', label: 'Invited talk' },
   { kind: 'patent', collection: 'patents', label: 'Patent' },
 ] as const;
+
+/** The two list boards under `/notice/`: route segment, content collection, page title and list URL. */
+export const BOARDS = [
+  { board: 'news', collection: 'news', label: 'News', base: '/notice/news/' },
+  { board: 'seminar', collection: 'seminars', label: 'Seminar', base: '/notice/seminar/' },
+] as const;
+
+/** The lecture board, rendered like the notice boards (no categories, with a lecture-date column). */
+export const LECTURE = { collection: 'lectures', label: 'Lecture', base: '/lecture/' } as const;
+
+export type PostEntry = CollectionEntry<'news' | 'seminars' | 'lectures'>;
+
+/** URL of a post's page under its board's list URL: `/notice/seminar/` + `2025-12-31-471` + `/`. */
+export function postHref(base: string, entry: PostEntry): string {
+  return base + slugOf(entry.id) + '/';
+}
 
 /** Ascending comparison for numbers or strings; equal values (including Infinity) give 0. */
 function asc<V extends number | string>(a: V, b: V): number {
@@ -65,9 +83,10 @@ export function sortPosts<T extends { data: { date: string; legacy_id?: number }
   );
 }
 
-/** Distinct non-empty categories: all-digit values (years) first, descending; then the rest in Korean collation order. */
+/** Distinct non-empty categories, trimmed: all-digit values (years) first, descending; then the rest in Korean
+ * collation order. */
 export function categoriesOf(posts: Array<{ data: { category?: string } }>): string[] {
-  const distinct = [...new Set(posts.map((p) => p.data.category).filter((c): c is string => !!c))];
+  const distinct = [...new Set(posts.map((p) => p.data.category?.trim()).filter((c): c is string => !!c))];
   const isNumeric = (c: string) => /^\d+$/.test(c);
   const numeric = distinct.filter(isNumeric).sort((a, b) => Number(b) - Number(a));
   const named = distinct.filter((c) => !isNumeric(c)).sort((a, b) => a.localeCompare(b, 'ko'));
@@ -84,5 +103,18 @@ export function paginateArray<T>(items: T[], size: number): T[][] {
   if (items.length === 0) return [[]];
   const pages: T[][] = [];
   for (let i = 0; i < items.length; i += size) pages.push(items.slice(i, i + size));
+  return pages;
+}
+
+/** Pages of a board list. With `pinnedFirst` (a board's full list) pinned posts are taken out of the paging and
+ * lead page 1, as the old boards' notices did; otherwise (a category list) every post is paged in place. */
+export function paginatePosts<T extends { data: { pinned: boolean } }>(
+  posts: T[],
+  pinnedFirst: boolean,
+  size: number = PAGE_SIZE,
+): T[][] {
+  if (!pinnedFirst) return paginateArray(posts, size);
+  const pages = paginateArray(posts.filter((p) => !p.data.pinned), size);
+  pages[0] = [...posts.filter((p) => p.data.pinned), ...pages[0]];
   return pages;
 }

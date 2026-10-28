@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import BoardPage from '../../../../../../components/BoardPage.astro';
+import '../../../../../../styles/legacy/board-basic.css';
+import {
+  BOARDS,
+  categoriesOf,
+  categorySlug,
+  isLocale,
+  paginatePosts,
+  sortPosts,
+  type PostEntry,
+} from '../../../../../../lib/content.ts';
+
+export async function getStaticPaths() {
+  const perBoard = await Promise.all(
+    BOARDS.map(async (board) => {
+      const allPosts = sortPosts(await getCollection(board.collection, isLocale('ko')));
+      return categoriesOf(allPosts).flatMap((c) => {
+        const category = categorySlug(c);
+        const posts = allPosts.filter((p) => categorySlug(p.data.category ?? '') === category);
+        const pageCount = paginatePosts(posts, false).length;
+        return Array.from({ length: pageCount - 1 }, (_, i) => ({
+          params: { board: board.board, category, page: String(i + 2) },
+          props: { board, posts, allPosts, category, pageNo: i + 2 },
+        }));
+      });
+    }),
+  );
+  return perBoard.flat();
+}
+
+interface Props {
+  board: (typeof BOARDS)[number];
+  posts: PostEntry[];
+  allPosts: PostEntry[];
+  category: string;
+  pageNo: number;
+}
+
+const { board, posts, allPosts, category, pageNo } = Astro.props;
+---
+
+<BoardPage board={board} posts={posts} allPosts={allPosts} pageNo={pageNo} category={category} />

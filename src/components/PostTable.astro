@@ -1,0 +1,80 @@
+---
+// The old `basic` / `lecture` board list table, without the hits (조회) column. Pinned rows show the bullhorn
+// (`strong.notice_icon`, Font Awesome replaced by an inline SVG) instead of a number; the other rows count down from
+// `startNumber`. All text is rendered escaped.
+import { categorySlug, postHref, type Locale, type PostEntry } from '../lib/content.ts';
+import { t } from '../i18n/index.ts';
+
+interface Props {
+  posts: PostEntry[];
+  /** List URL of the board, e.g. `/notice/news/`; post and category links hang below it. */
+  base: string;
+  /** Board title for the hidden caption, e.g. `News` → `News 목록`. */
+  label: string;
+  /** Number of the first non-pinned row. */
+  startNumber: number;
+  /** The lecture board's `강의날짜` column. */
+  showEventDate?: boolean;
+  locale: Locale;
+}
+
+const { posts, base, label, startNumber, showEventDate = false, locale } = Astro.props;
+const s = t(locale).board;
+
+let num = startNumber;
+const rows = posts.map((entry) => ({
+  entry,
+  category: entry.data.category?.trim(),
+  num: entry.data.pinned ? undefined : num--,
+}));
+---
+
+<div class="tbl_head01 tbl_wrap">
+  <table>
+    <caption>{label} {s.list}</caption>
+    <thead>
+      <tr>
+        <th scope="col">{s.num}</th>
+        <th scope="col">{s.subject}</th>
+        {showEventDate && <th scope="col">{s.lectureDate}</th>}
+        <th scope="col">{s.author}</th>
+        <th scope="col">{s.date}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map(({ entry, category, num }) => (
+          <tr class={num === undefined ? 'bo_notice' : undefined}>
+            <td class="td_num2">
+              {num === undefined ? (
+                <strong class="notice_icon">
+                  <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" style="vertical-align:middle">
+                    <path d="M1 6h3l10-4v12L4 10H1zm4 4.5h2.5l1.2 3.5H6.2z" />
+                  </svg>
+                  <span class="sound_only">{s.pinned}</span>
+                </strong>
+              ) : (
+                num
+              )}
+            </td>
+            <td class="td_subject" style="padding-left:0px">
+              {category && (
+                <a href={`${base}c/${categorySlug(category)}/`} class="bo_cate_link">
+                  {category}
+                </a>
+              )}
+              <div class="bo_tit">
+                <a href={postHref(base, entry)}>{entry.data.title}</a>
+              </div>
+            </td>
+            {showEventDate && <td class="td_lec_date sv_use center">{entry.data.event_date}</td>}
+            <td class={showEventDate ? 'td_name sv_use center' : 'td_name sv_use'}>
+              <span class="sv_member">{s.authorName}</span>
+            </td>
+            <td class="td_datetime">{entry.data.date.slice(5)}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

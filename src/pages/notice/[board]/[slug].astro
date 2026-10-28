@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import SubLayout from '../../../layouts/SubLayout.astro';
+import PostView from '../../../components/PostView.astro';
+import '../../../styles/legacy/board-basic.css';
+import { BOARDS, isLocale, slugOf, sortPosts, type PostEntry } from '../../../lib/content.ts';
+
+export async function getStaticPaths() {
+  const perBoard = await Promise.all(
+    BOARDS.map(async (board) => {
+      const posts = sortPosts(await getCollection(board.collection, isLocale('ko')));
+      // Neighbours in list order (newest first): 이전글 is the row above, 다음글 the row below.
+      return posts.map((entry, i) => ({
+        params: { board: board.board, slug: slugOf(entry.id) },
+        props: { board, entry, prev: posts[i - 1], next: posts[i + 1] },
+      }));
+    }),
+  );
+  return perBoard.flat();
+}
+
+interface Props {
+  board: (typeof BOARDS)[number];
+  entry: PostEntry;
+  prev?: PostEntry;
+  next?: PostEntry;
+}
+
+const { board, entry, prev, next } = Astro.props;
+---
+
+<SubLayout title={board.label} sectionKey="notice" currentHref={board.base}>
+  <PostView entry={entry} base={board.base} locale="ko" prev={prev} next={next} />
+</SubLayout>

@@ -1,0 +1,10 @@
+---
+import { getCollection } from 'astro:content';
+import BoardPage from '../../components/BoardPage.astro';
+import '../../styles/legacy/board-lecture.css';
+import { LECTURE, isLocale, sortPosts } from '../../lib/content.ts';
+
+const posts = sortPosts(await getCollection(LECTURE.collection, isLocale('ko')));
+---
+
+<BoardPage board={LECTURE} posts={posts} allPosts={posts} pageNo={1} showEventDate />

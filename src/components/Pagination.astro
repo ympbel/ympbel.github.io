@@ -1,0 +1,76 @@
+---
+// Gnuboard's `get_paging()` markup: 처음 (when not on page 1), 이전 (when the window does not start at 1), a window of
+// 10 page numbers with the current one as `strong.pg_current`, 다음 (when pages follow the window), 맨끝 (when not on the
+// last page). Nothing when there is a single page. Each item is followed by a newline as in the old markup: the
+// inline-block buttons rely on that whitespace for their gaps (Astro's HTML compression would remove it otherwise).
+interface Props {
+  current: number;
+  last: number;
+  hrefFor: (p: number) => string;
+}
+
+const { current, last, hrefFor } = Astro.props;
+
+const WINDOW = 10;
+const start = Math.floor((current - 1) / WINDOW) * WINDOW + 1;
+const end = Math.min(start + WINDOW - 1, last);
+const numbers = Array.from({ length: end - start + 1 }, (_, i) => start + i);
+---
+
+{
+  last > 1 && (
+    <nav class="pg_wrap">
+      <span class="pg">
+        {current > 1 && (
+          <>
+            <a href={hrefFor(1)} class="pg_page pg_start">
+              처음
+            </a>
+            {'\n'}
+          </>
+        )}
+        {start > 1 && (
+          <>
+            <a href={hrefFor(start - 1)} class="pg_page pg_prev">
+              이전
+            </a>
+            {'\n'}
+          </>
+        )}
+        {numbers.map((p) => (
+          <>
+            {p === current ? (
+              <>
+                <span class="sound_only">열린</span>
+                <strong class="pg_current">{p}</strong>
+                <span class="sound_only">페이지</span>
+              </>
+            ) : (
+              <a href={hrefFor(p)} class="pg_page">
+                {p}
+                <span class="sound_only">페이지</span>
+              </a>
+            )}
+            {'\n'}
+          </>
+        ))}
+        {end < last && (
+          <>
+            <a href={hrefFor(end + 1)} class="pg_page pg_next">
+              다음
+            </a>
+            {'\n'}
+          </>
+        )}
+        {current < last && (
+          <>
+            <a href={hrefFor(last)} class="pg_page pg_end">
+              맨끝
+            </a>
+            {'\n'}
+          </>
+        )}
+      </span>
+    </nav>
+  )
+}

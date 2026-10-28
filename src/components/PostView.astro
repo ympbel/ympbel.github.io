@@ -1,0 +1,75 @@
+---
+// The old board post view (`basic` / `lecture` skins) without hits, comments, share or admin buttons. 이전글 is the
+// newer neighbour and 다음글 the older one (the rows above and below in the list), as on the old boards. All text is
+// rendered escaped; the body is the post's markdown.
+import { render } from 'astro:content';
+import { postHref, type Locale, type PostEntry } from '../lib/content.ts';
+import { t } from '../i18n/index.ts';
+
+interface Props {
+  entry: PostEntry;
+  /** List URL of the board, e.g. `/notice/seminar/`. */
+  base: string;
+  locale: Locale;
+  /** Newer neighbour (이전글). */
+  prev?: PostEntry;
+  /** Older neighbour (다음글). */
+  next?: PostEntry;
+}
+
+const { entry, base, locale, prev, next } = Astro.props;
+const s = t(locale).board;
+const { Content } = await render(entry);
+const { title, date, presenter, event_date } = entry.data;
+const category = entry.data.category?.trim();
+
+// Seminar bodies usually open with their own presenter line, sometimes lower-case (`presenter: …`).
+const presenterLine = presenter && !/presenter/i.test(entry.body ?? '') ? `${s.presenter}: ${presenter}` : undefined;
+const neighbours = [
+  { cls: 'btn_prv', label: s.prev, post: prev },
+  { cls: 'btn_next', label: s.next, post: next },
+].filter((n): n is { cls: string; label: string; post: PostEntry } => n.post !== undefined);
+---
+
+<article id="bo_v">
+  <header>
+    <h2 id="bo_v_title">
+      {category && <span class="bo_v_cate">{category}</span>}
+      <span class="bo_v_tit">{title}</span>
+    </h2>
+    {entry.collection === 'lectures' && <div class="lec_date">{s.lectureDate} : {event_date}</div>}
+  </header>
+  <section id="bo_v_info">
+    <h2>페이지 정보</h2>
+    <span class="sound_only">작성자</span> <strong><span class="sv_member">{s.authorName}</span></strong>
+    <strong class="if_date"><span class="sound_only">작성일</span> {date.slice(2)}</strong>
+  </section>
+  <section id="bo_v_atc">
+    <h2 id="bo_v_atc_title">본문</h2>
+    <div id="bo_v_img"></div>
+    <div id="bo_v_con">
+      {presenterLine && <p>{presenterLine}</p>}
+      <Content />
+    </div>
+  </section>
+  <div id="bo_v_share"></div>
+  <div id="bo_v_top">
+    <ul class="bo_v_left"></ul>
+    <ul class="bo_v_com">
+      <li><a href={base} class="btn_b01 btn">{s.list}</a></li>
+    </ul>
+    {
+      neighbours.length > 0 && (
+        <ul class="bo_v_nb">
+          {neighbours.map(({ cls, label, post }) => (
+            <li class={cls}>
+              <span class="nb_tit">{label}</span>
+              <a href={postHref(base, post)}>{post.data.title}</a>{' '}
+              <span class="nb_date">{post.data.date.slice(2).replaceAll('-', '.')}</span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+  </div>
+</article>

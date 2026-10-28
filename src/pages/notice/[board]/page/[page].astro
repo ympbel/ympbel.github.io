@@ -1,0 +1,30 @@
+---
+import { getCollection } from 'astro:content';
+import BoardPage from '../../../../components/BoardPage.astro';
+import '../../../../styles/legacy/board-basic.css';
+import { BOARDS, isLocale, paginatePosts, sortPosts, type PostEntry } from '../../../../lib/content.ts';
+
+export async function getStaticPaths() {
+  const perBoard = await Promise.all(
+    BOARDS.map(async (board) => {
+      const posts = sortPosts(await getCollection(board.collection, isLocale('ko')));
+      const pageCount = paginatePosts(posts, true).length;
+      return Array.from({ length: pageCount - 1 }, (_, i) => ({
+        params: { board: board.board, page: String(i + 2) },
+        props: { board, posts, pageNo: i + 2 },
+      }));
+    }),
+  );
+  return perBoard.flat();
+}
+
+interface Props {
+  board: (typeof BOARDS)[number];
+  posts: PostEntry[];
+  pageNo: number;
+}
+
+const { board, posts, pageNo } = Astro.props;
+---
+
+<BoardPage board={board} posts={posts} allPosts={posts} pageNo={pageNo} />

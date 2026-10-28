@@ -11,6 +11,7 @@ import {
   categoriesOf,
   categorySlug,
   paginateArray,
+  paginatePosts,
 } from '../../src/lib/content.ts';
 
 test('localeOf and slugOf split the entry id', () => {
@@ -55,6 +56,21 @@ test('categoriesOf: numeric desc first, then names', () => {
     { data: { category: '2024' } },
   ];
   assert.deepEqual(categoriesOf(posts), ['2025', '2024', '연구실소식', '학회소식']);
+});
+
+test('categoriesOf trims values and dedupes by the trimmed value', () => {
+  const posts = [{ data: { category: ' 2025' } }, { data: { category: '2025' } }, { data: { category: ' 연구실소식 ' } }];
+  assert.deepEqual(categoriesOf(posts), ['2025', '연구실소식']);
+});
+
+test('paginatePosts: pinned posts lead page 1 outside the paging, unless kept in place', () => {
+  const post = (id: string, pinned = false) => ({ id, data: { pinned } });
+  const posts = [post('a'), post('b'), post('p', true), post('c'), post('d'), post('e')];
+  const ids = (pages: Array<Array<{ id: string }>>) => pages.map((page) => page.map((p) => p.id));
+  assert.deepEqual(ids(paginatePosts(posts, true, 2)), [['p', 'a', 'b'], ['c', 'd'], ['e']]);
+  assert.deepEqual(ids(paginatePosts(posts, false, 2)), [['a', 'b'], ['p', 'c'], ['d', 'e']]);
+  assert.deepEqual(ids(paginatePosts([post('p', true)], true, 2)), [['p']]);
+  assert.deepEqual(ids(paginatePosts([], true, 2)), [[]]);
 });
 
 test('categorySlug makes a single path segment', () => {
