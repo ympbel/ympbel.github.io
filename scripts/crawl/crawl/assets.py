@@ -28,7 +28,7 @@ REFERENCE_CSS = {
 }
 
 _CSS_URL = re.compile(r'url\(\s*([\'"]?)(.*?)\1\s*\)', re.IGNORECASE)
-_SITE_PREFIXES = ('/images/', '/img/')
+_SKIN_IMG = re.compile(r'/skin/board/([^/]+)/img/(.+)')
 
 
 def download(fetcher: Fetcher, url: str, dest: Path) -> Path:
@@ -39,32 +39,45 @@ def download(fetcher: Fetcher, url: str, dest: Path) -> Path:
     return dest
 
 
-def _site_asset(ref: str) -> str | None:
-    """Absolute URL (query dropped) if `ref` resolves under /images/ or /img/ on the old site."""
-    parts = urlsplit(urljoin(BASE_URL + '/', ref.strip()))
-    if f'{parts.scheme}://{parts.netloc}' != BASE_URL or not parts.path.startswith(_SITE_PREFIXES):
+def _site_asset(base: str, ref: str) -> str | None:
+    """Absolute URL (query dropped) of `ref` if it is an old-site file with a local path."""
+    parts = urlsplit(urljoin(base, ref.strip()))
+    url = BASE_URL + parts.path
+    if f'{parts.scheme}://{parts.netloc}' != BASE_URL or local_path_for_site_asset(url) is None:
         return None
-    return BASE_URL + parts.path
+    return url
 
 
-def site_asset_urls(html_docs: list[str], css_docs: list[str]) -> set[str]:
-    refs = [img['src'] for html in html_docs
+def site_asset_urls(html_docs: list[str], css_docs: list[tuple[str, str]]) -> set[str]:
+    """Design images used by the pages (`<img src>`, resolved against the site root) and by
+    the stylesheets (`url(...)`, resolved against each stylesheet's own URL)."""
+    refs = [(BASE_URL + '/', img['src']) for html in html_docs
             for img in BeautifulSoup(html, 'html.parser').find_all('img', src=True)]
-    refs += [match.group(2) for css in css_docs for match in _CSS_URL.finditer(css)]
-    return {url for url in map(_site_asset, refs) if url}
+    refs += [(css_url, match.group(2)) for css_url, css in css_docs
+             for match in _CSS_URL.finditer(css)]
+    return {url for url in (_site_asset(base, ref) for base, ref in refs) if url}
 
 
-def local_path_for_site_asset(url: str) -> str:
+
+def local_path_for_site_asset(url: str) -> str | None:
+    """Path under public/ for an old-site design image, or None if it is not one."""
     path = urlsplit(url).path
     if path.startswith('/images/'):
         return '/images/site/' + path.removeprefix('/images/')
     if path.startswith('/img/'):
         return '/images/site/img/' + path.removeprefix('/img/')
-    raise ValueError(f'not a site asset: {url}')
+    if path.startswith('/skin/latest/basic/img/'):
+        return '/images/site/skin/latest-basic/' + path.removeprefix('/skin/latest/basic/img/')
+    if match := _SKIN_IMG.fullmatch(path):
+        return f'/images/site/skin/{match.group(1)}/{match.group(2)}'
+    return None
 
 
-def copy_reference_css(fetcher: Fetcher, out_dir: Path) -> list[Path]:
-    """Download the old site's CSS into `out_dir/reference/css/`; returns the local files."""
+def copy_reference_css(fetcher: Fetcher, out_dir: Path) -> list[tuple[str, Path]]:
+    """Download the old site's CSS into `out_dir/reference/css/`; returns (css_url, local file)."""
     css_dir = out_dir / 'reference' / 'css'
-    return [download(fetcher, f'{BASE_URL}/{src}', css_dir / name)
-            for src, name in REFERENCE_CSS.items()]
+    result = []
+    for src, name in REFERENCE_CSS.items():
+        url = f'{BASE_URL}/{src}'
+        result.append((url, download(fetcher, url, css_dir / name)))
+    return result

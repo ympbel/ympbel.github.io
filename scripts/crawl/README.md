@@ -25,7 +25,8 @@ python3 -m venv .venv
 ### 두 가지 모드
 
 - `--mode full` (기본값): **전체 모드.** 모든 결과 파일을 새로 씁니다(덮어쓰기). 최초 이전 때 한 번 실행합니다.
-- `--mode add`: **추가 모드.** 이미 있는 마크다운 파일은 건드리지 않고, 옛 사이트에 새로 생긴 글만 추가합니다(원본 글 번호 `legacy_id`로 판단). 도메인 전환 직전에 한 번 더 실행해 그 사이 올라온 글(특히 연말 세미나 일괄 등록)을 반영합니다.
+- `--mode add`: **추가 모드.** 목록 페이지(와 고정 페이지)는 캐시를 무시하고 옛 사이트에서 다시 받아 `reference/html/`의 캐시를 갱신합니다. 그 목록에서 새로 생긴 글만 추가하고, 이미 있는 마크다운 파일은 건드리지 않습니다(원본 글 번호 `legacy_id`로 판단). 이미 받아 둔 글 상세 페이지는 다시 받지 않습니다. 도메인 전환 직전에 한 번 더 실행해 그 사이 올라온 글(특히 연말 세미나 일괄 등록)을 반영합니다.
+  - 게시판별 실행기(`pages`, `members`, `publications`, `posts`)는 이후 작업에서 추가됩니다. 지금은 `assets`만 동작하고 나머지는 `NotImplementedError`로 멈춥니다. 다시 받기는 `Fetcher.get(url, refresh=True)`로 하며, 오프라인 모드에서는 무시됩니다.
 
 ### 옵션
 
@@ -40,7 +41,7 @@ python3 -m venv .venv
 | 위치 | 내용 |
 |---|---|
 | `src/content/<collection>/ko/*.md` | 페이지, 멤버, 출판물, 뉴스·세미나·강의 글 (한 항목 = 한 파일) |
-| `public/images/site/` | 로고, 아이콘, 배경 등 디자인 이미지 (`assets`). 옛 사이트의 `/images/x` → `/images/site/x`, `/img/x` → `/images/site/img/x` |
+| `public/images/site/` | 로고, 아이콘, 배경 등 디자인 이미지 (`assets`). 옛 사이트의 `/images/x` → `/images/site/x`, `/img/x` → `/images/site/img/x`, `/skin/board/<스킨>/img/x` → `/images/site/skin/<스킨>/x`, `/skin/latest/basic/img/x` → `/images/site/skin/latest-basic/x`. CSS 안의 `url(...)`은 그 CSS 파일 위치 기준으로 해석합니다. |
 | `public/images/...` | 고정 페이지 이미지, 멤버 사진 |
 | `reference/html/` | 옛 사이트에서 받은 원본 그대로의 캐시(HTML, CSS, 이미지)와 `redirects.json`. 한 번 받은 주소는 다시 요청하지 않습니다. 옛 사이트의 기록으로 git에 함께 커밋합니다. |
 | `reference/css/` | 옛 사이트 CSS 13개 원본 (`default.css`, `design.css`, `latest-basic.css`, `board-*.css`) |

@@ -53,13 +53,17 @@ class Fetcher:
         self.user_agent = user_agent
         self._opener = urllib.request.build_opener(_NoRedirect)
 
-    def get(self, url: str) -> str:
-        return self.get_bytes(url).decode('utf-8', errors='replace')
+    def get(self, url: str, refresh: bool = False) -> str:
+        return self.get_bytes(url, refresh=refresh).decode('utf-8', errors='replace')
 
-    def get_bytes(self, url: str) -> bytes:
-        """Cached body of `url`; a 3xx/4xx answer raises HTTPError and is not cached."""
+    def get_bytes(self, url: str, refresh: bool = False) -> bytes:
+        """Cached body of `url`; a 3xx/4xx answer raises HTTPError and is not cached.
+
+        `refresh=True` ignores an existing cache file, fetches again and overwrites it
+        (add mode uses this for list pages). Offline, `refresh` is ignored.
+        """
         path = self.cache_dir / cache_name(url)
-        if path.exists():
+        if path.exists() and (self.offline or not refresh):
             return path.read_bytes()
         if self.offline:
             raise FileNotFoundError(f'not cached (offline): {url}')

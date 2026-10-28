@@ -47,7 +47,7 @@ def run_assets(ctx: Context) -> Summary:
     public/images/site/."""
     css_files = assets.copy_reference_css(ctx.fetcher, ctx.out)
     html_docs = [p.read_text(encoding='utf-8') for p in sorted(FIXTURES_DIR.glob('*.html'))]
-    css_docs = [p.read_text(encoding='utf-8') for p in css_files]
+    css_docs = [(url, path.read_text(encoding='utf-8')) for url, path in css_files]
     written = skipped = 0
     for url in sorted(assets.site_asset_urls(html_docs, css_docs)):
         dest = ctx.out / 'public' / assets.local_path_for_site_asset(url).lstrip('/')
