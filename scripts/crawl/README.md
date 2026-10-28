@@ -29,7 +29,10 @@ python3 -m venv .venv
   - 고정 페이지(`pages`: 홈 `home.md`와 고정 페이지 7개)는 하나씩만 있는 페이지이므로 추가 모드에서도 **항상** 옛 사이트에서 다시 받아 8개 파일을 모두 새로 씁니다. 전환 전에 옛 사이트에서 고친 내용이 반영됩니다.
   - 멤버(`members`)는 분류 탭(연구원 MPBEL·Affiliate, 졸업생 Graduate·Former)별 목록과 분류 없는 전체 목록을 모두 다시 받고, 게시판 폴더(`src/content/members/ko/<board>/`)에 같은 `legacy_id`가 없는 사람만 추가합니다. 어느 탭에도 없는 사람은 `category` 없이 들어갑니다.
   - 출판물(`publications`: 논문 `papers`, 학회 발표 `presentations`, 초청 강연 `talks`, 특허 `patents`)은 연도 탭(`sca=<연도>`)별 목록을 탭마다의 쪽수만큼, 그리고 분류 없는 전체 목록을 모두 다시 받고, `src/content/<collection>/ko/`에 같은 `legacy_id`가 없는 항목만 `<연도>-<wr_id>-<제목 앞 5단어>.md`로 추가합니다. 연도는 그 글이 있는 탭의 연도입니다. 두 가지 글만 상세 페이지를 받아 `Year of publication`과 첨부파일(`legacy_files`)을 가져옵니다: 공지(`pinned`) 글(옛 사이트는 전체 목록에서만 '공지'로 표시하고 연도 탭에서는 보통 글로 보여 줍니다)과, 탭이 없는 연도의 글(학회 발표 2002~2004년 9건, 전체 목록에만 나옵니다). 상세 페이지에도 연도가 없는 글은 경고를 출력하고 건너뜁니다. 목록의 LINK 버튼(`bbs/link.php`)은 따라가지 않고 리다이렉트 주소만 읽어 `link`에 적으며(`reference/html/redirects.json`에 저장), 리다이렉트가 없거나 오류이면 경고를 출력하고 `link` 줄 없이 씁니다.
-  - 지금은 `pages`, `members`, `publications`, `assets`가 동작하고, `posts`는 이후 작업에서 추가됩니다(그 전까지는 `NotImplementedError`로 멈춥니다). 다시 받기는 `Fetcher.get(url, refresh=True)`로 하며, 오프라인 모드에서는 무시됩니다.
+  - 글(`posts`: 뉴스 `news`, 세미나 `seminars`, 강의 `lectures`)은 분류 탭을 따로 받지 않고 분류 없는 전체 목록만 쪽수만큼 다시 받습니다(분류는 목록의 각 줄과 상세 페이지에 있습니다). `src/content/<collection>/ko/`에 같은 `legacy_id`가 없는 글만 상세 페이지를 받아 `<작성일>-<wr_id>.md`로 추가하므로, 다시 실행하는 비용은 새 글 수에 비례합니다. 공지(`pinned`) 글은 여러 쪽에 다시 나와도 한 번만 씁니다. 제목(`title`)은 잘리지 않은 `<title>`의 제목, `date`는 작성일, `category`는 분류, `event_date`는 강의 날짜(`강의날짜`) 또는 제목 앞의 `YYYY/MM/DD`, `presenter`는 본문의 `Presenter: …` 줄(본문에도 그대로 남습니다)이며, 값이 없으면 그 줄을 쓰지 않습니다. 본문(`#bo_v_con`)은 마크다운으로 바꿉니다.
+    - `legacy_images`: 본문에 있던 이미지의 옛 사이트 경로 목록(본문 순서, 호스트 없이 `/data/editor/...`). 썸네일이 아니라 `view_image.php` 링크가 가리키는 원본입니다. 옛 도메인 `ympbe.yonsei.ac.kr`의 주소도 같은 파일이 옛 사이트에 있으므로 호스트 없는 경로로 적습니다. 다른 사이트에서 복사해 온 이미지(뉴스 30의 `smart.yonsei.ac.kr`, 39의 `googleusercontent.com`)는 옛 사이트에 없으므로 전체 주소를 그대로 적습니다. 이미지는 본문에서 지우고(그 뒤 공백·`&nbsp;`·`<br>`만 남은 문단도 지웁니다) 받지는 않으므로, 새 사이트에 이미지를 옮길 때 이 목록을 씁니다.
+    - `legacy_files`: 첨부파일 목록. 항목마다 `name`(파일 이름)과 `url`(호스트 없는 다운로드 경로 `/bbs/download.php?bo_table=...&wr_id=...&no=...`)이 있습니다. 출판물의 `legacy_files`도 같은 형식입니다.
+  - 다섯 종류(`pages`, `members`, `publications`, `posts`, `assets`)가 모두 동작합니다. 다시 받기는 `Fetcher.get(url, refresh=True)`로 하며, 오프라인 모드에서는 무시됩니다.
 
 ### 옵션
 

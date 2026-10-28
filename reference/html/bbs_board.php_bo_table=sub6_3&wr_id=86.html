@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="imagetoolbar" content="no">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<title>[Research seminar] Synthetic contrast-enhanced CT generation > Seminar | MPBEL | 연세 의학물리 및 의공학 연구실</title>
+<link rel="stylesheet" href="http://mpbel.yonsei.ac.kr/css/default.css?ver=171222">
+<link rel="stylesheet" href="http://mpbel.yonsei.ac.kr/skin/board/basic/style.css?ver=171222">
+<!--[if lte IE 8]>
+<script src="http://mpbel.yonsei.ac.kr/js/html5.js"></script>
+<![endif]-->
+<script>
+// 자바스크립트에서 사용하는 전역변수 선언
+var g5_url       = "http://mpbel.yonsei.ac.kr";
+var g5_bbs_url   = "http://mpbel.yonsei.ac.kr/bbs";
+var g5_is_member = "";
+var g5_is_admin  = "";
+var g5_is_mobile = "";
+var g5_bo_table  = "sub6_3";
+var g5_sca       = "";
+var g5_editor    = "smarteditor2";
+var g5_cookie_domain = "";
+</script>
+<script src="http://mpbel.yonsei.ac.kr/js/jquery-1.8.3.min.js"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/jquery.menu.js?ver=171222"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/common.js?ver=171222"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/wrest.js?ver=171222"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/placeholders.min.js"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/default.js"></script>
+<link rel="stylesheet" href="http://mpbel.yonsei.ac.kr/js/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://mpbel.yonsei.ac.kr/css/design.css" type="text/css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
+</head>
+<body>
+
+
+<div id="wrap">
+	<script src="../js/jquery.menu.js"></script>
+
+<div class="topmenu">
+	<div class="logo"><a href="javascript:GoPage('main')"><img src="../images/logo.png" alt="연세 의학물리 및 의공학연구실"></a></div>
+	<div class="langbut">
+		<ul>
+			<li class="active"><a href="http://mpbel.yonsei.ac.kr/index.php">KR</a></li>
+			<li><a href="http://mpbel.yonsei.ac.kr/eng/index.php">EN</a></li>
+		</ul>
+	</div>
+	<div id="navi">
+
+		<ul id="nav">
+
+                                <li class="menu1" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub1_1" target="_self" class="on">INTRODUCTION</a>
+                        <ul class='sub1'>
+                            <li><a href="/bbs/board.php?bo_table=sub1_1" target="_self">welcome to MPBEL</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub1_2" target="_self">contact us</a></li>
+                        </ul>
+                    </li>
+                                              <li class="menu2" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub2_1" target="_self" class="on">MEMBER</a>
+                        <ul class='sub2'>
+                            <li><a href="/bbs/board.php?bo_table=sub2_1" target="_self">Professor</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub2_2" target="_self">Collaborators</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub2_3" target="_self">Researchers</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub2_4" target="_self">Alumni</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub2_5" target="_self">Short-term internship</a></li>
+                        </ul>
+                    </li>
+                                              <li class="menu3" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub3_2" target="_self" class="on">RESEARCH</a>
+                        <ul class='sub3'>
+                            <li><a href="/bbs/board.php?bo_table=sub3_2" target="_self">Artificial Intelligence</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub3_3" target="_self">Radiation Therapy</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub3_4" target="_self">Particle Therapy</a></li>
+                        </ul>
+                    </li>
+                                              <li class="menu4" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub4_1" target="_self" class="on">PUBLICATION</a>
+                        <ul class='sub4'>
+                            <li><a href="/bbs/board.php?bo_table=sub4_1" target="_self">Paper</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub4_2" target="_self">Presentation</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub4_3" target="_self">Invited talk</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub4_4" target="_self">Patent</a></li>
+                        </ul>
+                    </li>
+                                              <li class="menu5" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub5_1" target="_self" class="on">LECTURE</a>
+                        <ul class='sub5'>
+                            <li><a href="/bbs/board.php?bo_table=sub5_1" target="_self">Lecture</a></li>
+                        </ul>
+                    </li>
+                                              <li class="menu6" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub6_1" target="_self" class="on">NOTICE</a>
+                        <ul class='sub6'>
+                            <li><a href="/bbs/board.php?bo_table=sub6_1" target="_self">News</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub6_2" target="_self">Gallery</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub6_3" target="_self">Seminar</a></li>
+                        </ul>
+                    </li>
+                          
+                </ul>
+
+		<!-- <ul id="nav"> -->
+			<!-- <li><a href="javascript:GoPage('sub01_1')" class="on">INTRODUCTION</a> -->
+				<!-- <ul class="sub1"> -->
+					<!-- <li><a href="javascript:GoPage('sub01_1')">Welcome to MPBEL</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub01_2')">Contact us</a></li> -->
+				<!-- </ul> -->
+			<!-- </li> -->
+			<!-- <li><a href="javascript:GoPage('sub02_1')" class="on">MEMBER</a> -->
+				<!-- <ul class="sub2"> -->
+					<!-- <li><a href="javascript:GoPage('sub02_1')">Professor</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub02_2')">Collaborators</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub02_3')">Researchers</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub02_4')">Alumni</a></li> -->
+				<!-- </ul> -->
+			<!-- </li> -->
+			<!-- <li><a href="javascript:GoPage('sub03_1')" class="on">RESEARCH</a> -->
+				<!-- <ul class="sub3"> -->
+					<!-- <li><a href="javascript:GoPage('sub03_1')">Advanced CT Reconstruction</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub03_2')">Intelligent Medical Imaging</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub03_3')">Radiation Therapy</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub03_4')">Particle Therapy</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub03_5')">Grant Lists</a></li> -->
+				<!-- </ul> -->
+			<!-- </li> -->
+			<!-- <li><a href="javascript:GoPage('sub04_1')" class="on">PUBLICATION</a> -->
+				<!-- <ul class="sub4"> -->
+					<!-- <li><a href="javascript:GoPage('sub04_1')">Paper</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub04_2')">Presentation</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub04_4')">Invited talk</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub04_3')">Patent</a></li> -->
+				<!-- </ul> -->
+			<!-- </li> -->
+			<!-- <li><a href="javascript:GoPage('sub05_1')" class="on">LECTURE</a> -->
+			<!-- </li> -->
+			<!-- <li><a href="javascript:GoPage('sub06_1')" class="on">NOTICE</a> -->
+				<!-- <ul class="sub6"> -->
+					<!-- <li><a href="javascript:GoPage('sub06_1')">News</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub06_2')">Gallery</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub06_3')">Seminar</a></li> -->
+				<!-- </ul> -->
+			<!-- </li> -->
+		<!-- </ul> -->
+	</div>
+
+</div>
+
+<!--
+<script type="text/javascript">
+$(function() {
+	$("#nav").droppy();
+});
+</script>
+ -->
+	<div id="sub_container">
+		<div class="sub_visual">
+			<div class="wrap">
+				<img src="../images/sub/sub_slogan.png" alt="">
+			</div>
+		</div>
+		<div id="sub_contents">
+			<div id="" class="snb">
+<style type="text/css">
+/* 페이지인식-메인 */
+#page6 #menu03 > .box6_3_3 {
+	display:block;
+	color:#1563b4;
+	background:#f5f5f5 ;
+}
+</style>
+
+
+<p class="tit">NOTICE </p>
+
+<!-- <h2>학과소개</h2> -->
+<div class="vNav" id="page6">
+        <ul>
+                                          <li  id="menu01" >
+                  <a href="/bbs/board.php?bo_table=sub6_1" target="_self" class="box6_3_1">News</a>
+         </li>
+         <li  id="menu02" >
+                  <a href="/bbs/board.php?bo_table=sub6_2" target="_self" class="box6_3_2">Gallery</a>
+         </li>
+         <li  id="menu03" class='active'>
+                  <a href="/bbs/board.php?bo_table=sub6_3" target="_self" class="box6_3_3">Seminar</a>
+         </li>
+        </ul>
+</div>
+</div>
+			<div class="contentBox">
+				<h2 class="cnt_title">
+										Seminar									</h2>
+				<div class="loca">
+					<ul class="loc">
+												<li><img src="../images/sub/home.png" alt="home"></li>
+						<li>NOTICE</li>
+						<li class="last">Seminar</li>
+
+											</ul>
+				</div>
+				<!-- contents -->
+				<div class="contents" style="overflow:hidden;"><p><br></p><script type="text/javascript" charset="UTF-8" src="webkit-masked-url://hidden/"></script><script type="text/javascript" charset="UTF-8" src="webkit-masked-url://hidden/"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/viewimageresize.js"></script>
+
+<!-- 게시물 읽기 시작 { -->
+
+<article id="bo_v" style="width:100%">
+    <header>
+        <h2 id="bo_v_title">
+                        <span class="bo_v_tit">
+            [Research seminar] Synthetic contrast-enhanced CT generation</span>
+        </h2>
+    </header>
+
+    <section id="bo_v_info">
+        <h2>페이지 정보</h2>
+        <span class="sound_only">작성자</span> <strong><span class="sv_member">YMPBEL</span></strong>
+        <span class="sound_only">댓글</span><strong><a href="#bo_vc"> <i class="fa fa-commenting-o" aria-hidden="true"></i> 0건</a></strong>
+        <span class="sound_only">조회</span><strong><i class="fa fa-eye" aria-hidden="true"></i> 1,552회</strong>
+        <strong class="if_date"><span class="sound_only">작성일</span><i class="fa fa-clock-o" aria-hidden="true"></i> 21-06-09 18:20</strong>
+
+    </section>
+
+    <section id="bo_v_atc">
+        <h2 id="bo_v_atc_title">본문</h2>
+
+        <div id="bo_v_img">
+</div>
+
+        <!-- 본문 내용 시작 { -->
+        <div id="bo_v_con"><p style="font-family:Lato, 'Nanum Gothic', sans-serif;line-height:1.6;max-height:100000px;background-color:rgb(255,255,255);"><span style="max-height:100000px;font-size:12pt;"><b style="line-height:1.6;max-height:100000px;">- Presenter: Jaehee Chun</b></span></p><p style="font-family:Lato, 'Nanum Gothic', sans-serif;line-height:1.6;max-height:100000px;background-color:rgb(255,255,255);"><b style="line-height:1.6;max-height:100000px;"><br style="line-height:1.6;max-height:100000px;" /></b></p><p style="font-family:Lato, 'Nanum Gothic', sans-serif;line-height:1.6;max-height:100000px;background-color:rgb(255,255,255);"><span style="max-height:100000px;font-size:12pt;"><b style="line-height:1.6;max-height:100000px;">- Date: 2021/06/09</b></span></p><p style="font-family:Lato, 'Nanum Gothic', sans-serif;line-height:1.6;max-height:100000px;background-color:rgb(255,255,255);"><b style="line-height:1.6;max-height:100000px;"><br style="line-height:1.6;max-height:100000px;" /></b></p><p style="font-family:Lato, 'Nanum Gothic', sans-serif;line-height:1.6;max-height:100000px;background-color:rgb(255,255,255);"><span style="max-height:100000px;font-size:12pt;"><b style="line-height:1.6;max-height:100000px;">- Topic: Synthetic contrast-enhanced CT generation using deep convolutional neural network for cardiac substructure delineation in breast cancer radiation therapy: a feasibility study (Jaehee Chun)</b></span></p><p style="font-family:Lato, 'Nanum Gothic', sans-serif;line-height:1.6;max-height:100000px;background-color:rgb(255,255,255);"><span style="max-height:100000px;font-size:12pt;"><b style="line-height:1.6;max-height:100000px;"><a href="http://mpbel.yonsei.ac.kr/bbs/view_image.php?fn=%2Fdata%2Feditor%2F2106%2Fb46fb74eeeb2b183d7da230914e092e5_1623230391_9814.png" target="_blank" class="view_image"><img src="http://mpbel.yonsei.ac.kr/data/editor/2106/thumb-b46fb74eeeb2b183d7da230914e092e5_1623230391_9814_800x1499.png" alt="b46fb74eeeb2b183d7da230914e092e5_1623230391_9814.png"/></a><br style="clear:both;" /> </b></span></p></div>
+                <!-- } 본문 내용 끝 -->
+
+        
+
+        <!--  추천 비추천 시작 { -->
+                <!-- }  추천 비추천 끝 -->
+    </section>
+
+    <div id="bo_v_share">
+        
+            </div>
+
+    
+    
+    
+    <!-- 게시물 상단 버튼 시작 { -->
+    <div id="bo_v_top">
+        
+        <ul class="bo_v_left">
+                                                                    </ul>
+
+        <ul class="bo_v_com">
+           <li><a href="./board.php?bo_table=sub6_3&amp;page=" class="btn_b01 btn"><i class="fa fa-list" aria-hidden="true"></i> 목록</a></li>
+                                </ul>
+
+                <ul class="bo_v_nb">
+            <li class="btn_prv"><span class="nb_tit"><i class="fa fa-caret-up" aria-hidden="true"></i> 이전글</span><a href="./board.php?bo_table=sub6_3&amp;wr_id=87">[Research seminar] machine learning-based auto segmentation and invasiveness prediction</a> <span class="nb_date">21.06.18</span></li>            <li class="btn_next"><span class="nb_tit"><i class="fa fa-caret-down" aria-hidden="true"></i> 다음글</span><a href="./board.php?bo_table=sub6_3&amp;wr_id=85">[Research Seminar] RT Outcome Prediction: Using Radiomics features to predict Progression in Cervix Patients</a>  <span class="nb_date">21.05.26</span></li>        </ul>
+                    </div>
+    <!-- } 게시물 상단 버튼 끝 -->
+
+    
+<script>
+// 글자수 제한
+var char_min = parseInt(0); // 최소
+var char_max = parseInt(0); // 최대
+</script>
+<button type="button" class="cmt_btn"><i class="fa fa-commenting-o" aria-hidden="true"></i> 댓글목록</button>
+<!-- 댓글 시작 { -->
+<section id="bo_vc">
+    <h2>댓글목록</h2>
+        <p id="bo_vc_empty">등록된 댓글이 없습니다.</p>
+</section>
+<!-- } 댓글 끝 -->
+
+<!-- 댓글 쓰기 시작 { -->
+<aside id="bo_vc_w" class="bo_vc_w">
+    <h2>댓글쓰기</h2>
+    <form name="fviewcomment" id="fviewcomment" action="http://mpbel.yonsei.ac.kr/bbs/write_comment_update.php" onsubmit="return fviewcomment_submit(this);" method="post" autocomplete="off">
+    <input type="hidden" name="w" value="c" id="w">
+    <input type="hidden" name="bo_table" value="sub6_3">
+    <input type="hidden" name="wr_id" value="86">
+    <input type="hidden" name="comment_id" value="" id="comment_id">
+    <input type="hidden" name="sca" value="">
+    <input type="hidden" name="sfl" value="">
+    <input type="hidden" name="stx" value="">
+    <input type="hidden" name="spt" value="">
+    <input type="hidden" name="page" value="">
+    <input type="hidden" name="is_good" value="">
+
+    <span class="sound_only">내용</span>
+        <textarea id="wr_content" name="wr_content" maxlength="10000" required class="required" title="내용" placeholder="댓글내용을 입력해주세요" 
+    ></textarea>
+        <script>
+    $(document).on("keyup change", "textarea#wr_content[maxlength]", function() {
+        var str = $(this).val()
+        var mx = parseInt($(this).attr("maxlength"))
+        if (str.length > mx) {
+            $(this).val(str.substr(0, mx));
+            return false;
+        }
+    });
+    </script>
+    <div class="bo_vc_w_wr">
+        <div class="bo_vc_w_info">
+                        <label for="wr_name" class="sound_only">이름<strong> 필수</strong></label>
+            <input type="text" name="wr_name" value="" id="wr_name" required class="frm_input required" size="25" placeholder="이름">
+            <label for="wr_password" class="sound_only">비밀번호<strong> 필수</strong></label>
+            <input type="password" name="wr_password" id="wr_password" required class="frm_input required" size="25"  placeholder="비밀번호">
+                                                    
+<script>var g5_captcha_url  = "http://mpbel.yonsei.ac.kr/plugin/kcaptcha";</script>
+<script src="http://mpbel.yonsei.ac.kr/plugin/kcaptcha/kcaptcha.js"></script>
+<fieldset id="captcha" class="_comment">
+<legend><label for="captcha_key">자동등록방지</label></legend>
+<img src="http://mpbel.yonsei.ac.kr/plugin/kcaptcha/img/dot.gif" alt="" id="captcha_img"><input type="text" name="captcha_key" id="captcha_key" required class="captcha_box required" size="6" maxlength="6">
+<button type="button" id="captcha_mp3"><span></span>숫자음성듣기</button>
+<button type="button" id="captcha_reload"><span></span>새로고침</button>
+<span id="captcha_info">자동등록방지 숫자를 순서대로 입력하세요.</span>
+</fieldset>                    </div>
+        <div class="btn_confirm">
+            <input type="checkbox" name="wr_secret" value="secret" id="wr_secret">
+            <label for="wr_secret"><i class="fa fa-lock" aria-hidden="true"></i><span class="sound_only">비밀글사용</span></label>
+            <input type="submit" id="btn_submit" class="btn_submit" value="댓글등록">
+        </div>
+    </div>
+    </form>
+</aside>
+
+<script>
+var save_before = '';
+var save_html = document.getElementById('bo_vc_w').innerHTML;
+
+function good_and_write()
+{
+    var f = document.fviewcomment;
+    if (fviewcomment_submit(f)) {
+        f.is_good.value = 1;
+        f.submit();
+    } else {
+        f.is_good.value = 0;
+    }
+}
+
+function fviewcomment_submit(f)
+{
+    var pattern = /(^\s*)|(\s*$)/g; // \s 공백 문자
+
+    f.is_good.value = 0;
+
+    var subject = "";
+    var content = "";
+    $.ajax({
+        url: g5_bbs_url+"/ajax.filter.php",
+        type: "POST",
+        data: {
+            "subject": "",
+            "content": f.wr_content.value
+        },
+        dataType: "json",
+        async: false,
+        cache: false,
+        success: function(data, textStatus) {
+            subject = data.subject;
+            content = data.content;
+        }
+    });
+
+    if (content) {
+        alert("내용에 금지단어('"+content+"')가 포함되어있습니다");
+        f.wr_content.focus();
+        return false;
+    }
+
+    // 양쪽 공백 없애기
+    var pattern = /(^\s*)|(\s*$)/g; // \s 공백 문자
+    document.getElementById('wr_content').value = document.getElementById('wr_content').value.replace(pattern, "");
+    if (char_min > 0 || char_max > 0)
+    {
+        check_byte('wr_content', 'char_count');
+        var cnt = parseInt(document.getElementById('char_count').innerHTML);
+        if (char_min > 0 && char_min > cnt)
+        {
+            alert("댓글은 "+char_min+"글자 이상 쓰셔야 합니다.");
+            return false;
+        } else if (char_max > 0 && char_max < cnt)
+        {
+            alert("댓글은 "+char_max+"글자 이하로 쓰셔야 합니다.");
+            return false;
+        }
+    }
+    else if (!document.getElementById('wr_content').value)
+    {
+        alert("댓글을 입력하여 주십시오.");
+        return false;
+    }
+
+    if (typeof(f.wr_name) != 'undefined')
+    {
+        f.wr_name.value = f.wr_name.value.replace(pattern, "");
+        if (f.wr_name.value == '')
+        {
+            alert('이름이 입력되지 않았습니다.');
+            f.wr_name.focus();
+            return false;
+        }
+    }
+
+    if (typeof(f.wr_password) != 'undefined')
+    {
+        f.wr_password.value = f.wr_password.value.replace(pattern, "");
+        if (f.wr_password.value == '')
+        {
+            alert('비밀번호가 입력되지 않았습니다.');
+            f.wr_password.focus();
+            return false;
+        }
+    }
+
+    if (!chk_captcha()) return false;
+
+    set_comment_token(f);
+
+    document.getElementById("btn_submit").disabled = "disabled";
+
+    return true;
+}
+
+function comment_box(comment_id, work)
+{
+    var el_id,
+        form_el = 'fviewcomment',
+        respond = document.getElementById(form_el);
+
+    // 댓글 아이디가 넘어오면 답변, 수정
+    if (comment_id)
+    {
+        if (work == 'c')
+            el_id = 'reply_' + comment_id;
+        else
+            el_id = 'edit_' + comment_id;
+    }
+    else
+        el_id = 'bo_vc_w';
+
+    if (save_before != el_id)
+    {
+        if (save_before)
+        {
+            document.getElementById(save_before).style.display = 'none';
+        }
+
+        document.getElementById(el_id).style.display = '';
+        document.getElementById(el_id).appendChild(respond);
+        //입력값 초기화
+        document.getElementById('wr_content').value = '';
+        
+        // 댓글 수정
+        if (work == 'cu')
+        {
+            document.getElementById('wr_content').value = document.getElementById('save_comment_' + comment_id).value;
+            if (typeof char_count != 'undefined')
+                check_byte('wr_content', 'char_count');
+            if (document.getElementById('secret_comment_'+comment_id).value)
+                document.getElementById('wr_secret').checked = true;
+            else
+                document.getElementById('wr_secret').checked = false;
+        }
+
+        document.getElementById('comment_id').value = comment_id;
+        document.getElementById('w').value = work;
+
+        if(save_before)
+            $("#captcha_reload").trigger("click");
+
+        save_before = el_id;
+    }
+}
+
+function comment_delete()
+{
+    return confirm("이 댓글을 삭제하시겠습니까?");
+}
+
+comment_box('', 'c'); // 댓글 입력폼이 보이도록 처리하기위해서 추가 (root님)
+
+$(function() {            
+    //댓글열기
+    $(".cmt_btn").click(function(){
+        $(this).toggleClass("cmt_btn_op");
+        $("#bo_vc").toggle();
+    });
+});
+</script>
+<!-- } 댓글 쓰기 끝 --><script src="http://mpbel.yonsei.ac.kr/js/md5.js"></script>
+
+
+</article>
+<!-- } 게시판 읽기 끝 -->
+
+<script>
+
+function board_move(href)
+{
+    window.open(href, "boardmove", "left=50, top=50, width=500, height=550, scrollbars=1");
+}
+</script>
+
+<script>
+$(function() {
+    $("a.view_image").click(function() {
+        window.open(this.href, "large_image", "location=yes,links=no,toolbar=no,top=10,left=10,width=10,height=10,resizable=yes,scrollbars=no,status=no");
+        return false;
+    });
+
+    // 추천, 비추천
+    $("#good_button, #nogood_button").click(function() {
+        var $tx;
+        if(this.id == "good_button")
+            $tx = $("#bo_v_act_good");
+        else
+            $tx = $("#bo_v_act_nogood");
+
+        excute_good(this.href, $(this), $tx);
+        return false;
+    });
+
+    // 이미지 리사이즈
+    $("#bo_v_atc").viewimageresize();
+
+    //sns공유
+    $(".btn_share").click(function(){
+        $("#bo_v_sns").fadeIn();
+   
+    });
+
+    $(document).mouseup(function (e) {
+        var container = $("#bo_v_sns");
+        if (!container.is(e.target) && container.has(e.target).length === 0){
+        container.css("display","none");
+        }	
+    });
+});
+
+function excute_good(href, $el, $tx)
+{
+    $.post(
+        href,
+        { js: "on" },
+        function(data) {
+            if(data.error) {
+                alert(data.error);
+                return false;
+            }
+
+            if(data.count) {
+                $el.find("strong").text(number_format(String(data.count)));
+                if($tx.attr("id").search("nogood") > -1) {
+                    $tx.text("이 글을 비추천하셨습니다.");
+                    $tx.fadeIn(200).delay(2500).fadeOut(200);
+                } else {
+                    $tx.text("이 글을 추천하셨습니다.");
+                    $tx.fadeIn(200).delay(2500).fadeOut(200);
+                }
+            }
+        }, "json"
+    );
+}
+</script>
+<!-- } 게시글 읽기 끝 --><p><br></p><script type="text/javascript" charset="UTF-8" src="webkit-masked-url://hidden/"></script><script type="text/javascript" charset="UTF-8" src="webkit-masked-url://hidden/"></script>				</div><!-- //contents -->
+			</div><!-- //contentBox -->
+		</div><!-- //sub_contents -->
+	</div><!-- //sub_container -->
+
+
+	<div id="footer">
+		<p class="ft_name">Yonsei Medical Physics and Biomedical Engineering Lab.</p>
+		<p class="ft_address">03722 서울특별시 서대문구 연세로 50 연세대학교<br>
+		TEL. +82-2-2228-8118 / FAX. +82-2-2227-7823</p>
+		<p class="ft_copy">COPYRIGHT @2018<span>MPBEL</span>ALL RIGHT RESERVED. &nbsp;&nbsp; Design by <a href="http://dsso.kr/" target="_blank" style="color:#aeaeae;">DSSO</a></p>
+	</div>
+</div><!-- //wrap -->
+
+
+<!-- ie6,7에서 사이드뷰가 게시판 목록에서 아래 사이드뷰에 가려지는 현상 수정 -->
+<!--[if lte IE 7]>
+<script>
+$(function() {
+    var $sv_use = $(".sv_use");
+    var count = $sv_use.length;
+
+    $sv_use.each(function() {
+        $(this).css("z-index", count);
+        $(this).css("position", "relative");
+        count = count - 1;
+    });
+});
+</script>
+<![endif]-->
+
+</body>
+</html>
+
+<!-- 사용스킨 : basic -->

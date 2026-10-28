@@ -13,6 +13,7 @@ from .config import BASE_URL, BOARDS, PAGE_SECTION, REPO_ROOT, board_url
 from .fetch import Fetcher
 from .markdown import write_entry
 from .run_members import run_members
+from .run_posts import run_posts
 from .run_publications import run_publications
 
 KINDS = ('pages', 'members', 'publications', 'posts', 'assets')
@@ -59,10 +60,6 @@ def run_pages(ctx: Context) -> Summary:
         write_entry(pages_dir / f'{spec.slug}.md', frontmatter, body)
         written += 1
     return {'pages': written}
-
-
-def run_posts(ctx: Context) -> Summary:
-    raise NotImplementedError('posts runner: Task 7')
 
 
 def run_assets(ctx: Context) -> Summary:
