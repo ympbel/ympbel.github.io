@@ -208,7 +208,7 @@ cp src/content/members/ko/_template.md src/content/members/ko/researchers/gildon
   grep -h '^order:' src/content/members/ko/researchers/*.md | sort -n -k2 | tail -1
   ```
   중간에 넣으려면 뒤 사람들의 `order`를 하나씩 늘립니다.
-- 사진은 JPG, 긴 변 800px 이하로 줄여 넣습니다(옛 사진도 그렇게 줄였습니다).
+- 사진은 JPG, 긴 변 800px 이하로 줄여 넣습니다(옛 사진도 그렇게 줄였습니다). 카드에는 옛 사이트처럼 202×150 크기로, 가운데를 기준으로 잘라 보입니다. 세로 사진은 위아래가 잘리므로 얼굴이 사진 가운데쯤 오게 합니다.
 - 연구원(researchers)은 `fields`에 보통 `Grade`, `E-mail`, `Research Interest`를, 졸업생(alumni)은 `E-mail`, `Research Interest`를 씁니다.
 
 **졸업 처리** (연구원 → 졸업생): 파일을 `alumni/`로 옮기고 `board`와 `category`를 바꿉니다.
@@ -225,7 +225,7 @@ git mv src/content/members/ko/researchers/gildong-hong.md src/content/members/ko
 
 | 파일 | 주소 |
 |---|---|
-| `home.md` | `/` (홈 소개 문단, `links`: 홈 아래 링크 4개의 `label`과 `url`) |
+| `home.md` | `/` (홈 소개 문단, `links`: 홈 아래 링크 4개의 `label`과 `url`. 라벨을 두 줄로 쓰려면 `label: \|-` 다음 줄부터 네 칸 들여 한 줄씩) |
 | `welcome.md` | `/introduction/welcome/` |
 | `contact.md` | `/introduction/contact/` |
 | `professor.md` | `/member/professor/` |
@@ -279,7 +279,7 @@ gh run watch $(gh run list --workflow deploy.yml --limit 1 --json databaseId --j
       cd scripts/crawl && .venv/bin/python -m crawl --mode add --only members,publications,posts
       cd ../..
       ```
-   2. 옛 사이트의 고정 페이지(소개·교수·연구)를 1차 크롤링 이후에 고쳤다면 `--only pages`를 따로 실행하고 `git diff`로 확인합니다. 이 실행은 고정 페이지 8개(`home.md` 포함)를 모두 옛 사이트 내용으로 다시 쓰므로, 새 저장소에서 고친 내용(예: 홈 링크 라벨)이 되돌려집니다. 옛 사이트에서 고친 부분만 남깁니다.
+   2. 옛 사이트의 고정 페이지(소개·교수·연구)를 1차 크롤링 이후에 고쳤다면 `--only pages`를 따로 실행하고 `git diff`로 확인합니다. 이 실행은 고정 페이지 8개(`home.md` 포함)를 모두 옛 사이트 내용으로 다시 쓰므로, 새 저장소에서 고친 내용이 있으면 되돌려집니다. 옛 사이트에서 고친 부분만 남깁니다.
       ```bash
       cd scripts/crawl && .venv/bin/python -m crawl --mode add --only pages
       cd ../..
@@ -332,8 +332,6 @@ gh run watch $(gh run list --workflow deploy.yml --limit 1 --json databaseId --j
 ### 알려진 차이 (옛 사이트와 다른 점)
 
 - 멤버 사진 5장(연구원 이혜진·이원형, 졸업생 이주영·최민서, 인턴 이강훈)은 202×150 썸네일입니다. 옛 서버에 원본이 없었습니다. 새 사진을 받으면 같은 파일을 바꿔 넣습니다.
-- 멤버 카드의 글(이름·항목) 시작 위치가 카드마다 조금씩 다릅니다. 옛 사이트는 모든 사진을 202×150 썸네일로 보여 주었지만, 지금은 줄인 원본 사진을 쓰므로 사진마다 가로세로 비율이 달라 사진 폭이 다릅니다(위의 썸네일 5장만 옛 위치). 최종 수정 단계에서 고칠 예정입니다.
-- 홈 아래 링크 2번, 4번(연세암병원 의학물리팀 블로그, 방사선종양학과)의 라벨은 옛 사이트의 `<br>` 줄바꿈이 없어 단어 중간에서 줄이 바뀌고, 오른쪽 화살표가 글자 끝과 겹칩니다. 라벨은 `src/content/pages/ko/home.md`의 `links`에 있고 `src/pages/index.astro`가 표시합니다.
 - 연구(Research) 페이지의 왼쪽 메뉴는 현재 페이지 항목을 강조합니다. 옛 사이트는 한 칸 어긋나 있었습니다.
 - 화면 폭 1025~1199px에서는 1200px 데스크톱 배치를 그대로 씁니다(가로 스크롤). 1024px 이하부터 모바일 배치입니다.
 - 갤러리와 영문 페이지는 준비 중 안내만 있습니다.

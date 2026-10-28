@@ -30,6 +30,13 @@ test('external links and publication icons', () => {
   assert.equal($('.publication li').eq(2).find('a').attr('href'), '/publication/patent/');
 });
 
+test('external link labels 2 and 4 keep the old <br> line break', () => {
+  assert.equal($('.link ul li:nth-child(1) a br').length, 0);
+  assert.equal($('.link ul li:nth-child(2) a br').length, 1);
+  assert.equal($('.link ul li:nth-child(3) a br').length, 0);
+  assert.equal($('.link ul li:nth-child(4) a br').length, 1);
+});
+
 test('footer without the DSSO credit', () => {
   assert.ok($('#footer').text().includes('ALL RIGHT RESERVED.'));
   assert.ok(!$('#footer').text().includes('DSSO'));

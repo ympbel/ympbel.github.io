@@ -4,11 +4,15 @@ section: home
 links:
 - label: 김진성 교수님 블로그
   url: http://mpjinsung.tistory.com/
-- label: 연세의료원 연세암병원 의학물리팀 블로그
+- label: |-
+    연세의료원 연세암병원
+    의학물리팀 블로그
   url: http://medphy.tistory.com/
 - label: 김진성 교수님 YouTube
   url: https://www.youtube.com/channel/UCQ_db0bwBvWJian998nzq4w
-- label: 연세의료원 연세암병원 방사선종양학과
+- label: |-
+    연세의료원 연세암병원
+    방사선종양학과
   url: http://sev.iseverance.com/cancer/dept_clinic/department/radiation_oncology/
 ---
 

@@ -196,7 +196,6 @@
 #maps .map_info .cam_img img{width:100%;max-width:640px;padding:20px;vertical-align:middle;border:solid 1px #e8e8e8;}
 #maps .map_info .cam_info{padding:0}
 #maps .map_info .cam_info ul{padding:0}
-#maps .map_info .cam_info li{padding:1px 0 0 10px;background:url('/images/site/common/ico_sq.png') no-repeat 0 55%;}
 
 #footer{min-width:1200px;background:#363636;text-align:center;padding:30px 0;}
 #footer .ft_name{color:#fff;font-size:16px;    margin-bottom:5px;}

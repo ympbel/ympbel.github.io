@@ -1,8 +1,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { exists, page } from './helpers.mjs';
+import { DIST, exists, page } from './helpers.mjs';
 
 const MEMBERS = fileURLToPath(new URL('../../src/content/members/ko/', import.meta.url));
 const BOARDS = ['researchers', 'collaborators', 'alumni', 'internship'];
@@ -150,4 +151,23 @@ test('boards without categories: one wrapper and one list', () => {
     assert.equal($('#gall_ul').length, 1, board);
     assert.equal($('#gall_ul .member_list').length, 1, board);
   }
+});
+
+/** The innermost `selector{declarations}` rules of the stylesheets the page at `path` links, with the whitespace
+ * around `{`, `}`, `:`, `;` and `,` removed (descendant combinators stay). */
+function linkedRules(path) {
+  const $ = page(path);
+  const css = $('link[rel=stylesheet][href^="/_astro/"]')
+    .map((_, link) => readFileSync(join(DIST, $(link).attr('href')), 'utf8'))
+    .get()
+    .join('\n')
+    .replace(/\s*([{}:;,])\s*/g, '$1');
+  return css.match(/[^{}]+\{[^{}]*\}/g) ?? [];
+}
+
+test('researchers: every photo fills a fixed 202×150 box, cropped like the old thumbnails', () => {
+  const rules = linkedRules('member/researchers').filter((r) => r.split('{')[0].trim().endsWith('.mb_img img'));
+  const box = rules.filter((r) => r.includes('object-fit:cover') && r.includes('width:202px'));
+  assert.equal(box.length, 1, rules.join('\n'));
+  assert.ok(box[0].includes('height:150px'), box[0]);
 });

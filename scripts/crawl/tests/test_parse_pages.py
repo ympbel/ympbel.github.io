@@ -119,3 +119,6 @@ def test_parse_home():
     assert '연세 의학물리 및 의공학 연구실' in home.about_html
     assert home.links[0] == ('김진성 교수님 블로그', 'http://mpjinsung.tistory.com/')
     assert len(home.links) == 4
+    # The old labels' <br> is kept as a line break.
+    assert home.links[1] == ('연세의료원 연세암병원\n의학물리팀 블로그', 'http://medphy.tistory.com/')
+    assert home.links[3][0] == '연세의료원 연세암병원\n방사선종양학과'

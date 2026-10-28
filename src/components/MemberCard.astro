@@ -10,7 +10,7 @@ const { name, photo, link, fields } = Astro.props.member.data;
 // The old cards linked photo and name to a detail page this site does not build. The anchors stay so the skin
 // CSS applies: they open the member's own link when there is one and carry no href otherwise.
 // An empty-label dt drops its icon padding, as the old markup did inline.
-const anchor = link ? { href: link, target: '_blank' } : {};
+const anchor = link ? { href: link, target: '_blank', rel: 'noopener' } : {};
 ---
 
 <div class="mb_peple">
@@ -49,7 +49,7 @@ const anchor = link ? { href: link, target: '_blank' } : {};
     <div class="link01">
       {
         link && (
-          <a href={link} target="_blank" class="btn_set01">
+          <a href={link} target="_blank" rel="noopener" class="btn_set01">
             LINK
           </a>
         )

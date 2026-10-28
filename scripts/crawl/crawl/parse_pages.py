@@ -10,7 +10,7 @@ from bs4 import Comment
 from bs4.dammit import EntitySubstitution
 from bs4.formatter import HTMLFormatter
 
-from .parse_common import PAGE_URL, clean_text, path_of, soup
+from .parse_common import PAGE_URL, block_text, path_of, soup
 
 
 @dataclass
@@ -132,5 +132,6 @@ def parse_home(html: str) -> HomePage:
     txt = s.select_one('div.about div.txt')
     if txt is None:
         raise ValueError('no div.about div.txt')
-    links = [(clean_text(a), a['href']) for a in s.select('div.link ul li a[href]')]
+    # A label keeps its <br> as '\n' (the old home wrapped two labels after '연세암병원').
+    links = [(block_text(a), a['href']) for a in s.select('div.link ul li a[href]')]
     return HomePage(txt.decode_contents(formatter=_FORMATTER), links)

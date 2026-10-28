@@ -77,7 +77,11 @@ function venueLines(venue: string): Array<{ label?: string; value: string }> {
                       <td class="num">{num === undefined ? <strong>{t(locale).board.pinned}</strong> : num}</td>
                       <td class="name_title">
                         <span class="text_title">
-                          <a href={entry.data.link} target={entry.data.link ? '_blank' : undefined}>
+                          <a
+                            href={entry.data.link}
+                            target={entry.data.link ? '_blank' : undefined}
+                            rel={entry.data.link ? 'noopener' : undefined}
+                          >
                             {entry.data.title}
                           </a>
                         </span>
@@ -104,7 +108,7 @@ function venueLines(venue: string): Array<{ label?: string; value: string }> {
                     <tr>
                       <td colspan="3" class="btn_positon">
                         {entry.data.link && (
-                          <a href={entry.data.link} target="_blank" class="btn_set01">
+                          <a href={entry.data.link} target="_blank" rel="noopener" class="btn_set01">
                             LINK
                           </a>
                         )}
