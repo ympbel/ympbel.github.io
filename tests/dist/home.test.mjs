@@ -40,3 +40,8 @@ test('head: viewport, Google Fonts, no jQuery', () => {
   assert.equal($('script[src*=jquery]').length, 0);
   assert.ok($('link[href*="fonts.googleapis"]').length >= 1);
 });
+
+test('head: Nanum Gothic is loaded with its bold weights', () => {
+  const hrefs = $('link[href*="fonts.googleapis"]').map((_, el) => $(el).attr('href')).get();
+  assert.ok(hrefs.some((h) => h.includes('Nanum+Gothic:400,700,800')), hrefs.join(' '));
+});
