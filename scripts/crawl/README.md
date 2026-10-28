@@ -52,6 +52,7 @@ python3 -m venv .venv
 | `public/images/members/<board>/<wr_id>.<ext>` | 멤버 사진 (`<board>`: researchers, collaborators, alumni, internship, `<ext>`는 소문자). 목록의 썸네일 대신 원본을 받고, 없으면 확장자를 대문자로 바꾼 주소(예: `.JPG`), 그것도 없으면 썸네일(202x150)을 받습니다. 긴 변이 800px를 넘으면 800px로 줄여 저장하며, `reference/html/`에는 받은 원본을 그대로 둡니다. 이미 있는 사진 파일은 다시 받지 않으므로, 새로 받으려면 그 파일을 지우고 실행합니다. |
 | `reference/html/` | 옛 사이트에서 받은 원본 그대로의 캐시(HTML, CSS, 이미지)와 `redirects.json`. 한 번 받은 주소는 다시 요청하지 않습니다. 옛 사이트의 기록으로 git에 함께 커밋합니다. |
 | `reference/css/` | 옛 사이트 CSS 13개 원본 (`default.css`, `design.css`, `latest-basic.css`, `board-*.css`) |
+| `reference/crawl-summary.json` | 마지막 실행의 요약: 종류별 `{"written": 새로 쓴 파일 수, "skipped": 건너뛴 파일 수}`와 실행 시각 `generated_at`(UTC, ISO 8601). 실행할 때마다 새로 쓰며 결과와 함께 커밋합니다. |
 
 고정 페이지와 홈의 본문은 옛 페이지의 HTML을 그대로 옮긴 것입니다. 마크다운은 빈 줄에서 HTML 덩어리를 끝내고 4칸 들여쓴 줄을 코드로 바꾸므로, 크롤러는 빈 줄과 줄 앞 공백을 모두 지워서 씁니다. 이 파일을 직접 고칠 때도 본문에 빈 줄이나 줄 앞 공백을 넣지 마세요.
 

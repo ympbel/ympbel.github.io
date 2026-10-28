@@ -2,10 +2,12 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 import urllib.error
 from collections.abc import Callable
 from dataclasses import dataclass, field
+from datetime import datetime, timezone
 from pathlib import Path
 
 from . import assets, parse_pages
@@ -94,6 +96,15 @@ KIND_RUNNERS: dict[str, Callable[[Context], Summary]] = {
 }
 
 
+def write_summary(path: Path, summary: dict[str, dict[str, int]]) -> None:
+    """`summary` (collection -> {'written': n, 'skipped': m}) as JSON, collections sorted, then
+    `generated_at` (ISO 8601, UTC)."""
+    data: dict = {collection: summary[collection] for collection in sorted(summary)}
+    data['generated_at'] = datetime.now(timezone.utc).isoformat(timespec='seconds')
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+
 def _kinds(value: str) -> list[str]:
     kinds = [k.strip() for k in value.split(',') if k.strip()]
     unknown = sorted(set(kinds) - set(KINDS))
@@ -121,7 +132,10 @@ def main(argv: list[str]) -> int:
         if kind in args.only:
             written.update(KIND_RUNNERS[kind](ctx))
 
+    summary = {c: {'written': written.get(c, 0), 'skipped': ctx.skipped.get(c, 0)}
+               for c in sorted(written.keys() | ctx.skipped.keys())}
     print('collection  written  skipped')
-    for collection in sorted(written.keys() | ctx.skipped.keys()):
-        print(f'{collection}  {written.get(collection, 0)}  {ctx.skipped.get(collection, 0)}')
+    for collection, counts in summary.items():
+        print(f'{collection}  {counts["written"]}  {counts["skipped"]}')
+    write_summary(out / 'reference' / 'crawl-summary.json', summary)
     return 0

@@ -1,0 +1,43 @@
+{
+  "assets": {
+    "written": 0,
+    "skipped": 61
+  },
+  "lectures": {
+    "written": 2,
+    "skipped": 0
+  },
+  "members": {
+    "written": 58,
+    "skipped": 0
+  },
+  "news": {
+    "written": 49,
+    "skipped": 0
+  },
+  "pages": {
+    "written": 8,
+    "skipped": 0
+  },
+  "papers": {
+    "written": 182,
+    "skipped": 0
+  },
+  "patents": {
+    "written": 7,
+    "skipped": 0
+  },
+  "presentations": {
+    "written": 285,
+    "skipped": 0
+  },
+  "seminars": {
+    "written": 431,
+    "skipped": 0
+  },
+  "talks": {
+    "written": 3,
+    "skipped": 0
+  },
+  "generated_at": "2026-10-28T08:37:21+00:00"
+}
