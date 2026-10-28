@@ -3,7 +3,7 @@ board: researchers
 category: Affiliate
 name: 이원형 Wonhyeong Lee
 photo: /images/members/researchers/63.jpg
-link: http://mpbel.yonsei.ac.kr/bbs/link.php?bo_table=sub2_3&wr_id=63&no=1&sca=Affiliate&page=1
+link: https://sites.google.com/view/hyu-rssl
 fields:
 - label: Grade
   value: Integrated Ph.D. Student

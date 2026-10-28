@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import sys
-import urllib.error
 from collections.abc import Iterator
 from typing import TYPE_CHECKING
 
@@ -12,7 +11,7 @@ from .fetch import Fetcher
 from .markdown import write_entry
 from .parse_publications import (Publication, parse_detail_files, parse_publication_detail_year,
                                  parse_publication_rows, publication_filename)
-from .run_common import known_ids, list_pages
+from .run_common import known_ids, list_pages, resolve_link
 
 if TYPE_CHECKING:
     from .run import Context
@@ -29,20 +28,6 @@ def year_pages(fetcher: Fetcher, table: str, refresh: bool) -> Iterator[tuple[in
 
     for category, html in list_pages(fetcher, table, refresh, tabs=is_year):
         yield (None if category is None else int(category)), html
-
-
-def _link(ctx: Context, collection: str, p: Publication) -> str | None:
-    """Target of the row's LINK button, None (with a warning) if it does not redirect."""
-    if p.link_php is None:
-        return None
-    try:
-        location = ctx.fetcher.resolve_redirect(p.link_php)
-    except urllib.error.HTTPError as err:
-        print(f'warning: no link for {collection} {p.wr_id} ({p.link_php}): {err}', file=sys.stderr)
-        return None
-    if location is None:
-        print(f'warning: no link for {collection} {p.wr_id} ({p.link_php}): no redirect', file=sys.stderr)
-    return location
 
 
 def run_publications(ctx: Context) -> dict[str, int]:
@@ -80,7 +65,7 @@ def run_publications(ctx: Context) -> dict[str, int]:
                 print(f'warning: no year for {spec.collection} {wr_id} ({p.title}), skipped', file=sys.stderr)
                 continue
             frontmatter: dict = {'year': year, 'title': p.title, 'authors': p.authors, 'venue': p.venue}
-            if link := _link(ctx, spec.collection, p):
+            if link := resolve_link(ctx.fetcher, p.link_php, f'{spec.collection} {wr_id}'):
                 frontmatter['link'] = link
             frontmatter['pinned'] = wr_id in pinned
             frontmatter['order'] = wr_id

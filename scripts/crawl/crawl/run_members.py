@@ -14,7 +14,7 @@ from .fetch import Fetcher
 from .images import shrink_image
 from .markdown import write_entry
 from .parse_members import Member, member_filename, original_photo_url, parse_member_list
-from .run_common import known_ids, list_pages
+from .run_common import known_ids, list_pages, resolve_link
 
 if TYPE_CHECKING:
     from .run import Context
@@ -53,6 +53,14 @@ def _photo(ctx: Context, board: str, m: Member) -> str | None:
     return '/' + dest.relative_to(public).as_posix()
 
 
+def _link(ctx: Context, board: str, m: Member) -> str | None:
+    """The card's LINK button: a `bbs/link.php` href resolved to its target (None, with a warning,
+    if it does not redirect), any other href as is."""
+    if m.link is None or not urlsplit(m.link).path.endswith('/link.php'):
+        return m.link
+    return resolve_link(ctx.fetcher, m.link, f'{board} {m.wr_id}')
+
+
 def run_members(ctx: Context) -> dict[str, int]:
     """Full mode rewrites every card; add mode re-fetches the lists and writes only cards whose
     wr_id is not a legacy_id in the board folder yet. `order` follows the old list (tabs in order)."""
@@ -78,8 +86,8 @@ def run_members(ctx: Context) -> dict[str, int]:
                 frontmatter['name'] = m.name
                 if photo := _photo(ctx, spec.board, m):
                     frontmatter['photo'] = photo
-                if m.link is not None:
-                    frontmatter['link'] = m.link
+                if link := _link(ctx, spec.board, m):
+                    frontmatter['link'] = link
                 frontmatter['fields'] = [{'label': label, 'value': value} for label, value in m.fields]
                 frontmatter['order'] = len(seen)
                 frontmatter['legacy_url'] = board_url(spec.table, wr_id=m.wr_id)

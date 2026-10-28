@@ -3,7 +3,7 @@ board: alumni
 category: Former
 name: 신재익 Jae-ik shin
 photo: /images/members/alumni/20.jpg
-link: http://mpbel.yonsei.ac.kr/bbs/link.php?bo_table=sub2_4&wr_id=20&no=1&sca=Former&page=1
+link: http://Jishin86.github.com/about
 fields:
 - label: Status
   value: Former

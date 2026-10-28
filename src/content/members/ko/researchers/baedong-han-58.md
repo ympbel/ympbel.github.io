@@ -3,7 +3,7 @@ board: researchers
 category: Affiliate
 name: 배동한 BaeDong Han
 photo: /images/members/researchers/58.jpg
-link: http://mpbel.yonsei.ac.kr/bbs/link.php?bo_table=sub2_3&wr_id=58&no=1&sca=Affiliate&page=1
+link: https://lesson.yonsei.ac.kr/
 fields:
 - label: Grade
   value: M.S. Student

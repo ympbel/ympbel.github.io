@@ -3,7 +3,7 @@ board: researchers
 category: Affiliate
 name: 손가희 Gahee Son
 photo: /images/members/researchers/55.jpg
-link: http://mpbel.yonsei.ac.kr/bbs/link.php?bo_table=sub2_3&wr_id=55&no=1&sca=Affiliate&page=1
+link: https://hurel.hanyang.ac.kr
 fields:
 - label: Grade
   value: Integrated Ph.D. Student

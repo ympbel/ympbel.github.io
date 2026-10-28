@@ -2,7 +2,7 @@
 board: internship
 name: 이효택 Hyo Thaek Lee
 photo: /images/members/internship/6.jpg
-link: http://mpbel.yonsei.ac.kr/bbs/link.php?bo_table=sub2_5&wr_id=6&no=1&page=1
+link: http://medphy.tistory.com/50?category=726932
 fields:
 - label: E-mail
   value: john.ht.lee.g@gmail.com

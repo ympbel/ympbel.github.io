@@ -26,15 +26,24 @@ MISSING = {BASE_URL + '/data/file/sub2_3/a.JPG', BASE_URL + f'/data/file/sub2_2/
            BASE_URL + f'/data/file/sub2_2/{FILE_15}.PNG', BASE_URL + f'/data/file/sub2_2/thumb-{FILE_15}_202x150.png'}
 
 
-def card(table, wr_id, name, photo):
+def card(table, wr_id, name, photo, link=None):
+    button = f'<div id="" class="link01"><a href="{link}" target=_blank>LINK</a></div>' if link else ''
     return (f'<div class="mb_peple"><div class="mb_img"><img src="{photo}"></div><div class="cnt">'
             f'<div class="mb_name"><h3><a href="{board_url(table, wr_id=wr_id)}">{name}</a></h3></div>'
-            '<dl><dt>Grade</dt><dd>Intern</dd></dl></div></div>')
+            f'<dl><dt>Grade</dt><dd>Intern</dd></dl></div>{button}</div>')
 
 
+def link_php(wr_id, page):
+    """LINK button href of a researcher card in fixture sub2_3_p<page>."""
+    return BASE_URL + f'/bbs/link.php?bo_table=sub2_3&wr_id={wr_id}&no=1&page={page}'
+
+
+# The fixtures' LINK buttons: 56 answers 404 and 57 does not redirect (both: no `link`).
+LINKED = [link_php(i, 1) for i in (31, 46, 55, 56, 57)] + [link_php(i, 2) for i in (58, 59, 63)]
+DIRECT_LINK = 'https://example.com/hong'  # not a bbs/link.php button: kept as is, never resolved
 # Affiliate tab: a repeat of 19 (deduped) and one new member whose original photo is missing.
 AFFILIATE = (card('sub2_3', 19, '양고운 Gowoon Yang', THUMB_99)
-             + card('sub2_3', 99, '홍길동 Gildong Hong', THUMB_99))
+             + card('sub2_3', 99, '홍길동 Gildong Hong', THUMB_99, DIRECT_LINK))
 # Alumni: tabs list A (201) and B (202); the unfiltered list also has C (203), in no tab.
 ALUMNI_PHOTO = BASE_URL + '/data/file/sub2_4/thumb-x_202x150.jpg'
 ALUMNI_TABS = ('<nav id="bo_cate"><ul class="class_area"><li><a href="#">Graduate</a></li>'
@@ -59,6 +68,7 @@ class FakeFetcher:
                       LIST_URLS[4]: 'sub2_3_p2', LIST_URLS[5]: 'sub2_2'}
         self.requested = []  # (url, refresh) of every get()
         self.bytes_requested = []
+        self.resolved = []
 
     def get(self, url, refresh=False):
         self.requested.append((url, refresh))
@@ -72,6 +82,13 @@ class FakeFetcher:
         if url in MISSING:
             raise urllib.error.HTTPError(url, 302, 'Found', {}, None)
         return THUMB if '/thumb-' in url else ORIGINAL
+
+    def resolve_redirect(self, url):
+        self.resolved.append(url)
+        wr_id = int(url.split('wr_id=')[1].split('&')[0])
+        if wr_id == 56:
+            raise urllib.error.HTTPError(url, 404, 'Not Found', {}, None)
+        return None if wr_id == 57 else f'https://example.org/{wr_id}'
 
 
 def members_dir(root, board):
@@ -102,9 +119,10 @@ def test_run_members_full_mode(tmp_path, capsys):
         'order': 1, 'legacy_url': board_url('sub2_3', wr_id=19), 'legacy_id': 19}
     assert list(first) == ['board', 'category', 'name', 'photo', 'fields', 'order', 'legacy_url', 'legacy_id']
     assert (researchers / 'gowoon-yang-19.md').read_text(encoding='utf-8').endswith('---\n\n\n')
-    # A card with a LINK button: `link` right after `photo` (19 above has none, so no key).
+    # A card with a LINK button: its redirect target as `link`, right after `photo` (19 has none).
+    assert fetcher.resolved == LINKED
     linked = read_frontmatter(researchers / 'gahee-son-55.md')
-    assert linked['link'] == BASE_URL + '/bbs/link.php?bo_table=sub2_3&wr_id=55&no=1&page=1'
+    assert linked['link'] == 'https://example.org/55'
     assert list(linked) == ['board', 'category', 'name', 'photo', 'link', 'fields', 'order', 'legacy_url',
                             'legacy_id']
     images = tmp_path / 'public' / 'images' / 'members'
@@ -122,7 +140,14 @@ def test_run_members_full_mode(tmp_path, capsys):
     assert 'category' not in collaborator and 'photo' not in collaborator
     assert collaborator['fields'][0] == {'label': '', 'value': 'Clinical Professor'}
     assert collaborator['order'] == 1
-    assert 'warning:' in capsys.readouterr().err
+    err = capsys.readouterr().err
+    assert 'warning: no photo for collaborators 15' in err
+    # A LINK that errors or does not redirect is left out with a warning; a direct link is kept.
+    assert 'link' not in read_frontmatter(researchers / 'hyejin-lee-56.md')
+    assert 'link' not in read_frontmatter(researchers / 'geumbong-ji-57.md')
+    assert f'warning: no link for researchers 56 ({link_php(56, 1)}): HTTP Error 404' in err
+    assert f'warning: no link for researchers 57 ({link_php(57, 1)}): no redirect' in err
+    assert read_frontmatter(researchers / 'gildong-hong-99.md')['link'] == DIRECT_LINK
     assert len(list(members_dir(tmp_path, 'collaborators').glob('*.md'))) == 9
 
     # Members outside every tab come from the unfiltered sweep: no category, order after the tabs.
@@ -138,11 +163,13 @@ def test_run_members_add_mode_skips_known_legacy_ids(tmp_path):
     researchers = members_dir(tmp_path, 'researchers')
     write_entry(researchers / 'renamed.md', {'name': 'kept', 'legacy_id': 19}, 'edited by hand')
     write_entry(researchers / '_draft.md', {'name': 'template', 'legacy_id': 23}, '')  # ignored
+    write_entry(researchers / 'known-55.md', {'name': 'kept', 'legacy_id': 55}, '')
     before = (researchers / 'renamed.md').read_text(encoding='utf-8')
     fetcher = FakeFetcher()
     ctx = Context(fetcher, tmp_path, 'add')
-    assert run_members(ctx) == {'members': 22 + 1 + 9 + 3 - 1}
-    assert ctx.skipped == {'members': 1}
+    assert run_members(ctx) == {'members': 22 + 1 + 9 + 3 - 2}
+    assert ctx.skipped == {'members': 2}
+    assert fetcher.resolved == [url for url in LINKED if url != link_php(55, 1)]  # skipped: not resolved
     assert fetcher.requested == [(url, True) for url in LIST_URLS]
 
     assert (researchers / 'renamed.md').read_text(encoding='utf-8') == before

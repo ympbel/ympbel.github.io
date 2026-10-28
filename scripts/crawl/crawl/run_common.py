@@ -1,6 +1,8 @@
 """Helpers shared by the board runners."""
 from __future__ import annotations
 
+import sys
+import urllib.error
 from collections.abc import Callable, Iterator
 from pathlib import Path
 
@@ -35,6 +37,21 @@ def list_pages(fetcher: Fetcher, table: str, refresh: bool,
     yield None, first
     for page in range(2, page_count(soup(first)) + 1):
         yield None, get(page=page)
+
+
+def resolve_link(fetcher: Fetcher, link_php: str | None, what: str) -> str | None:
+    """Target of a LINK button (`bbs/link.php?...`, not followed: Fetcher.resolve_redirect), or None,
+    with a warning naming `what`, if the request fails or does not redirect."""
+    if link_php is None:
+        return None
+    try:
+        location = fetcher.resolve_redirect(link_php)
+    except urllib.error.HTTPError as err:
+        print(f'warning: no link for {what} ({link_php}): {err}', file=sys.stderr)
+        return None
+    if location is None:
+        print(f'warning: no link for {what} ({link_php}): no redirect', file=sys.stderr)
+    return location
 
 
 def known_ids(folder: Path) -> set[int]:
