@@ -10,9 +10,9 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 from urllib.parse import urlsplit
 
-from . import assets
 from .config import BOARDS, board_url
 from .fetch import Fetcher
+from .images import shrink_image
 from .markdown import read_frontmatter, write_entry
 from .parse_common import categories, page_count, soup
 from .parse_members import Member, member_filename, original_photo_url, parse_member_list
@@ -23,14 +23,20 @@ if TYPE_CHECKING:
 
 def list_pages(fetcher: Fetcher, table: str, refresh: bool) -> Iterator[tuple[str | None, str]]:
     """(category, html) of every list page: each category tab (`sca=`) in tab order with its own
-    page count, or the plain pages when the board has no tabs."""
-    first = fetcher.get(board_url(table, page=1), refresh=refresh)
-    for category in categories(soup(first)) or [None]:
-        scope = {'sca': category} if category else {}
-        html = fetcher.get(board_url(table, **scope, page=1), refresh=refresh) if category else first
+    page count, then the unfiltered pages (category None). On a board with tabs the unfiltered
+    pages only add the posts whose category is in no tab (alumni 39 and 40 on the old site)."""
+    def get(**params) -> str:
+        return fetcher.get(board_url(table, **params), refresh=refresh)
+
+    first = get(page=1)
+    for category in categories(soup(first)):
+        html = get(sca=category, page=1)
         yield category, html
         for page in range(2, page_count(soup(html)) + 1):
-            yield category, fetcher.get(board_url(table, **scope, page=page), refresh=refresh)
+            yield category, get(sca=category, page=page)
+    yield None, first
+    for page in range(2, page_count(soup(first)) + 1):
+        yield None, get(page=page)
 
 
 def _known_ids(folder: Path) -> set[int]:
@@ -39,20 +45,37 @@ def _known_ids(folder: Path) -> set[int]:
     return {i for i in ids if i is not None}
 
 
+def download_photo(fetcher: Fetcher, thumb_url: str, dest_stem: Path) -> Path | None:
+    """Save the first image that exists of: the original behind the thumbnail, the same URL with
+    the extension upper-cased (a thumbnail's extension is lower case, the original keeps the
+    uploader's, e.g. `.JPG`), the thumbnail itself. Written shrunk to 800 px as `dest_stem` +
+    the lower-cased extension; an existing file is kept without a request. None if all fail."""
+    original = original_photo_url(thumb_url)
+    stem, ext = posixpath.splitext(original)
+    for url in dict.fromkeys([original, stem + ext.upper(), thumb_url]):
+        dest = dest_stem.with_name(dest_stem.name + posixpath.splitext(urlsplit(url).path)[1].lower())
+        if dest.exists():
+            return dest
+        try:
+            data = fetcher.get_bytes(url)
+        except (urllib.error.HTTPError, FileNotFoundError):
+            continue
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(shrink_image(data))
+        return dest
+    return None
+
+
 def _photo(ctx: Context, board: str, m: Member) -> str | None:
-    """Download the original photo (the thumbnail if the original is missing); site path or None."""
+    """Site path of the member's photo, or None (with a warning if the card has one)."""
     if not m.photo_url:
         return None
-    error = None
-    for url in dict.fromkeys([original_photo_url(m.photo_url), m.photo_url]):
-        local = f'/images/members/{board}/{m.wr_id}{posixpath.splitext(urlsplit(url).path)[1].lower()}'
-        try:
-            assets.download(ctx.fetcher, url, ctx.out / 'public' / local.lstrip('/'))
-            return local
-        except (urllib.error.HTTPError, FileNotFoundError) as err:
-            error = err
-    print(f'warning: no photo for {board} {m.wr_id} ({m.name}): {m.photo_url}: {error}', file=sys.stderr)
-    return None
+    public = ctx.out / 'public'
+    dest = download_photo(ctx.fetcher, m.photo_url, public / 'images' / 'members' / board / str(m.wr_id))
+    if dest is None:
+        print(f'warning: no photo for {board} {m.wr_id} ({m.name}): {m.photo_url}', file=sys.stderr)
+        return None
+    return '/' + dest.relative_to(public).as_posix()
 
 
 def run_members(ctx: Context) -> dict[str, int]:
