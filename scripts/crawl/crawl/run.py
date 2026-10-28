@@ -8,9 +8,10 @@ from collections.abc import Callable
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from . import assets
-from .config import REPO_ROOT
+from . import assets, parse_pages
+from .config import BASE_URL, BOARDS, PAGE_SECTION, REPO_ROOT, board_url
 from .fetch import Fetcher
+from .markdown import write_entry
 
 KINDS = ('pages', 'members', 'publications', 'posts', 'assets')
 FIXTURES_DIR = Path(__file__).resolve().parents[1] / 'tests' / 'fixtures'
@@ -27,7 +28,35 @@ class Context:
 
 
 def run_pages(ctx: Context) -> Summary:
-    raise NotImplementedError('pages runner: Task 4')
+    """home.md and the 7 static pages, always rewritten (singletons); add mode re-fetches them
+    so edits on the old site are picked up. Page images go to public/images/pages/<slug>/."""
+    refresh = ctx.mode == 'add'
+    pages_dir = ctx.out / 'src' / 'content' / 'pages' / 'ko'
+    home = parse_pages.parse_home(ctx.fetcher.get(f'{BASE_URL}/index.php', refresh=refresh))
+    links = [{'label': label, 'url': url} for label, url in home.links]
+    write_entry(pages_dir / 'home.md', {'title': 'MPBEL', 'section': 'home', 'links': links},
+                parse_pages.normalize_html(home.about_html))
+    written = 1
+    for spec in BOARDS:
+        if spec.kind != 'page':
+            continue
+        url = board_url(spec.table)
+        page = parse_pages.parse_static_page(ctx.fetcher.get(url, refresh=refresh))
+        mapping = {}
+        for image_url, local in parse_pages.local_image_paths(spec.slug, page.image_urls).items():
+            try:
+                assets.download(ctx.fetcher, image_url, ctx.out / 'public' / local.lstrip('/'))
+            except (urllib.error.HTTPError, FileNotFoundError) as err:
+                print(f'warning: {image_url} not downloaded, kept remote in {spec.slug}: {err}',
+                      file=sys.stderr)
+                continue
+            mapping[image_url] = local
+        body = parse_pages.normalize_html(parse_pages.rewrite_images(page.body_html, mapping))
+        frontmatter = {'title': spec.name, 'section': PAGE_SECTION[spec.slug],
+                       'images': list(mapping.values()), 'legacy_url': url}
+        write_entry(pages_dir / f'{spec.slug}.md', frontmatter, body)
+        written += 1
+    return {'pages': written}
 
 
 def run_members(ctx: Context) -> Summary:
