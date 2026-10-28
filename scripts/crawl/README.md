@@ -42,6 +42,8 @@ python3 -m venv .venv
 
 실행이 끝나면 `collection  written  skipped` 표(종류별 새로 쓴 파일 수, 건너뛴 파일 수)를 출력합니다.
 
+`--only`나 `--mode add`로 실행하면 `reference/crawl-summary.json`이 그 실행에서 돌린 종류의 수치(추가 모드에서는 새로 쓴 파일 수)만으로 덮어써집니다. 전체 수치가 필요하면 `.venv/bin/python -m crawl --mode full --offline`로 다시 실행합니다(전체 모드는 마크다운을 모두 다시 쓰므로 손으로 고친 내용은 덮어써집니다).
+
 ## 결과가 저장되는 곳 (저장소 루트 기준)
 
 | 위치 | 내용 |
