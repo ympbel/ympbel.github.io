@@ -1,0 +1,58 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  member: CollectionEntry<'members'>;
+}
+
+const { name, photo, link, fields } = Astro.props.member.data;
+
+// The old cards linked photo and name to a detail page this site does not build. The anchors stay so the skin
+// CSS applies: they open the member's own link when there is one and carry no href otherwise.
+const anchor = link ? { href: link, target: '_blank' } : {};
+---
+
+<div class="mb_peple">
+  <div class="cntWrap">
+    <div class="mb_img">
+      {
+        photo && (
+          <a {...anchor}>
+            <img src={photo} width="202" height="150" alt="" />
+          </a>
+        )
+      }
+    </div>
+    <div class="cnt">
+      <div class="mb_name">
+        <h3><a {...anchor}>{name}</a> <span></span></h3>
+      </div>
+      <dl>
+        {
+          fields.map(({ label, value }) => (
+            <>
+              <dt>{label}</dt>
+              <dd>
+                {value.split('\n').map((line, i) => (
+                  <>
+                    {i > 0 && <br />}
+                    {line}
+                  </>
+                ))}
+              </dd>
+            </>
+          ))
+        }
+      </dl>
+    </div>
+    <div class="link01">
+      {
+        link && (
+          <a href={link} target="_blank" class="btn_set01">
+            LINK
+          </a>
+        )
+      }
+    </div>
+  </div>
+</div>

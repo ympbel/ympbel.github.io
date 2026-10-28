@@ -1,0 +1,23 @@
+---
+interface Props {
+  tabs: Array<{ label: string; href: string; active: boolean }>;
+  /** `members`: the member boards' `ul.class_area`; `board`: the list boards' `ul#bo_cate_ul`. */
+  variant: 'members' | 'board';
+}
+
+const { tabs, variant } = Astro.props;
+---
+
+<nav id="bo_cate">
+  <ul class={variant === 'members' ? 'class_area' : undefined} id={variant === 'board' ? 'bo_cate_ul' : undefined}>
+    {
+      tabs.map((tab) => (
+        <li>
+          <a href={tab.href} class={tab.active ? 'active' : undefined}>
+            {tab.label}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</nav>

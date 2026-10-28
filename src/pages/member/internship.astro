@@ -1,0 +1,12 @@
+---
+import MemberBoardPage from '../../components/MemberBoardPage.astro';
+// The old internship board used the alumni skin.
+import '../../styles/legacy/board-alumni.css';
+import { MENU } from '../../lib/menu.ts';
+
+const currentHref = '/member/internship/';
+const item = MENU.ko.flatMap((s) => s.items).find((i) => i.href === currentHref);
+if (!item) throw new Error(`${currentHref} is not in the menu`);
+---
+
+<MemberBoardPage board="internship" title={item.label} currentHref={currentHref} />

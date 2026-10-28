@@ -1,0 +1,53 @@
+---
+// Shared body of the four member board pages. Each page file imports its own board skin CSS (Astro bundles CSS
+// per page from static imports), so this component imports none.
+import { getCollection } from 'astro:content';
+import SubLayout from '../layouts/SubLayout.astro';
+import CategoryTabs from './CategoryTabs.astro';
+import MemberList from './MemberList.astro';
+import { categorySlug, localeOf, sortMembers } from '../lib/content.ts';
+import { t } from '../i18n/index.ts';
+
+interface Props {
+  board: 'researchers' | 'collaborators' | 'alumni' | 'internship';
+  title: string;
+  currentHref: string;
+}
+
+const { board, title, currentHref } = Astro.props;
+const locale = 'ko';
+
+const members = sortMembers(
+  await getCollection('members', (e) => localeOf(e.id) === locale && e.data.board === board),
+);
+
+// Categories in first-seen order; each becomes an in-page section the tabs jump to.
+const categories = [...new Set(members.map((m) => m.data.category).filter((c): c is string => !!c))];
+const anchorOf = (category: string) => `cat-${categorySlug(category)}`;
+const tabs = [
+  { label: t(locale).board.all, href: currentHref, active: true },
+  ...categories.map((c) => ({ label: c, href: `#${anchorOf(c)}`, active: false })),
+];
+const uncategorised = members.filter((m) => !m.data.category);
+---
+
+<SubLayout title={title} sectionKey="member" currentHref={currentHref} locale={locale}>
+  {
+    categories.length === 0 ? (
+      <MemberList members={members} />
+    ) : (
+      <>
+        <CategoryTabs tabs={tabs} variant="members" />
+        {categories.map((c) => (
+          <>
+            <h3 class="mb_cate_title" id={anchorOf(c)}>
+              {c}
+            </h3>
+            <MemberList members={members.filter((m) => m.data.category === c)} />
+          </>
+        ))}
+        {uncategorised.length > 0 && <MemberList members={uncategorised} />}
+      </>
+    )
+  }
+</SubLayout>

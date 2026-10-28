@@ -1,0 +1,11 @@
+---
+import MemberBoardPage from '../../components/MemberBoardPage.astro';
+import '../../styles/legacy/board-student.css';
+import { MENU } from '../../lib/menu.ts';
+
+const currentHref = '/member/researchers/';
+const item = MENU.ko.flatMap((s) => s.items).find((i) => i.href === currentHref);
+if (!item) throw new Error(`${currentHref} is not in the menu`);
+---
+
+<MemberBoardPage board="researchers" title={item.label} currentHref={currentHref} />
