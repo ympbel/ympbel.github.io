@@ -10,12 +10,14 @@ interface Props {
   sectionKey: SectionKey;
   currentHref: string;
   locale?: Locale;
+  /** Document title when it differs from the page heading `title`, e.g. `<post title> > Seminar` on a board post. */
+  docTitle?: string;
 }
 
-const { title, sectionKey, currentHref, locale = 'ko' } = Astro.props;
+const { title, sectionKey, currentHref, locale = 'ko', docTitle } = Astro.props;
 ---
 
-<BaseLayout title={title} locale={locale}>
+<BaseLayout title={docTitle ?? title} locale={locale}>
   <div id="sub_container">
     <div class="sub_visual">
       <div class="wrap">

@@ -2,7 +2,9 @@
    each page template imports the skin of the board it renders, as the old site loaded one skin per board —
    static pages → board-html; member boards → board-student / board-collaborators / board-alumni;
    publications → board-patent / board-patent2 / board-patent3; news & seminar → board-basic;
-   lecture → board-lecture; gallery → board-gallery. */
+   lecture → board-lecture; gallery → board-gallery.
+   Every page imports this file as its first import, before any skin, so its bundle is linked first (the old pages
+   loaded default.css before the skin); tests/dist/css-order.test.mjs checks the order on every built page. */
 @import './legacy/default.css';
 @import './legacy/design.css';
 @import './legacy/latest-basic.css';

@@ -50,7 +50,13 @@ const tabs = [
 ];
 ---
 
-<SubLayout title={board.label} sectionKey={section.key} currentHref={board.base} locale={locale}>
+<SubLayout
+  title={board.label}
+  docTitle={`${board.label} ${s.pageOf(pageNo)}`}
+  sectionKey={section.key}
+  currentHref={board.base}
+  locale={locale}
+>
   <div id="bo_list">
     <div id="bo_btn_top">
       <div id="bo_list_total" class="bo_count">

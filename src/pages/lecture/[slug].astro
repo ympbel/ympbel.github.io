@@ -1,4 +1,5 @@
 ---
+import '../../styles/global.css';
 import { getCollection } from 'astro:content';
 import SubLayout from '../../layouts/SubLayout.astro';
 import PostView from '../../components/PostView.astro';
@@ -23,6 +24,11 @@ interface Props {
 const { entry, prev, next } = Astro.props;
 ---
 
-<SubLayout title={LECTURE.label} sectionKey="lecture" currentHref={LECTURE.base}>
+<SubLayout
+  title={LECTURE.label}
+  docTitle={`${entry.data.title} > ${LECTURE.label}`}
+  sectionKey="lecture"
+  currentHref={LECTURE.base}
+>
   <PostView entry={entry} base={LECTURE.base} locale="ko" prev={prev} next={next} />
 </SubLayout>

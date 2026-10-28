@@ -1,5 +1,7 @@
 ---
-import '../styles/global.css';
+// The site-wide CSS (styles/global.css) is imported by every page as its first import, not here: Astro links a
+// page's stylesheets in the order of their import position along the path it finds from each CSS file to the page,
+// so a layout-level import would come after a page's own board skin. The old pages loaded default.css first.
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import { t } from '../i18n/index.ts';

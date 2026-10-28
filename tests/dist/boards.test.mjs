@@ -137,6 +137,15 @@ test('lecture: a single page today, so no pagination and no page/2', () => {
   assert.equal(page('lecture')('.pg_wrap').length, 0);
 });
 
+test('document titles as on the old boards: `<post title> > <board>` and `<board> <n> 페이지`', () => {
+  const view = page('notice/seminar/2025-12-31-471')('title').text();
+  assert.ok(view.startsWith('2025/12/29 [Research Seminar] Group Sparse Algorithm'), view);
+  assert.ok(view.includes(' > Seminar | MPBEL'), view);
+  assert.ok(page('notice/news')('title').text().startsWith('News 1 페이지 | '), page('notice/news')('title').text());
+  const p12 = page('notice/seminar/page/12')('title').text();
+  assert.ok(p12.startsWith('Seminar 12 페이지 | '), p12);
+});
+
 test('gallery placeholder', () => {
   assert.equal(page('notice/gallery')('.preparing').text().trim(), '준비 중입니다.');
 });
