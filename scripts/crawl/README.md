@@ -28,7 +28,8 @@ python3 -m venv .venv
 - `--mode add`: **추가 모드.** 목록 페이지(와 고정 페이지)는 캐시를 무시하고 옛 사이트에서 다시 받아 `reference/html/`의 캐시를 갱신합니다. 그 목록에서 새로 생긴 글만 추가하고, 이미 있는 마크다운 파일은 건드리지 않습니다(원본 글 번호 `legacy_id`로 판단). 이미 받아 둔 글 상세 페이지는 다시 받지 않습니다. 도메인 전환 직전에 한 번 더 실행해 그 사이 올라온 글(특히 연말 세미나 일괄 등록)을 반영합니다.
   - 고정 페이지(`pages`: 홈 `home.md`와 고정 페이지 7개)는 하나씩만 있는 페이지이므로 추가 모드에서도 **항상** 옛 사이트에서 다시 받아 8개 파일을 모두 새로 씁니다. 전환 전에 옛 사이트에서 고친 내용이 반영됩니다.
   - 멤버(`members`)는 분류 탭(연구원 MPBEL·Affiliate, 졸업생 Graduate·Former)별 목록과 분류 없는 전체 목록을 모두 다시 받고, 게시판 폴더(`src/content/members/ko/<board>/`)에 같은 `legacy_id`가 없는 사람만 추가합니다. 어느 탭에도 없는 사람은 `category` 없이 들어갑니다.
-  - 지금은 `pages`, `members`, `assets`가 동작하고, `publications`, `posts`는 이후 작업에서 추가됩니다(그 전까지는 `NotImplementedError`로 멈춥니다). 다시 받기는 `Fetcher.get(url, refresh=True)`로 하며, 오프라인 모드에서는 무시됩니다.
+  - 출판물(`publications`: 논문 `papers`, 학회 발표 `presentations`, 초청 강연 `talks`, 특허 `patents`)은 연도 탭(`sca=<연도>`)별 목록을 탭마다의 쪽수만큼, 그리고 분류 없는 전체 목록을 모두 다시 받고, `src/content/<collection>/ko/`에 같은 `legacy_id`가 없는 항목만 `<연도>-<wr_id>-<제목 앞 5단어>.md`로 추가합니다. 연도는 그 글이 있는 탭의 연도입니다. 두 가지 글만 상세 페이지를 받아 `Year of publication`과 첨부파일(`legacy_files`)을 가져옵니다: 공지(`pinned`) 글(옛 사이트는 전체 목록에서만 '공지'로 표시하고 연도 탭에서는 보통 글로 보여 줍니다)과, 탭이 없는 연도의 글(학회 발표 2002~2004년 9건, 전체 목록에만 나옵니다). 상세 페이지에도 연도가 없는 글은 경고를 출력하고 건너뜁니다. 목록의 LINK 버튼(`bbs/link.php`)은 따라가지 않고 리다이렉트 주소만 읽어 `link`에 적으며(`reference/html/redirects.json`에 저장), 리다이렉트가 없거나 오류이면 경고를 출력하고 `link` 줄 없이 씁니다.
+  - 지금은 `pages`, `members`, `publications`, `assets`가 동작하고, `posts`는 이후 작업에서 추가됩니다(그 전까지는 `NotImplementedError`로 멈춥니다). 다시 받기는 `Fetcher.get(url, refresh=True)`로 하며, 오프라인 모드에서는 무시됩니다.
 
 ### 옵션
 

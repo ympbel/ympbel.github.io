@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="imagetoolbar" content="no">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<title>Optimization of high X-ray energy detector based on SNR in cargo container inspection system > Presentation | MPBEL | 연세 의학물리 및 의공학 연구실</title>
+<link rel="stylesheet" href="http://mpbel.yonsei.ac.kr/css/default.css?ver=171222">
+<link rel="stylesheet" href="http://mpbel.yonsei.ac.kr/skin/board/patent2/style.css?ver=171222">
+<!--[if lte IE 8]>
+<script src="http://mpbel.yonsei.ac.kr/js/html5.js"></script>
+<![endif]-->
+<script>
+// 자바스크립트에서 사용하는 전역변수 선언
+var g5_url       = "http://mpbel.yonsei.ac.kr";
+var g5_bbs_url   = "http://mpbel.yonsei.ac.kr/bbs";
+var g5_is_member = "";
+var g5_is_admin  = "";
+var g5_is_mobile = "";
+var g5_bo_table  = "sub4_2";
+var g5_sca       = "";
+var g5_editor    = "smarteditor2";
+var g5_cookie_domain = "";
+</script>
+<script src="http://mpbel.yonsei.ac.kr/js/jquery-1.8.3.min.js"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/jquery.menu.js?ver=171222"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/common.js?ver=171222"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/wrest.js?ver=171222"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/placeholders.min.js"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/default.js"></script>
+<link rel="stylesheet" href="http://mpbel.yonsei.ac.kr/js/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://mpbel.yonsei.ac.kr/css/design.css" type="text/css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
+</head>
+<body>
+
+
+<div id="wrap">
+	<script src="../js/jquery.menu.js"></script>
+
+<div class="topmenu">
+	<div class="logo"><a href="javascript:GoPage('main')"><img src="../images/logo.png" alt="연세 의학물리 및 의공학연구실"></a></div>
+	<div class="langbut">
+		<ul>
+			<li class="active"><a href="http://mpbel.yonsei.ac.kr/index.php">KR</a></li>
+			<li><a href="http://mpbel.yonsei.ac.kr/eng/index.php">EN</a></li>
+		</ul>
+	</div>
+	<div id="navi">
+
+		<ul id="nav">
+
+                                <li class="menu1" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub1_1" target="_self" class="on">INTRODUCTION</a>
+                        <ul class='sub1'>
+                            <li><a href="/bbs/board.php?bo_table=sub1_1" target="_self">welcome to MPBEL</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub1_2" target="_self">contact us</a></li>
+                        </ul>
+                    </li>
+                                              <li class="menu2" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub2_1" target="_self" class="on">MEMBER</a>
+                        <ul class='sub2'>
+                            <li><a href="/bbs/board.php?bo_table=sub2_1" target="_self">Professor</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub2_2" target="_self">Collaborators</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub2_3" target="_self">Researchers</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub2_4" target="_self">Alumni</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub2_5" target="_self">Short-term internship</a></li>
+                        </ul>
+                    </li>
+                                              <li class="menu3" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub3_2" target="_self" class="on">RESEARCH</a>
+                        <ul class='sub3'>
+                            <li><a href="/bbs/board.php?bo_table=sub3_2" target="_self">Artificial Intelligence</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub3_3" target="_self">Radiation Therapy</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub3_4" target="_self">Particle Therapy</a></li>
+                        </ul>
+                    </li>
+                                              <li class="menu4" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub4_1" target="_self" class="on">PUBLICATION</a>
+                        <ul class='sub4'>
+                            <li><a href="/bbs/board.php?bo_table=sub4_1" target="_self">Paper</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub4_2" target="_self">Presentation</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub4_3" target="_self">Invited talk</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub4_4" target="_self">Patent</a></li>
+                        </ul>
+                    </li>
+                                              <li class="menu5" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub5_1" target="_self" class="on">LECTURE</a>
+                        <ul class='sub5'>
+                            <li><a href="/bbs/board.php?bo_table=sub5_1" target="_self">Lecture</a></li>
+                        </ul>
+                    </li>
+                                              <li class="menu6" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub6_1" target="_self" class="on">NOTICE</a>
+                        <ul class='sub6'>
+                            <li><a href="/bbs/board.php?bo_table=sub6_1" target="_self">News</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub6_2" target="_self">Gallery</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub6_3" target="_self">Seminar</a></li>
+                        </ul>
+                    </li>
+                          
+                </ul>
+
+		<!-- <ul id="nav"> -->
+			<!-- <li><a href="javascript:GoPage('sub01_1')" class="on">INTRODUCTION</a> -->
+				<!-- <ul class="sub1"> -->
+					<!-- <li><a href="javascript:GoPage('sub01_1')">Welcome to MPBEL</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub01_2')">Contact us</a></li> -->
+				<!-- </ul> -->
+			<!-- </li> -->
+			<!-- <li><a href="javascript:GoPage('sub02_1')" class="on">MEMBER</a> -->
+				<!-- <ul class="sub2"> -->
+					<!-- <li><a href="javascript:GoPage('sub02_1')">Professor</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub02_2')">Collaborators</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub02_3')">Researchers</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub02_4')">Alumni</a></li> -->
+				<!-- </ul> -->
+			<!-- </li> -->
+			<!-- <li><a href="javascript:GoPage('sub03_1')" class="on">RESEARCH</a> -->
+				<!-- <ul class="sub3"> -->
+					<!-- <li><a href="javascript:GoPage('sub03_1')">Advanced CT Reconstruction</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub03_2')">Intelligent Medical Imaging</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub03_3')">Radiation Therapy</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub03_4')">Particle Therapy</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub03_5')">Grant Lists</a></li> -->
+				<!-- </ul> -->
+			<!-- </li> -->
+			<!-- <li><a href="javascript:GoPage('sub04_1')" class="on">PUBLICATION</a> -->
+				<!-- <ul class="sub4"> -->
+					<!-- <li><a href="javascript:GoPage('sub04_1')">Paper</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub04_2')">Presentation</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub04_4')">Invited talk</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub04_3')">Patent</a></li> -->
+				<!-- </ul> -->
+			<!-- </li> -->
+			<!-- <li><a href="javascript:GoPage('sub05_1')" class="on">LECTURE</a> -->
+			<!-- </li> -->
+			<!-- <li><a href="javascript:GoPage('sub06_1')" class="on">NOTICE</a> -->
+				<!-- <ul class="sub6"> -->
+					<!-- <li><a href="javascript:GoPage('sub06_1')">News</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub06_2')">Gallery</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub06_3')">Seminar</a></li> -->
+				<!-- </ul> -->
+			<!-- </li> -->
+		<!-- </ul> -->
+	</div>
+
+</div>
+
+<!--
+<script type="text/javascript">
+$(function() {
+	$("#nav").droppy();
+});
+</script>
+ -->
+	<div id="sub_container">
+		<div class="sub_visual">
+			<div class="wrap">
+				<img src="../images/sub/sub_slogan.png" alt="">
+			</div>
+		</div>
+		<div id="sub_contents">
+			<div id="" class="snb">
+<style type="text/css">
+/* 페이지인식-메인 */
+#page4 #menu02 > .box4_2_2 {
+	display:block;
+	color:#1563b4;
+	background:#f5f5f5 ;
+}
+</style>
+
+
+<p class="tit">PUBLICATION </p>
+
+<!-- <h2>학과소개</h2> -->
+<div class="vNav" id="page4">
+        <ul>
+                                          <li  id="menu01" >
+                  <a href="/bbs/board.php?bo_table=sub4_1" target="_self" class="box4_2_1">Paper</a>
+         </li>
+         <li  id="menu02" class='active'>
+                  <a href="/bbs/board.php?bo_table=sub4_2" target="_self" class="box4_2_2">Presentation</a>
+         </li>
+         <li  id="menu03" >
+                  <a href="/bbs/board.php?bo_table=sub4_3" target="_self" class="box4_2_3">Invited talk</a>
+         </li>
+         <li  id="menu04" >
+                  <a href="/bbs/board.php?bo_table=sub4_4" target="_self" class="box4_2_4">Patent</a>
+         </li>
+        </ul>
+</div>
+</div>
+			<div class="contentBox">
+				<h2 class="cnt_title">
+										Presentation									</h2>
+				<div class="loca">
+					<ul class="loc">
+												<li><img src="../images/sub/home.png" alt="home"></li>
+						<li>PUBLICATION</li>
+						<li class="last">Presentation</li>
+
+											</ul>
+				</div>
+				<!-- contents -->
+				<div class="contents" style="overflow:hidden;">
+<script src="http://mpbel.yonsei.ac.kr/js/viewimageresize.js"></script>
+
+<!-- 게시물 읽기 시작 { -->
+
+
+
+<article id="bo_v" style="width:100%">
+
+
+<div class="publication_oldver">
+	<table class="tb_basic">
+		<colgroup>
+			<col width="">
+			<col width="">
+		</colgroup>
+		<thead>
+			<tr>
+				<th colspan="2">Optimization of high X-ray energy detector based on SNR in cargo container inspection system</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th>Year of publication</th>
+				<td>2003</td>
+			</tr>
+			<tr>
+				<th>Title of paper</th>
+				<td>Optimization of high X-ray energy detector based on SNR in cargo container inspection system</td>
+			</tr>
+			<tr>
+				<th>Author</th>
+				<td>Sung-Woo Kwak (Presenter), Jin Sung Kim (Corresponding Author)</td>
+			</tr>
+			<!-- <tr>
+			  <th>Publication in journal</th>
+			  <td></td>
+			</tr> -->
+			<tr>
+			  <th>학회</th>
+			  <td>2004 IEEE Nuclear Science Symposium and Medical Imaging Conference (NSS/MIC 2004)</td>
+			</tr>
+			<tr>
+			  <th>지역</th>
+			  <td>Rome, Italy</td>
+			</tr>
+			<tr>
+			  <th>Date</th>
+			  <td>16-22 Oct. 2004</td>
+			</tr>
+
+			<!-- <tr>
+			  <th>pubilsher</th>
+			  <td></td>
+			</tr> -->
+
+
+    
+    
+         <!-- 관련링크 시작 { -->
+    <section id="bo_v_link">
+        
+        		 <tr>
+            <th>Link</th>
+             <td><a href="http://mpbel.yonsei.ac.kr/bbs/link.php?bo_table=sub4_2&amp;wr_id=27&amp;no=1" target="_blank">
+                    <img src="http://mpbel.yonsei.ac.kr/skin/board/patent2/img/icon_link.gif" alt="관련링크">
+                    <strong>https://ieeexplore.ieee.org/document/1462348/</strong>
+                </a>
+                <span class="bo_v_link_cnt">1311회 연결</span>
+            </td>
+		</tr>
+                
+    </section>
+    <!-- } 관련링크 끝 -->
+    
+			<tr>
+			  <td colspan="2"><div id="bo_v_img">
+</div>
+<p> <br /></p><div class="ng-scope">
+				<strong>Abstract:</strong>
+				<div class="abstract-text ng-binding">Energetic
+ X-rays are used for nonintrusive inspection of large cargo containers 
+at seaports or airports, nondestructive inspection of machine engines or
+ pipes in industry, and quantification of free water in radioactive 
+waste drums in nuclear industry. Such inspection systems have employed a
+ photodiode-based solid state detector consisting of a single crystal 
+and a photo sensor. In X-ray inspection systems using low energy X-ray 
+known well, there is no interrelation between the increase in the 
+crystal thickness for improving signal amplitude and the expansion of an
+ active area of a photodiode. On the other hand, due to different 
+detector arrangement, the increase of detector depth for improving 
+signal in imaging system using high energy X-ray gives rise to the 
+increase of signal as well as noise. In addition, the noise in a large 
+detector has a significant effect on detector SNR. However, no studies 
+on how to design a high energy X-ray detector in consideration of 
+electronic noise in detector system have reported in the literature. To 
+address this problem, new generalized design model using SNR 
+(signal-to-noise ratio) of X-ray detector is proposed in this paper. The
+ design model of this paper is also applied to realize the actual X-ray 
+detector for 0.45 MeV cargo container inspection system and the test 
+results obtained by the inspection system are discussed.</div>
+			</div></td>
+		  </tr>
+		</tbody>
+	</table>
+</div>
+
+
+
+
+    
+
+    <!-- 링크 버튼 시작 { -->
+    <div id="bo_v_top">
+                        <ul class="bo_v_nb">
+            <li><a href="./board.php?bo_table=sub4_2&amp;wr_id=28" class="btn_b01">이전글</a></li>            <li><a href="./board.php?bo_table=sub4_2&amp;wr_id=26" class="btn_b01">다음글</a></li>        </ul>
+        
+        <ul class="bo_v_com">
+                                                                        <li><a href="./board.php?bo_table=sub4_2&amp;page=" class="btn_b01">목록</a></li>
+                                </ul>
+            </div>
+    <!-- } 링크 버튼 끝 -->
+
+</article>
+<!-- } 게시판 읽기 끝 -->
+
+<script>
+
+function board_move(href)
+{
+    window.open(href, "boardmove", "left=50, top=50, width=500, height=550, scrollbars=1");
+}
+</script>
+
+<script>
+$(function() {
+    $("a.view_image").click(function() {
+        window.open(this.href, "large_image", "location=yes,links=no,toolbar=no,top=10,left=10,width=10,height=10,resizable=yes,scrollbars=no,status=no");
+        return false;
+    });
+
+    // 추천, 비추천
+    $("#good_button, #nogood_button").click(function() {
+        var $tx;
+        if(this.id == "good_button")
+            $tx = $("#bo_v_act_good");
+        else
+            $tx = $("#bo_v_act_nogood");
+
+        excute_good(this.href, $(this), $tx);
+        return false;
+    });
+
+    // 이미지 리사이즈
+    $("#bo_v_atc").viewimageresize();
+});
+
+function excute_good(href, $el, $tx)
+{
+    $.post(
+        href,
+        { js: "on" },
+        function(data) {
+            if(data.error) {
+                alert(data.error);
+                return false;
+            }
+
+            if(data.count) {
+                $el.find("strong").text(number_format(String(data.count)));
+                if($tx.attr("id").search("nogood") > -1) {
+                    $tx.text("이 글을 비추천하셨습니다.");
+                    $tx.fadeIn(200).delay(2500).fadeOut(200);
+                } else {
+                    $tx.text("이 글을 추천하셨습니다.");
+                    $tx.fadeIn(200).delay(2500).fadeOut(200);
+                }
+            }
+        }, "json"
+    );
+}
+</script>
+<!-- } 게시글 읽기 끝 -->				</div><!-- //contents -->
+			</div><!-- //contentBox -->
+		</div><!-- //sub_contents -->
+	</div><!-- //sub_container -->
+
+
+	<div id="footer">
+		<p class="ft_name">Yonsei Medical Physics and Biomedical Engineering Lab.</p>
+		<p class="ft_address">03722 서울특별시 서대문구 연세로 50 연세대학교<br>
+		TEL. +82-2-2228-8118 / FAX. +82-2-2227-7823</p>
+		<p class="ft_copy">COPYRIGHT @2018<span>MPBEL</span>ALL RIGHT RESERVED. &nbsp;&nbsp; Design by <a href="http://dsso.kr/" target="_blank" style="color:#aeaeae;">DSSO</a></p>
+	</div>
+</div><!-- //wrap -->
+
+
+<!-- ie6,7에서 사이드뷰가 게시판 목록에서 아래 사이드뷰에 가려지는 현상 수정 -->
+<!--[if lte IE 7]>
+<script>
+$(function() {
+    var $sv_use = $(".sv_use");
+    var count = $sv_use.length;
+
+    $sv_use.each(function() {
+        $(this).css("z-index", count);
+        $(this).css("position", "relative");
+        count = count - 1;
+    });
+});
+</script>
+<![endif]-->
+
+</body>
+</html>
+
+<!-- 사용스킨 : patent2 -->

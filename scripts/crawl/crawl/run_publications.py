@@ -1,0 +1,104 @@
+"""Publication boards runner: one entry per list row under src/content/<collection>/ko/, named
+<year>-<wr_id>-<slug>.md, with the LINK button resolved to its target."""
+from __future__ import annotations
+
+import sys
+import urllib.error
+from collections.abc import Iterator
+from typing import TYPE_CHECKING
+
+from .config import BOARDS, board_url
+from .fetch import Fetcher
+from .markdown import write_entry
+from .parse_common import categories, page_count, soup
+from .parse_publications import (Publication, parse_detail_files, parse_publication_detail_year,
+                                 parse_publication_rows, publication_filename)
+from .run_members import _known_ids
+
+if TYPE_CHECKING:
+    from .run import Context
+
+
+def list_pages(fetcher: Fetcher, table: str, refresh: bool) -> Iterator[tuple[int | None, str]]:
+    """(year, html) of every list page: each year tab (`sca=<year>`) in tab order with its own page
+    count, then the unfiltered pages (year None). The unfiltered pages only add the posts filed under
+    a year that has no tab (presentations of 2002-2004 on the old site). A tab that is not a year is
+    skipped with a warning."""
+    def get(**params) -> str:
+        return fetcher.get(board_url(table, **params), refresh=refresh)
+
+    first = get(page=1)
+    for category in categories(soup(first)):
+        if not category.isdigit():
+            print(f'warning: {table} category {category!r} is not a year, skipped', file=sys.stderr)
+            continue
+        html = get(sca=category, page=1)
+        yield int(category), html
+        for page in range(2, page_count(soup(html)) + 1):
+            yield int(category), get(sca=category, page=page)
+    yield None, first
+    for page in range(2, page_count(soup(first)) + 1):
+        yield None, get(page=page)
+
+
+def _link(ctx: Context, collection: str, p: Publication) -> str | None:
+    """Target of the row's LINK button, None (with a warning) if it does not redirect."""
+    if p.link_php is None:
+        return None
+    try:
+        location = ctx.fetcher.resolve_redirect(p.link_php)
+    except urllib.error.HTTPError as err:
+        print(f'warning: no link for {collection} {p.wr_id} ({p.link_php}): {err}', file=sys.stderr)
+        return None
+    if location is None:
+        print(f'warning: no link for {collection} {p.wr_id} ({p.link_php}): no redirect', file=sys.stderr)
+    return location
+
+
+def run_publications(ctx: Context) -> dict[str, int]:
+    """Full mode rewrites every entry; add mode re-fetches the lists and writes only rows whose
+    wr_id is not a legacy_id in the collection folder yet. All list pages of a board are read first:
+    a notice (`pinned`) is marked `공지` only on the unfiltered list, its year tab lists it as a plain
+    row. `year` is the tab's, except for a pinned row and a row in no tab: those take it and their
+    attachments from their detail page (a pinned row falls back to the tab's year, a row in no tab
+    without one is skipped with a warning)."""
+    refresh = ctx.mode == 'add'
+    summary: dict[str, int] = {}
+    for spec in BOARDS:
+        if spec.kind != 'publication':
+            continue
+        rows: dict[int, tuple[Publication, int | None]] = {}  # wr_id -> (first listing, its tab's year)
+        pinned: set[int] = set()
+        for tab_year, html in list_pages(ctx.fetcher, spec.table, refresh):
+            for p in parse_publication_rows(html):
+                rows.setdefault(p.wr_id, (p, tab_year))
+                if p.pinned:
+                    pinned.add(p.wr_id)
+        folder = ctx.out / 'src' / 'content' / spec.collection / 'ko'
+        known = _known_ids(folder) if ctx.mode == 'add' else set()
+        written = skipped = 0
+        for wr_id, (p, tab_year) in rows.items():
+            if wr_id in known:
+                skipped += 1
+                continue
+            year, files = tab_year, []
+            if wr_id in pinned or tab_year is None:
+                detail = ctx.fetcher.get(board_url(spec.table, wr_id=wr_id))
+                year = parse_publication_detail_year(detail) or tab_year
+                files = parse_detail_files(detail)
+            if year is None:
+                print(f'warning: no year for {spec.collection} {wr_id} ({p.title}), skipped', file=sys.stderr)
+                continue
+            frontmatter: dict = {'year': year, 'title': p.title, 'authors': p.authors, 'venue': p.venue}
+            if link := _link(ctx, spec.collection, p):
+                frontmatter['link'] = link
+            frontmatter['pinned'] = wr_id in pinned
+            frontmatter['order'] = wr_id
+            frontmatter['legacy_files'] = [{'name': name, 'url': url} for name, url in files]
+            frontmatter['legacy_url'] = board_url(spec.table, wr_id=wr_id)
+            frontmatter['legacy_id'] = wr_id
+            write_entry(folder / publication_filename(year, p), frontmatter, '')
+            written += 1
+        summary[spec.collection] = written
+        ctx.skipped[spec.collection] = skipped
+    return summary
