@@ -12,9 +12,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
-      - uses: withastro/action@v6
+      - uses: actions/setup-node@v4
         with:
           node-version: 24
+          cache: npm
+      - run: npm ci
+      # A failing test stops the job here, so nothing is uploaded and the deploy job does not run.
+      - run: npm run test:unit
+      - run: npm run build
+      - run: npm run test:dist
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
   deploy:
     needs: build
     runs-on: ubuntu-latest

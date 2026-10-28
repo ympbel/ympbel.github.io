@@ -8,11 +8,11 @@
 
 ## 1. 사이트 개요와 폴더 구조
 
-옛 사이트 http://mpbel.yonsei.ac.kr (그누보드5)의 내용과 디자인을 [Astro](https://astro.build/) 정적 사이트로 옮겼습니다. 사이트의 모든 내용은 `src/content/` 아래 마크다운 파일이며, 한 항목(글 하나, 논문 하나, 멤버 한 명)이 파일 하나입니다. 파일 맨 위 `---` 사이의 값(frontmatter)은 `src/content/schemas.ts`의 규칙을 따라야 합니다. 디자인은 옛 사이트의 CSS를 그대로 가져왔고(`src/styles/legacy/`), 1024px 이하 화면용 규칙은 `src/styles/responsive.css`에 있습니다. `main`에 push하면 GitHub Actions가 사이트를 빌드해 GitHub Pages에 올립니다.
+옛 사이트 http://mpbel.yonsei.ac.kr (그누보드5)의 내용과 디자인을 [Astro](https://astro.build/) 정적 사이트로 옮겼습니다. 사이트의 모든 내용은 `src/content/` 아래 마크다운 파일이며, 한 항목(글 하나, 논문 하나, 멤버 한 명)이 파일 하나입니다. 파일 맨 위 `---` 사이의 값(frontmatter)은 `src/content/schemas.ts`의 규칙을 따라야 합니다. 규칙에 없는 필드 이름(오타 포함)을 적으면 빌드가 실패합니다. 디자인은 옛 사이트의 CSS를 그대로 가져왔고(`src/styles/legacy/`), 1024px 이하 화면용 규칙은 `src/styles/responsive.css`에 있습니다. `main`에 push하면 GitHub Actions가 테스트하고 사이트를 빌드해 GitHub Pages에 올립니다.
 
 ```
 .
-├── .github/workflows/deploy.yml   main에 push하면 빌드하고 GitHub Pages에 배포
+├── .github/workflows/deploy.yml   main에 push하면 테스트·빌드하고, 모두 통과하면 GitHub Pages에 배포
 ├── astro.config.mjs               사이트 주소(site) 설정
 ├── package.json                   npm 명령 (dev, build, test)
 ├── public/                        그대로 복사되는 파일
@@ -73,7 +73,7 @@ npm test        # 단위 테스트 → 빌드(dist/) → 빌드 결과 검사
 
 ### 작업 규칙
 
-- **push 전에 `npm test`.** GitHub Actions는 빌드만 하고 테스트는 돌리지 않습니다. 깨진 링크나 CSS 순서 문제는 로컬 테스트에서만 잡힙니다.
+- **push 전에 `npm test`.** GitHub Actions도 push마다 같은 테스트(단위 테스트 → 빌드 → 빌드 결과 검사)를 돌리고, 하나라도 실패하면 배포하지 않습니다(7장). 로컬에서 먼저 돌리면 push 전에 문제를 찾고, 배포가 막히는 일을 피할 수 있습니다.
 - **`src/pages/` 아래 모든 페이지 파일은 `global.css`를 첫 번째 import로 가져옵니다.** 폴더 깊이에 따라 `import '../styles/global.css';` 또는 `import '../../styles/global.css';` 처럼 씁니다. 그다음 줄들에서 그 페이지가 쓰는 게시판 스킨 CSS를 페이지마다 import합니다(옛 사이트가 게시판마다 스킨 하나를 불렀던 것과 같습니다):
   - 고정 페이지 → `legacy/board-html.css` (`StaticPageBody` 컴포넌트가 가져옴)
   - 멤버 → researchers `board-student.css`, collaborators `board-collaborators.css`, alumni·internship `board-alumni.css`
@@ -246,7 +246,7 @@ git commit -m "content: 2026-11-04 세미나"
 git push origin main
 ```
 
-push하면 GitHub Actions의 "Deploy to GitHub Pages" 워크플로가 빌드(`build`)와 배포(`deploy`)를 합니다. 보통 1~3분 뒤 https://ympbel.github.io/ 에 반영됩니다(브라우저 캐시 때문에 몇 분 늦게 보이면 새로고침).
+push하면 GitHub Actions의 "Deploy to GitHub Pages" 워크플로가 돌아갑니다. `build` 작업이 `npm ci` → 단위 테스트(`npm run test:unit`) → 빌드(`npm run build`) → 빌드 결과 검사(`npm run test:dist`)를 차례로 하고, 모두 통과하면 `deploy` 작업이 GitHub Pages에 올립니다. **테스트가 하나라도 실패하면 배포하지 않으며**, 사이트는 이전 상태 그대로입니다. 보통 2~4분 뒤 https://ympbel.github.io/ 에 반영됩니다(브라우저 캐시 때문에 몇 분 늦게 보이면 새로고침).
 
 진행 상황은 https://github.com/ympbel/ympbel.github.io/actions 또는:
 
@@ -255,7 +255,7 @@ gh run list --workflow deploy.yml --limit 3
 gh run watch $(gh run list --workflow deploy.yml --limit 1 --json databaseId --jq '.[0].databaseId') --exit-status
 ```
 
-**빌드가 실패하면** 실패한 실행 → `build` 작업 → `Run withastro/action@v6` 단계의 로그를 봅니다(`gh run view <번호> --log-failed`로도 볼 수 있습니다). `[InvalidContentEntryDataError]`는 frontmatter 오류이며, 어느 파일의 어느 필드가 왜 틀렸는지가 나옵니다:
+**테스트나 빌드가 실패하면** 실패한 실행 → `build` 작업에서 빨간 X가 붙은 단계(`Run npm run test:unit`, `Run npm run build`, `Run npm run test:dist` 중 하나)의 로그를 봅니다(`gh run view <번호> --log-failed`로도 볼 수 있습니다). 테스트 실패는 로그 맨 아래 `failing tests:` 부분에 파일과 이유가 나옵니다(로컬 `npm test`와 같은 내용). `Run npm run build` 단계의 `[InvalidContentEntryDataError]`는 frontmatter 오류이며, 어느 파일의 어느 필드가 왜 틀렸는지가 나옵니다:
 
 ```
 [InvalidContentEntryDataError] news → ko/2026-11-04-journal-club data does not match collection schema.
