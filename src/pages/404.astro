@@ -1,0 +1,10 @@
+---
+// Built as dist/404.html, which GitHub Pages serves for any path without a page.
+import '../styles/global.css';
+import SubLayout from '../layouts/SubLayout.astro';
+---
+
+<SubLayout title="Page not found" sectionKey="introduction" currentHref="/">
+  <p>요청하신 페이지를 찾을 수 없습니다.</p>
+  <p><a href="/">홈으로</a></p>
+</SubLayout>

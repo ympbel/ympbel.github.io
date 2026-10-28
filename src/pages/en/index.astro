@@ -1,0 +1,23 @@
+---
+// Phase 1 placeholder for the English site: the header shows EN as the active language, the body points to the
+// Korean site. Laid out like a sub page without the side navigation.
+import '../../styles/global.css';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="English" locale="en">
+  <div id="sub_container">
+    <div class="sub_visual">
+      <div class="wrap">
+        <img src="/images/site/sub/sub_slogan.png" alt="" />
+      </div>
+    </div>
+    <div id="sub_contents">
+      <div class="contentBox">
+        <h2 class="cnt_title">English</h2>
+        <p class="preparing">The English pages are being prepared. Please use the Korean site for now.</p>
+        <p><a href="/">Go to Korean site</a></p>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

@@ -1,0 +1,109 @@
+/* Responsive layer for tablets and phones, imported last by global.css. Every rule sits inside a media query, so
+   above 1024 px the legacy desktop layout is untouched (tests/dist/responsive.test.mjs checks that this file has no
+   rule outside @media). The board skins (legacy/board-*.css) are linked after the global bundle, so a rule that
+   overrides a skin rule carries a `#sub_contents` prefix to outrank it. */
+
+@media (max-width: 1024px) {
+  /* Page frame: the fixed 1200 px containers and min-widths become fluid with a 16 px gutter. */
+  html, body { overflow-x: hidden; }
+  #wrap, #footer, .main .visual { min-width: 0; }
+  .topmenu, .wrap, #sub_contents, .main_board { width: auto; max-width: 1200px; padding: 0 16px; box-sizing: border-box; }
+  .main .visual .wrap, #sub_container .sub_visual .wrap { width: auto; }
+  #footer { padding: 30px 16px; }
+  .contents img, .visual img, .sub_visual img { max-width: 100%; height: auto; }
+  .contents iframe { max-width: 100%; }
+
+  /* Header: logo and language buttons on one row, the menu in a drawer opened by the toggle (Header.astro script). */
+  .topmenu { height: auto; min-height: 100px; }
+  .topmenu .langbut { padding-left: 0; margin-right: 48px; }
+  /* `display` in a rule of its own: the minifier reorders declarations inside a rule (display after the box ones). */
+  .nav-toggle { display: block; }
+  .topmenu .nav-toggle {
+    position: absolute; right: 16px; top: 30px; width: 40px; height: 40px; padding: 0;
+    background: none; border: 1px solid #0a347f; border-radius: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='16' viewBox='0 0 20 16'%3E%3Cpath d='M0 1h20M0 8h20M0 15h20' stroke='%230a347f' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: 50% 50%;
+  }
+  #navi { display: none; }
+  #navi.open { display: block; position: static; float: none; width: 100%; clear: both; padding-bottom: 16px; }
+  #nav { float: none; width: 100%; margin: 0; }
+  #nav li { float: none; }
+  #nav > li { display: block; width: 100%; }
+  #nav a { float: none; }
+  #nav > li > a { height: auto; padding: 12px 8px; line-height: 1.6; font-size: 16px; text-align: left; border-top: 1px solid #ddd; }
+  /* Sub menus always expanded inside the open drawer: no hover needed. */
+  #nav ul { display: block; position: static; width: auto; }
+  #nav ul li a { display: block; min-width: 0; padding: 10px 8px 10px 24px; text-align: left; }
+
+  /* Home */
+  .main .visual { height: 400px; background-size: cover; background-position: 50% 50%; }
+  .main .visual .wrap .slogan { left: 16px; right: 16px; top: 120px; }
+  .main .about { width: auto; height: auto; padding: 0 16px; background: none; }
+  .main .about .tit { float: none; width: auto; height: auto; margin-top: 30px; padding: 24px; background: #2a74b9; }
+  .main .about .tit p { position: static; text-align: left; }
+  .main .about .txt { float: none; width: auto; margin: 0; padding: 20px 0 30px; }
+  .main .about .txt p { margin-top: 15px; font-size: 16px; }
+  .main .research_wrap ul { width: auto; margin: -200px 16px 40px; }
+  .main .research_wrap ul li { float: none; width: 100%; height: auto; }
+  .main .research_wrap ul li a { display: flex; flex-direction: column; height: auto; }
+  .main .research_wrap ul li a > div { height: auto; }
+  .main .research_wrap ul li.rs1 .img, .main .research_wrap ul li.rs2 .img,
+  .main .research_wrap ul li.rs3 .img, .main .research_wrap ul li.rs4 .img {
+    order: -1; height: 180px; background-size: cover; background-position: 50% 50%;
+  }
+  .main_board { margin: 30px auto; }
+  .main_board .l_bo, .main_board .r_bo { float: none; width: 100%; margin-left: 0; }
+  .main_board .r_bo { margin-top: 30px; }
+  .lat li a { float: none; width: auto; margin-right: 50px; }
+
+  /* Sub pages: the side navigation becomes a row of tabs above the content. */
+  #sub_container .sub_visual { height: 150px; }
+  #sub_container .sub_visual .wrap img { left: 16px; top: 40px; max-width: calc(100% - 32px); }
+  #sub_contents .snb { float: none; width: 100%; min-height: 0; margin-top: 20px; }
+  .snb p.tit { width: auto; height: auto; padding: 36px 30px 14px; background-size: cover; }
+  .snb p.tit:before { top: 26px; }
+  .vNav ul { width: auto; padding: 10px 8px; }
+  .vNav ul li { display: inline-block; margin: 4px 0; }
+  .vNav li a { width: auto; margin: 0; padding: 0 10px 0 30px; }
+  #sub_contents .contentBox { float: none; width: 100%; min-height: 0; margin-bottom: 40px; }
+  .contentBox .cnt_title { width: auto; margin-top: 30px; }
+  .contentBox .loca { position: static; margin-top: 6px; overflow: hidden; }
+  .contentBox .contents { margin: 30px auto; }
+
+  /* Static pages (board-html skin): the 900 px content blocks follow the content width. */
+  #sub_contents .research, #sub_contents .research_02, #sub_contents .pfwrap, #sub_contents .line { width: auto; }
+
+  /* Members: two cards per row, photo above the text. */
+  #sub_contents #member_professor .member_list { display: flex; flex-wrap: wrap; border-top: 1px solid #ddd; }
+  #sub_contents #member_professor .mb_peple { width: 50%; }
+  #sub_contents #member_professor .mb_peple:first-child { border-top: 0; }
+  #sub_contents #member_professor .mb_peple .cntWrap { padding: 20px 10px 20px 0; }
+  #sub_contents #member_professor .mb_peple .cntWrap .mb_img { float: none; width: 202px; max-width: 100%; }
+  #sub_contents #member_professor .mb_peple .cntWrap .cnt { float: none; padding: 12px 0 0; overflow-wrap: anywhere; }
+  #sub_contents #member_professor .mb_peple .cntWrap .cnt dl { width: auto; }
+
+  /* Publications */
+  .tb_basic_s td.num { width: 40px; }
+  .text_title, .text_author, .text_journal { word-break: break-word; overflow-wrap: anywhere; }
+
+  /* Boards */
+  /* Titles wrap between words (the desktop break-all splits words mid-way on a narrow column). */
+  td.td_subject { white-space: normal; word-break: normal; overflow-wrap: anywhere; }
+}
+
+@media (max-width: 600px) {
+  .main .visual { height: 260px; }
+  .main .visual .wrap .slogan { top: 90px; }
+  .main_board .link ul li { float: none; width: 100%; height: auto; min-height: 56px; }
+  .main_board .link ul li.bor_l { border-left: 0; }
+  .main_board .link ul li a, .main_board .link ul li a.oneline { height: auto; padding: 15px 50px 15px 20px; }
+  .main_board .r_bo .publication ul li { width: 100%; }
+
+  #sub_contents .wTxt { float: none; width: auto; }
+  #sub_contents .pro_txt { float: none; width: auto; margin-left: 0; }
+
+  #sub_contents #member_professor .mb_peple { width: 100%; }
+
+  /* Boards: hide the author (글쓴이) column, the second to last in every list (the lecture list has one more). */
+  .tbl_head01 thead th:nth-last-child(2), .tbl_head01 td.td_name { display: none; }
+}
