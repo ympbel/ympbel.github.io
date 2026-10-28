@@ -1,14 +1,12 @@
 """Member boards (researchers, collaborators, alumni, internship): one card per person."""
 from __future__ import annotations
 
-import re
 from dataclasses import dataclass
 from urllib.parse import urljoin
 
 from .markdown import slugify
-from .parse_common import PAGE_URL, block_text, clean_text, soup, wr_id_of
+from .parse_common import PAGE_URL, block_text, clean_text, original_image_path, soup, wr_id_of
 
-_THUMB_SIZE = re.compile(r'_\d+x\d+(\.[^.]+)$')
 
 
 @dataclass
@@ -54,10 +52,7 @@ def parse_member_list(html: str, category: str | None = None) -> list[Member]:
 
 def original_photo_url(thumb_url: str) -> str:
     """`.../thumb-<file>_202x150.png` -> `.../<file>.png`; any other URL unchanged."""
-    directory, _, name = thumb_url.rpartition('/')
-    if not name.startswith('thumb-'):
-        return thumb_url
-    return f'{directory}/' + _THUMB_SIZE.sub(r'\1', name.removeprefix('thumb-'))
+    return original_image_path(thumb_url)
 
 
 def member_filename(board: str, m: Member) -> str:

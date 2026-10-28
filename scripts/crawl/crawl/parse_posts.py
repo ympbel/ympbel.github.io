@@ -8,7 +8,8 @@ from urllib.parse import urljoin, urlsplit
 from bs4 import Tag
 
 from .config import BASE_URL
-from .parse_common import PAGE_URL, block_text, clean_text, full_title, path_of, soup, wr_id_of
+from .parse_common import (PAGE_URL, block_text, clean_text, full_title, original_image_path, path_of, soup,
+                           wr_id_of)
 from .parse_publications import parse_detail_files
 
 # Hosts whose /data/ files the old site serves: its own and its former domain (images of 2018 posts
@@ -55,34 +56,57 @@ def _is_empty(p: Tag) -> bool:
 
 def _image_ref(url: str) -> str:
     """Site path of an absolute image URL on the old site; the URL itself on another host (posts
-    copied from other sites), where the old site does not serve that path."""
+    copied from other sites), where the old site does not serve that path. A thumbnail gives its
+    original."""
+    url = original_image_path(url)
     return path_of(url) if urlsplit(url).hostname in SITE_HOSTS else url
 
 
-def _take_images(con: Tag) -> list[str]:
-    """Remove every image from the body (with its `view_image.php` link) and the paragraphs left
-    empty; return the images in body order: the original behind a `view_image.php` link (its `fn`,
-    on the link's host when relative), else the `src`, as site paths (see _image_ref)."""
-    paths = []
+def _image(img: Tag) -> tuple[str | None, Tag]:
+    """(image, element showing it): the original behind a `view_image.php` link (its `fn`, on the
+    link's host when relative) and that link, else the `src` and the `img`; see _image_ref."""
+    parent = img.parent
+    if parent.name == 'a' and 'view_image.php' in parent.get('href', ''):
+        link = urljoin(PAGE_URL, parent['href'].strip())
+        return _image_ref(urljoin(link, path_of(link))), parent
+    src = img.get('src', '').strip()
+    return (_image_ref(urljoin(PAGE_URL, src)) if src else None), img
+
+
+def _take_images(attached: Tag | None, con: Tag) -> list[str]:
+    """Images in page order: those shown above the body (`#bo_v_img`, attached files), then the
+    body's, which are removed from it with the paragraphs left empty."""
+    paths = [path for img in (attached.find_all('img') if attached else []) if (path := _image(img)[0])]
     for img in con.find_all('img'):
-        parent = img.parent
-        if parent.name == 'a' and 'view_image.php' in parent.get('href', ''):
-            link = urljoin(PAGE_URL, parent['href'].strip())
-            paths.append(_image_ref(urljoin(link, path_of(link))))
-            parent.decompose()
-        else:
-            if img.get('src'):
-                paths.append(_image_ref(urljoin(PAGE_URL, img['src'].strip())))
-            img.decompose()
+        path, shown = _image(img)
+        if path:
+            paths.append(path)
+        shown.decompose()
     for p in con.find_all('p'):
         if _is_empty(p):
             p.decompose()
     return paths
 
 
-def _ymd(match: re.Match) -> str:
-    year, month, day = match.groups()
-    return f'{year}-{int(month):02d}-{int(day):02d}'
+def _ymd(match: re.Match) -> str | None:
+    """`YYYY-MM-DD` of a (year, month, day) match; None for a month outside 1-12 or a day outside 1-31."""
+    year, month, day = (int(group) for group in match.groups())
+    return f'{year:04d}-{month:02d}-{day:02d}' if 1 <= month <= 12 and 1 <= day <= 31 else None
+
+
+# Where a post's event date is, in priority order: (pattern, flags, part of the page).
+_EVENT_DATES = [
+    (r'(\d{4})[./-](\d{1,2})[./-](\d{1,2})', 0, 'lec_date'),  # 강의날짜 : 2018-09-01
+    (r'^(\d{4})/(\d{2})/(\d{2})', 0, 'title'),  # 2025/12/29 [Research Seminar] ...
+    (r'(?<!\d)(\d{4})[/-](\d{2})[/-](\d{2})(?!\d)', 0, 'title'),  # [LAB] 2020/05/04 seminar
+    (r'\bDate\s*:\s*(\d{4})[./-](\d{2})[./-](\d{2})', re.IGNORECASE, 'body'),  # -Announcement Date : 2020/03/30
+]
+
+
+def _event_date(texts: dict[str, str]) -> str | None:
+    """First valid date found by _EVENT_DATES in `texts` (lec_date, title, body)."""
+    dates = (_ymd(m) for pattern, flags, part in _EVENT_DATES for m in re.finditer(pattern, texts[part], flags))
+    return next((date for date in dates if date), None)
 
 
 def parse_post_view(html: str) -> PostView:
@@ -93,11 +117,10 @@ def parse_post_view(html: str) -> PostView:
         raise ValueError(f'post view without a date: {title!r}')
     date = '20' + '-'.join(posted.groups())
     con = s.select_one('#bo_v_con') or soup('<div></div>').div
-    image_paths = _take_images(con)
-    lec_date = re.search(r'(\d{4})[./-](\d{1,2})[./-](\d{1,2})', clean_text(s.select_one('.lec_date')))
-    title_date = re.match(r'^(\d{4})/(\d{2})/(\d{2})', title)
-    event_date = _ymd(lec_date) if lec_date else _ymd(title_date) if title_date else None
-    presenter = re.search(r'Presenter\s*:\s*(.+?)\s*$', block_text(con), re.MULTILINE | re.IGNORECASE)
+    image_paths = _take_images(s.select_one('#bo_v_img'), con)
+    text = block_text(con)
+    event_date = _event_date({'lec_date': clean_text(s.select_one('.lec_date')), 'title': title, 'body': text})
+    presenter = re.search(r'Presenter\s*:\s*(.+?)\s*$', text, re.MULTILINE | re.IGNORECASE)
     return PostView(title=title, date=date, category=clean_text(s.select_one('.bo_v_cate')) or None,
                     body_html=con.decode_contents(), image_paths=image_paths, files=parse_detail_files(html),
                     event_date=event_date, presenter=presenter.group(1) if presenter else None)

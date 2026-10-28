@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from crawl.config import BASE_URL
+from crawl.parse_common import original_image_path, path_of
 from crawl.parse_posts import PostRow, PostView, parse_post_list, parse_post_view, post_filename
 
 FIXTURES = Path(__file__).resolve().parent / 'fixtures'
@@ -9,14 +11,15 @@ def fixture(name: str) -> str:
     return (FIXTURES / f'{name}.html').read_text(encoding='utf-8')
 
 
-def view_html(title_tag, tit='', cate='', lec_date='', con='', files=''):
+def view_html(title_tag, tit='', cate='', lec_date='', con='', files='', attached=''):
     cate_span = f'<span class="bo_v_cate">{cate}</span>' if cate else ''
     lec = f'<div class="lec_date">{lec_date}</div>' if lec_date else ''
     return (f'<html><head><title>{title_tag}</title></head><body><article id="bo_v"><header>'
             f'<h2 id="bo_v_title">{cate_span}<span class="bo_v_tit">{tit}</span></h2>{lec}</header>'
             '<section id="bo_v_info"><strong class="if_date"><span class="sound_only">작성일</span>'
             f' 24-03-05 09:10</strong></section><section id="bo_v_file">{files}</section>'
-            f'<section id="bo_v_atc"><div id="bo_v_con">{con}</div></section></article></body></html>')
+            f'<section id="bo_v_atc"><div id="bo_v_img">{attached}</div><div id="bo_v_con">{con}</div></section>'
+            '</article></body></html>')
 
 
 def test_parse_news_list_rows():
@@ -109,6 +112,54 @@ def test_presenter_label_in_any_case():
     v = parse_post_view(view_html('2025/04/21 [Research Seminar] X &gt; Seminar | MPBEL | x',
                                   con='<p>presenter: 이석호</p><p>Abstract</p>'))
     assert (v.presenter, v.event_date) == ('이석호', '2025-04-21')
+
+
+def test_event_date_later_in_title():
+    v = parse_post_view(view_html('[Research Seminar] X 2021/05/03 &gt; Seminar | MPBEL | x'))
+    assert v.event_date == '2021-05-03'
+    v = parse_post_view(view_html('[LAB] 2020-05-04 seminar &gt; Seminar | MPBEL | x'))
+    assert v.event_date == '2020-05-04'
+
+
+def test_event_date_from_body_date_line():
+    v = parse_post_view(view_html('[LAB] Research progress &gt; Seminar | MPBEL | x',
+                                  con='<p><b>-presenter : A</b></p><p>-Announcement Date : 2020/03/30</p>'))
+    assert v.event_date == '2020-03-30'
+    # Only a `Date` label: not "Update".
+    v = parse_post_view(view_html('X &gt; Seminar | MPBEL | x', con='<p>Update : 2020/03/30</p>'))
+    assert v.event_date is None
+
+
+def test_event_date_priority_and_invalid_candidates():
+    # The title's leading date beats a later one and the body's.
+    v = parse_post_view(view_html('2025/12/29 [X] 2025/11/01 &gt; Seminar | MPBEL | x', con='<p>Date: 2025/10/01</p>'))
+    assert v.event_date == '2025-12-29'
+    # An impossible date is ignored, the next candidate is used.
+    v = parse_post_view(view_html('[X] 2021/13/40 &gt; Seminar | MPBEL | x', con='<p>Date : 2021.04.05</p>'))
+    assert v.event_date == '2021-04-05'
+    v = parse_post_view(view_html('2021/13/40 [X] &gt; Seminar | MPBEL | x', con='<p>Date : 2021/00/12</p>'))
+    assert v.event_date is None
+
+
+def test_attachment_images_first_and_thumbnails_resolved():
+    """Images shown in #bo_v_img (attachments: `fn` is a file name in /data/file/<bo_table>/) come
+    before the body images; a bare thumbnail `src` gives its original."""
+    attached = (f'<a class="view_image" href="{BASE_URL}/bbs/view_image.php?bo_table=sub6_1&amp;fn=1039_7Ij.jpg">'
+                f'<img src="{BASE_URL}/data/file/sub6_1/thumb-1039_7Ij_800x453.jpg"></a>')
+    con = f'<p>Text</p><p><img src="{BASE_URL}/data/editor/2504/thumb-f9fb_1745196014_9114_800x566.png"></p>'
+    v = parse_post_view(view_html('News &gt; News | MPBEL | x', con=con, attached=attached))
+    assert v.image_paths == ['/data/file/sub6_1/1039_7Ij.jpg', '/data/editor/2504/f9fb_1745196014_9114.png']
+    assert v.body_html == '<p>Text</p>'
+
+
+def test_attachment_view_image_link_path():
+    assert path_of(BASE_URL + '/bbs/view_image.php?bo_table=sub6_3&fn=1952_V2R.gif') == '/data/file/sub6_3/1952_V2R.gif'
+
+
+def test_original_image_path():
+    assert original_image_path('/data/editor/2512/thumb-abc_1767148425_8757_800x450.png') == (
+        '/data/editor/2512/abc_1767148425_8757.png')
+    assert original_image_path('/data/editor/2512/abc_1767148425_8757.png') == '/data/editor/2512/abc_1767148425_8757.png'
 
 
 def test_post_filename():

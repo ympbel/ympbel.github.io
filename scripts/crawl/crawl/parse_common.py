@@ -38,13 +38,28 @@ def wr_id_of(href: str) -> int | None:
 
 def path_of(url: str) -> str:
     """Site-root path (with query) of an old-site URL; a `view_image.php?fn=...` link gives
-    the decoded `fn` (the original image behind a thumbnail)."""
+    the decoded `fn` (the original image behind a thumbnail), or `/data/file/<bo_table>/<fn>`
+    when `fn` is a bare file name (an attachment, `view_image.php?bo_table=...&fn=...`)."""
     parts = urlsplit(urljoin(PAGE_URL, url.strip()))
     if parts.path.endswith('/view_image.php'):
-        fn = parse_qs(parts.query).get('fn')
+        query = parse_qs(parts.query)
+        fn = query.get('fn')
         if fn:
+            if '/' not in fn[0] and query.get('bo_table'):
+                return f"/data/file/{query['bo_table'][0]}/{fn[0]}"
             return fn[0]
     return parts.path + (f'?{parts.query}' if parts.query else '')
+
+
+_THUMBNAIL = re.compile(r'thumb-(.+)_\d+x\d+(\.[^./]+)')
+
+
+def original_image_path(path: str) -> str:
+    """`.../thumb-<file>_<w>x<h>.<ext>` -> `.../<file>.<ext>`: the original behind a Gnuboard
+    thumbnail (a path or a URL); anything else unchanged."""
+    directory, slash, name = path.rpartition('/')
+    match = _THUMBNAIL.fullmatch(name)
+    return f'{directory}{slash}{match[1]}{match[2]}' if match else path
 
 
 def clean_text(el: Tag | None) -> str:
