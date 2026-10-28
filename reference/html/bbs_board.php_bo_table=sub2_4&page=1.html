@@ -1,0 +1,862 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="imagetoolbar" content="no">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<title>Alumni 1 페이지 | MPBEL | 연세 의학물리 및 의공학 연구실</title>
+<link rel="stylesheet" href="http://mpbel.yonsei.ac.kr/css/default.css?ver=171222">
+<link rel="stylesheet" href="http://mpbel.yonsei.ac.kr/skin/board/alumni/css/style.css?ver=171222">
+<!--[if lte IE 8]>
+<script src="http://mpbel.yonsei.ac.kr/js/html5.js"></script>
+<![endif]-->
+<script>
+// 자바스크립트에서 사용하는 전역변수 선언
+var g5_url       = "http://mpbel.yonsei.ac.kr";
+var g5_bbs_url   = "http://mpbel.yonsei.ac.kr/bbs";
+var g5_is_member = "";
+var g5_is_admin  = "";
+var g5_is_mobile = "";
+var g5_bo_table  = "sub2_4";
+var g5_sca       = "";
+var g5_editor    = "smarteditor2";
+var g5_cookie_domain = "";
+</script>
+<script src="http://mpbel.yonsei.ac.kr/js/jquery-1.8.3.min.js"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/jquery.menu.js?ver=171222"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/common.js?ver=171222"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/wrest.js?ver=171222"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/placeholders.min.js"></script>
+<script src="http://mpbel.yonsei.ac.kr/js/default.js"></script>
+<link rel="stylesheet" href="http://mpbel.yonsei.ac.kr/js/font-awesome/css/font-awesome.min.css">
+<link rel="stylesheet" href="http://mpbel.yonsei.ac.kr/css/design.css" type="text/css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Lato:300,400,700" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css?family=Nanum+Gothic" rel="stylesheet">
+</head>
+<body>
+
+
+<div id="wrap">
+	<script src="../js/jquery.menu.js"></script>
+
+<div class="topmenu">
+	<div class="logo"><a href="javascript:GoPage('main')"><img src="../images/logo.png" alt="연세 의학물리 및 의공학연구실"></a></div>
+	<div class="langbut">
+		<ul>
+			<li class="active"><a href="http://mpbel.yonsei.ac.kr/index.php">KR</a></li>
+			<li><a href="http://mpbel.yonsei.ac.kr/eng/index.php">EN</a></li>
+		</ul>
+	</div>
+	<div id="navi">
+
+		<ul id="nav">
+
+                                <li class="menu1" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub1_1" target="_self" class="on">INTRODUCTION</a>
+                        <ul class='sub1'>
+                            <li><a href="/bbs/board.php?bo_table=sub1_1" target="_self">welcome to MPBEL</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub1_2" target="_self">contact us</a></li>
+                        </ul>
+                    </li>
+                                              <li class="menu2" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub2_1" target="_self" class="on">MEMBER</a>
+                        <ul class='sub2'>
+                            <li><a href="/bbs/board.php?bo_table=sub2_1" target="_self">Professor</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub2_2" target="_self">Collaborators</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub2_3" target="_self">Researchers</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub2_4" target="_self">Alumni</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub2_5" target="_self">Short-term internship</a></li>
+                        </ul>
+                    </li>
+                                              <li class="menu3" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub3_2" target="_self" class="on">RESEARCH</a>
+                        <ul class='sub3'>
+                            <li><a href="/bbs/board.php?bo_table=sub3_2" target="_self">Artificial Intelligence</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub3_3" target="_self">Radiation Therapy</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub3_4" target="_self">Particle Therapy</a></li>
+                        </ul>
+                    </li>
+                                              <li class="menu4" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub4_1" target="_self" class="on">PUBLICATION</a>
+                        <ul class='sub4'>
+                            <li><a href="/bbs/board.php?bo_table=sub4_1" target="_self">Paper</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub4_2" target="_self">Presentation</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub4_3" target="_self">Invited talk</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub4_4" target="_self">Patent</a></li>
+                        </ul>
+                    </li>
+                                              <li class="menu5" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub5_1" target="_self" class="on">LECTURE</a>
+                        <ul class='sub5'>
+                            <li><a href="/bbs/board.php?bo_table=sub5_1" target="_self">Lecture</a></li>
+                        </ul>
+                    </li>
+                                              <li class="menu6" style="z-index:999">
+                        <a href="/bbs/board.php?bo_table=sub6_1" target="_self" class="on">NOTICE</a>
+                        <ul class='sub6'>
+                            <li><a href="/bbs/board.php?bo_table=sub6_1" target="_self">News</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub6_2" target="_self">Gallery</a></li>
+                                                    <li><a href="/bbs/board.php?bo_table=sub6_3" target="_self">Seminar</a></li>
+                        </ul>
+                    </li>
+                          
+                </ul>
+
+		<!-- <ul id="nav"> -->
+			<!-- <li><a href="javascript:GoPage('sub01_1')" class="on">INTRODUCTION</a> -->
+				<!-- <ul class="sub1"> -->
+					<!-- <li><a href="javascript:GoPage('sub01_1')">Welcome to MPBEL</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub01_2')">Contact us</a></li> -->
+				<!-- </ul> -->
+			<!-- </li> -->
+			<!-- <li><a href="javascript:GoPage('sub02_1')" class="on">MEMBER</a> -->
+				<!-- <ul class="sub2"> -->
+					<!-- <li><a href="javascript:GoPage('sub02_1')">Professor</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub02_2')">Collaborators</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub02_3')">Researchers</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub02_4')">Alumni</a></li> -->
+				<!-- </ul> -->
+			<!-- </li> -->
+			<!-- <li><a href="javascript:GoPage('sub03_1')" class="on">RESEARCH</a> -->
+				<!-- <ul class="sub3"> -->
+					<!-- <li><a href="javascript:GoPage('sub03_1')">Advanced CT Reconstruction</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub03_2')">Intelligent Medical Imaging</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub03_3')">Radiation Therapy</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub03_4')">Particle Therapy</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub03_5')">Grant Lists</a></li> -->
+				<!-- </ul> -->
+			<!-- </li> -->
+			<!-- <li><a href="javascript:GoPage('sub04_1')" class="on">PUBLICATION</a> -->
+				<!-- <ul class="sub4"> -->
+					<!-- <li><a href="javascript:GoPage('sub04_1')">Paper</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub04_2')">Presentation</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub04_4')">Invited talk</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub04_3')">Patent</a></li> -->
+				<!-- </ul> -->
+			<!-- </li> -->
+			<!-- <li><a href="javascript:GoPage('sub05_1')" class="on">LECTURE</a> -->
+			<!-- </li> -->
+			<!-- <li><a href="javascript:GoPage('sub06_1')" class="on">NOTICE</a> -->
+				<!-- <ul class="sub6"> -->
+					<!-- <li><a href="javascript:GoPage('sub06_1')">News</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub06_2')">Gallery</a></li> -->
+					<!-- <li><a href="javascript:GoPage('sub06_3')">Seminar</a></li> -->
+				<!-- </ul> -->
+			<!-- </li> -->
+		<!-- </ul> -->
+	</div>
+
+</div>
+
+<!--
+<script type="text/javascript">
+$(function() {
+	$("#nav").droppy();
+});
+</script>
+ -->
+	<div id="sub_container">
+		<div class="sub_visual">
+			<div class="wrap">
+				<img src="../images/sub/sub_slogan.png" alt="">
+			</div>
+		</div>
+		<div id="sub_contents">
+			<div id="" class="snb">
+<style type="text/css">
+/* 페이지인식-메인 */
+#page2 #menu04 > .box2_4_4 {
+	display:block;
+	color:#1563b4;
+	background:#f5f5f5 ;
+}
+</style>
+
+
+<p class="tit">MEMBER </p>
+
+<!-- <h2>학과소개</h2> -->
+<div class="vNav" id="page2">
+        <ul>
+                                          <li  id="menu01" >
+                  <a href="/bbs/board.php?bo_table=sub2_1" target="_self" class="box2_4_1">Professor</a>
+         </li>
+         <li  id="menu02" >
+                  <a href="/bbs/board.php?bo_table=sub2_2" target="_self" class="box2_4_2">Collaborators</a>
+         </li>
+         <li  id="menu03" >
+                  <a href="/bbs/board.php?bo_table=sub2_3" target="_self" class="box2_4_3">Researchers</a>
+         </li>
+         <li  id="menu04" class='active'>
+                  <a href="/bbs/board.php?bo_table=sub2_4" target="_self" class="box2_4_4">Alumni</a>
+         </li>
+         <li  id="menu05" >
+                  <a href="/bbs/board.php?bo_table=sub2_5" target="_self" class="box2_4_5">Short-term internship</a>
+         </li>
+        </ul>
+</div>
+</div>
+			<div class="contentBox">
+				<h2 class="cnt_title">
+										Alumni									</h2>
+				<div class="loca">
+					<ul class="loc">
+												<li><img src="../images/sub/home.png" alt="home"></li>
+						<li>MEMBER</li>
+						<li class="last">Alumni</li>
+
+											</ul>
+				</div>
+				<!-- contents -->
+				<div class="contents" style="overflow:hidden;">
+
+<!-- 게시판 목록 시작 { -->
+<div id="member_professor">
+
+    <!-- 게시판 카테고리 시작 { -->
+        <nav id="bo_cate">
+        <ul class="class_area">
+            <li><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;sca=Graduate">Graduate</a></li><li><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;sca=Former">Former</a></li>        </ul>
+    </nav>
+        <!-- } 게시판 카테고리 끝 -->
+
+
+
+    <form name="fboardlist"  id="fboardlist" action="./board_list_update.php" onsubmit="return fboardlist_submit(this);" method="post">
+    <input type="hidden" name="bo_table" value="sub2_4">
+    <input type="hidden" name="sfl" value="">
+    <input type="hidden" name="stx" value="">
+    <input type="hidden" name="spt" value="">
+    <input type="hidden" name="sst" value="wr_datetime asc">
+    <input type="hidden" name="sod" value="">
+    <input type="hidden" name="page" value="1">
+    <input type="hidden" name="sw" value="">
+
+
+<div id="gall_ul">
+		<div class="member_list">
+
+
+        
+
+		<!--구성원-->
+		<div class="mb_peple">
+
+			<div class="cntWrap">
+
+				<div class="mb_img">
+				 <a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=22&amp;page=1">
+
+					<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-1040009722_C7WFdgnB_048918be33944c912f0e411b8bf87f5d7b51f692_202x150.jpg" alt="" width="202" height="150">
+					<!--<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-1040009722_C7WFdgnB_048918be33944c912f0e411b8bf87f5d7b51f692_202x150.jpg" alt="" width="202" height="150">-->
+                    </a>
+				</div>
+
+				<div class="cnt">
+					<div class="mb_name">
+						<h3><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=22&amp;page=1">조진동 Jindong Cho </a>  	  </h3>
+					</div>
+					<dl>
+						
+												<dt>E-mail</dt>
+						<dd>cjindo2@gmail.com</dd>
+						
+												<dt>Research Interest</dt>
+						<dd><p>Polymer Dosimetry</p></dd>
+						
+					</dl>
+				</div>
+								<div id="" class="link01">
+																	</div>
+
+			</div>
+		</div>
+		<!--//구성원-->
+
+        
+
+		<!--구성원-->
+		<div class="mb_peple">
+
+			<div class="cntWrap">
+
+				<div class="mb_img">
+				 <a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=20&amp;page=1">
+
+					<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-1040009722_U3G6cS97_748046a8549e0ddaf85fa161b8c485772f1c65d6_202x150.jpg" alt="" width="202" height="150">
+					<!--<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-1040009722_U3G6cS97_748046a8549e0ddaf85fa161b8c485772f1c65d6_202x150.jpg" alt="" width="202" height="150">-->
+                    </a>
+				</div>
+
+				<div class="cnt">
+					<div class="mb_name">
+						<h3><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=20&amp;page=1">신재익 Jae-ik shin </a>  	  </h3>
+					</div>
+					<dl>
+												<dt>Status</dt>
+						<dd>Former</dd>
+						
+												<dt>E-mail</dt>
+						<dd>jishin86@gmail.com</dd>
+						
+												<dt>Research Interest</dt>
+						<dd><p>Medical Physics, Proton Therapy, Carbon Therapy, Monte Carlo Simulation</p></dd>
+						
+					</dl>
+				</div>
+								<div id="" class="link01">
+									<a href='http://mpbel.yonsei.ac.kr/bbs/link.php?bo_table=sub2_4&amp;wr_id=20&amp;no=1&amp;page=1' target=_blank  class='btn_set01' >LINK</a>								</div>
+
+			</div>
+		</div>
+		<!--//구성원-->
+
+        
+
+		<!--구성원-->
+		<div class="mb_peple">
+
+			<div class="cntWrap">
+
+				<div class="mb_img">
+				 <a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=21&amp;page=1">
+
+					<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2156318548_CXP6gWZs_56fa77c8c849b1ec53469249e8f2a4e891db9694_202x150.png" alt="" width="202" height="150">
+					<!--<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2156318548_CXP6gWZs_56fa77c8c849b1ec53469249e8f2a4e891db9694_202x150.png" alt="" width="202" height="150">-->
+                    </a>
+				</div>
+
+				<div class="cnt">
+					<div class="mb_name">
+						<h3><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=21&amp;page=1">천재희 Jaehee Chun </a>  	  </h3>
+					</div>
+					<dl>
+						
+												<dt>E-mail</dt>
+						<dd>cjhsmile@gmail.com</dd>
+						
+												<dt>Research Interest</dt>
+						<dd><p>Deep Learning, Auto-segmentation</p></dd>
+						
+					</dl>
+				</div>
+								<div id="" class="link01">
+									<a href='http://mpbel.yonsei.ac.kr/bbs/link.php?bo_table=sub2_4&amp;wr_id=21&amp;no=1&amp;page=1' target=_blank  class='btn_set01' >LINK</a>								</div>
+
+			</div>
+		</div>
+		<!--//구성원-->
+
+        
+
+		<!--구성원-->
+		<div class="mb_peple">
+
+			<div class="cntWrap">
+
+				<div class="mb_img">
+				 <a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=28&amp;page=1">
+
+					<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2776903254_V73lAqbQ_e9fb02e048360aa386e73b3ec9221fbfb1dfe358_202x150.jpg" alt="" width="202" height="150">
+					<!--<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2776903254_V73lAqbQ_e9fb02e048360aa386e73b3ec9221fbfb1dfe358_202x150.jpg" alt="" width="202" height="150">-->
+                    </a>
+				</div>
+
+				<div class="cnt">
+					<div class="mb_name">
+						<h3><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=28&amp;page=1">김나리 Nalee Kim </a>  	  </h3>
+					</div>
+					<dl>
+						
+												<dt>E-mail</dt>
+						<dd>smartdotdd@gmail.com</dd>
+						
+												<dt>Research Interest</dt>
+						<dd><p><span style="color: rgb(34, 34, 34); font-family: Arial, Helvetica, sans-serif; font-size: small; background-color: rgb(255, 255, 255);">Medical Physics, Carbon Therapy</span></p></dd>
+						
+					</dl>
+				</div>
+								<div id="" class="link01">
+																	</div>
+
+			</div>
+		</div>
+		<!--//구성원-->
+
+        
+
+		<!--구성원-->
+		<div class="mb_peple">
+
+			<div class="cntWrap">
+
+				<div class="mb_img">
+				 <a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=36&amp;page=1">
+
+					<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2776903254_3w7udVDb_f105d5aac31054d39df12cb8edb2f42a8224aa7c_202x150.jpg" alt="" width="202" height="150">
+					<!--<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2776903254_3w7udVDb_f105d5aac31054d39df12cb8edb2f42a8224aa7c_202x150.jpg" alt="" width="202" height="150">-->
+                    </a>
+				</div>
+
+				<div class="cnt">
+					<div class="mb_name">
+						<h3><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=36&amp;page=1">최병수 Byong Su Choi </a>  	  </h3>
+					</div>
+					<dl>
+						
+												<dt>E-mail</dt>
+						<dd>dreamsaretrue.choi@gmail.com</dd>
+						
+												<dt>Research Interest</dt>
+						<dd><p>Medical Physics, Machine Learning<br></p></dd>
+						
+					</dl>
+				</div>
+								<div id="" class="link01">
+																	</div>
+
+			</div>
+		</div>
+		<!--//구성원-->
+
+        
+
+		<!--구성원-->
+		<div class="mb_peple">
+
+			<div class="cntWrap">
+
+				<div class="mb_img">
+				 <a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=16&amp;page=1">
+
+					<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2776903254_R2LcQDJd_ca388b3a59227bf460aa2b0c20e008069b8596d0_202x150.png" alt="" width="202" height="150">
+					<!--<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2776903254_R2LcQDJd_ca388b3a59227bf460aa2b0c20e008069b8596d0_202x150.png" alt="" width="202" height="150">-->
+                    </a>
+				</div>
+
+				<div class="cnt">
+					<div class="mb_name">
+						<h3><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=16&amp;page=1">박인경 Inkyung Park </a>  	  </h3>
+					</div>
+					<dl>
+						
+												<dt>E-mail</dt>
+						<dd>inkyoung94@gmail.com</dd>
+						
+												<dt>Research Interest</dt>
+						<dd><p>Medical Physics, Deep Learning</p></dd>
+						
+					</dl>
+				</div>
+								<div id="" class="link01">
+																	</div>
+
+			</div>
+		</div>
+		<!--//구성원-->
+
+        
+
+		<!--구성원-->
+		<div class="mb_peple">
+
+			<div class="cntWrap">
+
+				<div class="mb_img">
+				 <a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=27&amp;page=1">
+
+					<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2776903254_Z3m4QhiA_15c85ae4206667aa839aa7b60c0a475729fd9ecd_202x150.jpg" alt="" width="202" height="150">
+					<!--<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2776903254_Z3m4QhiA_15c85ae4206667aa839aa7b60c0a475729fd9ecd_202x150.jpg" alt="" width="202" height="150">-->
+                    </a>
+				</div>
+
+				<div class="cnt">
+					<div class="mb_name">
+						<h3><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=27&amp;page=1">김예진 Yejin Kim </a>  	  </h3>
+					</div>
+					<dl>
+						
+												<dt>E-mail</dt>
+						<dd>sibg66@gmail.com</dd>
+						
+												<dt>Research Interest</dt>
+						<dd><p>Particle Therapy</p></dd>
+						
+					</dl>
+				</div>
+								<div id="" class="link01">
+																	</div>
+
+			</div>
+		</div>
+		<!--//구성원-->
+
+        
+
+		<!--구성원-->
+		<div class="mb_peple">
+
+			<div class="cntWrap">
+
+				<div class="mb_img">
+				 <a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=19&amp;page=1">
+
+					<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2156318548_81aXjgKN_a62342f84690c7262856c3ab06e922eb9634797f_202x150.jpg" alt="" width="202" height="150">
+					<!--<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2156318548_81aXjgKN_a62342f84690c7262856c3ab06e922eb9634797f_202x150.jpg" alt="" width="202" height="150">-->
+                    </a>
+				</div>
+
+				<div class="cnt">
+					<div class="mb_name">
+						<h3><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=19&amp;page=1">이주영 Juyoung Lee </a>  	  </h3>
+					</div>
+					<dl>
+						
+												<dt>E-mail</dt>
+						<dd>jychenko@gmail.com</dd>
+						
+												<dt>Research Interest</dt>
+						<dd>Deep Learning, Radiomics, Radioimmunotherapy, Personalized outcome prediction</dd>
+						
+					</dl>
+				</div>
+								<div id="" class="link01">
+																	</div>
+
+			</div>
+		</div>
+		<!--//구성원-->
+
+        
+
+		<!--구성원-->
+		<div class="mb_peple">
+
+			<div class="cntWrap">
+
+				<div class="mb_img">
+				 <a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=37&amp;page=1">
+
+					<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2156318548_PJoh5YLp_081fd9f939d35bd24654fd66c862a2cd724bf583_202x150.jpg" alt="" width="202" height="150">
+					<!--<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2156318548_PJoh5YLp_081fd9f939d35bd24654fd66c862a2cd724bf583_202x150.jpg" alt="" width="202" height="150">-->
+                    </a>
+				</div>
+
+				<div class="cnt">
+					<div class="mb_name">
+						<h3><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=37&amp;page=1">유상균 Sang Kyun Yoo </a>  	  </h3>
+					</div>
+					<dl>
+						
+												<dt>E-mail</dt>
+						<dd>skyunyoo@yuhs.ac</dd>
+						
+												<dt>Research Interest</dt>
+						<dd><p>Medical Physics</p></dd>
+						
+					</dl>
+				</div>
+								<div id="" class="link01">
+																	</div>
+
+			</div>
+		</div>
+		<!--//구성원-->
+
+        
+
+		<!--구성원-->
+		<div class="mb_peple">
+
+			<div class="cntWrap">
+
+				<div class="mb_img">
+				 <a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=39&amp;page=1">
+
+					<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-1039939158_JHhuojPG_6b8455ab138f0b580d32eda0c305653a6c58532d_202x150.jpg" alt="" width="202" height="150">
+					<!--<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-1039939158_JHhuojPG_6b8455ab138f0b580d32eda0c305653a6c58532d_202x150.jpg" alt="" width="202" height="150">-->
+                    </a>
+				</div>
+
+				<div class="cnt">
+					<div class="mb_name">
+						<h3><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=39&amp;page=1">최민서 Min Seo Choi </a>  	  </h3>
+					</div>
+					<dl>
+						
+												<dt>E-mail</dt>
+						<dd>minseochoi135@gmail.com</dd>
+						
+												<dt>Research Interest</dt>
+						<dd><p>Medical Physics, Clinical Data Validation</p></dd>
+						
+					</dl>
+				</div>
+								<div id="" class="link01">
+																	</div>
+
+			</div>
+		</div>
+		<!--//구성원-->
+
+        
+
+		<!--구성원-->
+		<div class="mb_peple">
+
+			<div class="cntWrap">
+
+				<div class="mb_img">
+				 <a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=30&amp;page=1">
+
+					<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2156318549_MZswJ1E9_ceb66e89a06c93f2b404922986f97c7d5dd01c7c_202x150.jpg" alt="" width="202" height="150">
+					<!--<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2156318549_MZswJ1E9_ceb66e89a06c93f2b404922986f97c7d5dd01c7c_202x150.jpg" alt="" width="202" height="150">-->
+                    </a>
+				</div>
+
+				<div class="cnt">
+					<div class="mb_name">
+						<h3><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=30&amp;page=1">강효경 Hyo Kyeong Kang </a>  	  </h3>
+					</div>
+					<dl>
+												<dt>Status</dt>
+						<dd>Former</dd>
+						
+												<dt>E-mail</dt>
+						<dd>hyokk722@gmail.com</dd>
+						
+												<dt>Research Interest</dt>
+						<dd><p>Medical Physics, Carbon-ion Radiotherapy, Monte Carlo Simulation</p></dd>
+						
+					</dl>
+				</div>
+								<div id="" class="link01">
+																	</div>
+
+			</div>
+		</div>
+		<!--//구성원-->
+
+        
+
+		<!--구성원-->
+		<div class="mb_peple">
+
+			<div class="cntWrap">
+
+				<div class="mb_img">
+				 <a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=42&amp;page=1">
+
+					<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2156318548_UglmLWEV_4c29265103ec45cf48da01908af02eb44d8e5253_202x150.jpg" alt="" width="202" height="150">
+					<!--<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2156318548_UglmLWEV_4c29265103ec45cf48da01908af02eb44d8e5253_202x150.jpg" alt="" width="202" height="150">-->
+                    </a>
+				</div>
+
+				<div class="cnt">
+					<div class="mb_name">
+						<h3><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=42&amp;page=1">권나혜 Na Hye Kwon </a>  	  </h3>
+					</div>
+					<dl>
+						
+												<dt>E-mail</dt>
+						<dd>kknh1216@gmail.com</dd>
+						
+												<dt>Research Interest</dt>
+						<dd><p>Medical Physics, Semiconductor Detector</p></dd>
+						
+					</dl>
+				</div>
+								<div id="" class="link01">
+																	</div>
+
+			</div>
+		</div>
+		<!--//구성원-->
+
+        
+
+		<!--구성원-->
+		<div class="mb_peple">
+
+			<div class="cntWrap">
+
+				<div class="mb_img">
+				 <a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=40&amp;page=1">
+
+					<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2156318548_tPUoDX7y_250823b21988114c501b4f721ef278000f1ab190_202x150.jpg" alt="" width="202" height="150">
+					<!--<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2156318548_tPUoDX7y_250823b21988114c501b4f721ef278000f1ab190_202x150.jpg" alt="" width="202" height="150">-->
+                    </a>
+				</div>
+
+				<div class="cnt">
+					<div class="mb_name">
+						<h3><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=40&amp;page=1">최동혁 Donghyeok Choi </a>  	  </h3>
+					</div>
+					<dl>
+						
+												<dt>E-mail</dt>
+						<dd>donghyeok2707@gmail.com</dd>
+						
+												<dt>Research Interest</dt>
+						<dd><p><span style="box-sizing: border-box; font-family: Lato, &quot;Nanum Gothic&quot;, sans-serif; max-height: 100000px; color: rgb(38, 38, 38);">Medical Physics, Deep Learning<span style="font-size: 13px;">,&nbsp;</span></span><span style="font-family: Lato, &quot;Nanum Gothic&quot;, sans-serif; color: rgb(38, 38, 38);"><span style="font-size: 13px;">Tumor prognostic forecasting</span></span>&nbsp;</p></dd>
+						
+					</dl>
+				</div>
+								<div id="" class="link01">
+																	</div>
+
+			</div>
+		</div>
+		<!--//구성원-->
+
+        
+
+		<!--구성원-->
+		<div class="mb_peple">
+
+			<div class="cntWrap">
+
+				<div class="mb_img">
+				 <a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=33&amp;page=1">
+
+					<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2156318548_fO1H52yn_df6d7aca8091885c63e167613f43f5456c129630_202x150.jpg" alt="" width="202" height="150">
+					<!--<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-2156318548_fO1H52yn_df6d7aca8091885c63e167613f43f5456c129630_202x150.jpg" alt="" width="202" height="150">-->
+                    </a>
+				</div>
+
+				<div class="cnt">
+					<div class="mb_name">
+						<h3><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=33&amp;page=1">민병국 Byeongguk Min </a>  	  </h3>
+					</div>
+					<dl>
+												<dt>Status</dt>
+						<dd>Former</dd>
+						
+												<dt>E-mail</dt>
+						<dd>mbkook4883@gmail.com</dd>
+						
+												<dt>Research Interest</dt>
+						<dd><p>Particle Therapy</p><p>MS Student majoring in particle physics @Gangneung-Wonju National University</p></dd>
+						
+					</dl>
+				</div>
+								<div id="" class="link01">
+																	</div>
+
+			</div>
+		</div>
+		<!--//구성원-->
+
+        
+
+		<!--구성원-->
+		<div class="mb_peple">
+
+			<div class="cntWrap">
+
+				<div class="mb_img">
+				 <a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=23&amp;page=1">
+
+					<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-3542385834_IBgbcivZ_d8970de28766b66b829786211b3ed38237900a51_202x150.jpg" alt="" width="202" height="150">
+					<!--<img src="http://mpbel.yonsei.ac.kr/data/file/sub2_4/thumb-3542385834_IBgbcivZ_d8970de28766b66b829786211b3ed38237900a51_202x150.jpg" alt="" width="202" height="150">-->
+                    </a>
+				</div>
+
+				<div class="cnt">
+					<div class="mb_name">
+						<h3><a href="http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub2_4&amp;wr_id=23&amp;page=1">백승협 Seung-Hyeop, Baek </a>  	  </h3>
+					</div>
+					<dl>
+						
+												<dt>E-mail</dt>
+						<dd>baeksh1996@gmail.com</dd>
+						
+												<dt>Research Interest</dt>
+						<dd>Medical Physics, Monte Carlo Simulation</dd>
+						
+					</dl>
+				</div>
+								<div id="" class="link01">
+																	</div>
+
+			</div>
+		</div>
+		<!--//구성원-->
+
+                    </div><!--  class="member_list" -->
+   </div><!-- id="gall_ul" -->
+
+
+
+		<div class="bo_fx">
+					</div>
+
+    </form>
+
+
+
+<!-- 페이지 -->
+<nav class="pg_wrap"><span class="pg"><span class="sound_only">열린</span><strong class="pg_current">1</strong><span class="sound_only">페이지</span>
+<a href="./board.php?bo_table=sub2_4&amp;page=2" class="pg_page">2<span class="sound_only">페이지</span></a>
+<a href="./board.php?bo_table=sub2_4&amp;page=2" class="pg_page pg_end">맨끝</a>
+</span></nav></div>
+
+	<!-- 게시판 검색 시작 { -->
+	<fieldset id="bo_sch" class="search_box txt_c">
+		<form name="fsearch" method="get" class="form-inline">
+		<input type="hidden" name="bo_table" value="sub2_4">
+		<input type="hidden" name="sca" value="">
+		<input type="hidden" name="sop" value="and">
+		<label for="sfl" class="sound_only">검색대상</label>
+		<select name="sfl" id="sfl">
+			<option value="wr_subject">이름&nbsp;</option>
+			<option value="wr_content">내용</option>
+			<option value="wr_subject||wr_content">이름+내용&nbsp;&nbsp;</option>
+			<option value="wr_content">소속</option>
+
+		</select>
+
+		<input type="text" name="stx" value="" required id="stx" class="frm_input required" size="15" maxlength="20" placeholder="검색어">
+		<button type="submit" class="btn_submit">검색</button>
+
+		</form>
+	</fieldset>
+	<!-- } 게시판 검색 끝 -->
+
+
+<!-- } 게시판 목록 끝 -->
+				</div><!-- //contents -->
+			</div><!-- //contentBox -->
+		</div><!-- //sub_contents -->
+	</div><!-- //sub_container -->
+
+
+	<div id="footer">
+		<p class="ft_name">Yonsei Medical Physics and Biomedical Engineering Lab.</p>
+		<p class="ft_address">03722 서울특별시 서대문구 연세로 50 연세대학교<br>
+		TEL. +82-2-2228-8118 / FAX. +82-2-2227-7823</p>
+		<p class="ft_copy">COPYRIGHT @2018<span>MPBEL</span>ALL RIGHT RESERVED. &nbsp;&nbsp; Design by <a href="http://dsso.kr/" target="_blank" style="color:#aeaeae;">DSSO</a></p>
+	</div>
+</div><!-- //wrap -->
+
+
+<!-- ie6,7에서 사이드뷰가 게시판 목록에서 아래 사이드뷰에 가려지는 현상 수정 -->
+<!--[if lte IE 7]>
+<script>
+$(function() {
+    var $sv_use = $(".sv_use");
+    var count = $sv_use.length;
+
+    $sv_use.each(function() {
+        $(this).css("z-index", count);
+        $(this).css("position", "relative");
+        count = count - 1;
+    });
+});
+</script>
+<![endif]-->
+
+</body>
+</html>
+
+<!-- 사용스킨 : alumni -->

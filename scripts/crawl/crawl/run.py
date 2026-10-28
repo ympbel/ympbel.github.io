@@ -12,6 +12,7 @@ from . import assets, parse_pages
 from .config import BASE_URL, BOARDS, PAGE_SECTION, REPO_ROOT, board_url
 from .fetch import Fetcher
 from .markdown import write_entry
+from .run_members import run_members
 
 KINDS = ('pages', 'members', 'publications', 'posts', 'assets')
 FIXTURES_DIR = Path(__file__).resolve().parents[1] / 'tests' / 'fixtures'
@@ -57,10 +58,6 @@ def run_pages(ctx: Context) -> Summary:
         write_entry(pages_dir / f'{spec.slug}.md', frontmatter, body)
         written += 1
     return {'pages': written}
-
-
-def run_members(ctx: Context) -> Summary:
-    raise NotImplementedError('members runner: Task 5')
 
 
 def run_publications(ctx: Context) -> Summary:
