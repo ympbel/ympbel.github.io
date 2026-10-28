@@ -105,16 +105,17 @@ npm test        # 단위 테스트 → 빌드(dist/) → 빌드 결과 검사
 | 필드 | 필수 | 적는 법 | 화면 |
 |---|---|---|---|
 | `title` | 필수 | 글자. `:`나 `#`이 들어가거나 `[`로 시작하면 큰따옴표로 감쌉니다(제목 안의 `"`는 `\"`) | 목록과 글 제목 |
-| `date` | 필수 | `'YYYY-MM-DD'`, 작은따옴표로 감쌈(따옴표가 없으면 빌드 실패) | 목록의 날짜. 목록은 최신 날짜가 위 |
-| `category` | 선택 | 기존 값 중 하나 또는 새 연도. 새 값을 적으면 탭이 자동으로 생깁니다. 연도는 `'2026'`처럼 작은따옴표로 감쌈(따옴표가 없으면 빌드 실패) | 분류 탭과 목록의 분류 표시 |
+| `date` | 필수 | `'YYYY-MM-DD'`. 작은따옴표로 감싸기를 권장(따옴표 없이 `2026-11-04`로 적어도 같은 날짜로 읽힘) | 목록의 날짜. 목록은 최신 날짜가 위 |
+| `category` | 선택 | 기존 값 중 하나 또는 새 연도. 새 값을 적으면 탭이 자동으로 생깁니다. 연도는 `'2026'`처럼 작은따옴표로 감싸기를 권장(따옴표 없이 `2026`으로 적어도 같은 분류로 읽힘) | 분류 탭과 목록의 분류 표시 |
 | `pinned` | 선택 | `true` 또는 `false` (기본 `false`) | `true`면 전체 목록 1쪽 맨 위에 공지로 고정 |
 | `presenter` | 선택 | 이름 | 글 위에 `Presenter: 이름` 줄 (본문에 이미 presenter 줄이 있으면 생략) |
-| `event_date` | 선택 | `'YYYY-MM-DD'`, 작은따옴표로 감쌈(따옴표가 없으면 빌드 실패) | 강의: 목록의 '강의날짜' 칸과 글 위. 뉴스·세미나: 기록만 |
+| `event_date` | 선택 | `'YYYY-MM-DD'`. `date`와 같이 작은따옴표로 감싸기를 권장 | 강의: 목록의 '강의날짜' 칸과 글 위. 뉴스·세미나: 기록만 |
 | 본문 | — | 두 번째 `---` 아래, 마크다운 (HTML도 가능) | 글 내용 |
 
 - 지금 쓰는 분류 값: 세미나 `'2022'`~`'2025'`(연도), 뉴스 `연구실소식`, `학회공지`, `학회소식`, `공지`, `'2022'`~`'2025'`. 탭은 연도가 먼저(최신순), 그다음 가나다순입니다. 분류 페이지 주소는 `/notice/<게시판>/c/<분류>/`입니다.
 - **강의 게시판에는 분류가 없습니다.** 강의 글에는 `category`를 적지 않습니다(템플릿에서도 주석 처리되어 있습니다). 적으면 없는 분류 페이지로 링크가 생겨 `npm test`가 실패합니다.
-- 날짜에 따옴표가 없으면 빌드가 실패합니다(YAML이 날짜나 숫자로 읽음). 연도 분류도 같습니다.
+- 날짜와 연도 분류는 작은따옴표로 감싸기를 권장합니다. 따옴표가 없으면 YAML이 날짜나 숫자로 읽지만, 사이트가 `YYYY-MM-DD`와 글자로 되돌려 읽으므로 빌드는 됩니다.
+- **표에 없는 필드 이름을 적으면 빌드가 실패합니다**(예: `pinned`를 `pined`로 잘못 적으면 `Unrecognized key: "pined"`). 템플릿에 있는 필드 이름만 씁니다. 출판물·멤버 파일도 같습니다.
 - 본문에 글자 `<`, `>`를 쓰려면 `&lt;`, `&gt;`로 적습니다.
 - 본문 이미지는 `public/images/posts/<year>/`에 넣고 `![](/images/posts/<year>/<file>)`로 씁니다. 파일 이름은 영문 소문자로 합니다.
 
@@ -262,7 +263,15 @@ gh run watch $(gh run list --workflow deploy.yml --limit 1 --json databaseId --j
   date: Invalid string: must match pattern /^\d{4}-\d{2}-\d{2}$/
 ```
 
-흔한 원인: 날짜·연도 분류에 따옴표 없음, `:`가 든 제목에 따옴표 없음, `year`에 따옴표, `order`가 정수가 아님, `board` 값 오타. 파일을 고쳐 다시 push하면 됩니다. 배포에 실패해도 사이트는 이전 상태로 남아 있습니다. 올린 변경을 되돌리려면 `git revert <커밋>` 후 push합니다.
+없는 필드 이름(오타)은 이렇게 나옵니다(앞의 `****`는 Astro가 위치를 표시하는 방식이며 무시해도 됩니다):
+
+```
+[InvalidContentEntryDataError] news → ko/2026-11-04-journal-club data does not match collection schema.
+
+  ****: Unrecognized key: "pined"
+```
+
+흔한 원인: 필드 이름 오타, `:`가 든 제목에 따옴표 없음, 날짜 형식이 `YYYY-MM-DD`가 아님(예: `'2026-11-4'`), `year`에 따옴표, `order`가 정수가 아님, `board` 값 오타. 파일을 고쳐 다시 push하면 됩니다. 배포에 실패해도 사이트는 이전 상태로 남아 있습니다. 올린 변경을 되돌리려면 `git revert <커밋>` 후 push합니다.
 
 ## 8. 도메인 전환 체크리스트 (한 번만)
 
@@ -295,8 +304,8 @@ gh run watch $(gh run list --workflow deploy.yml --limit 1 --json databaseId --j
       ```
 
    추가 모드와 `--only` 실행은 `reference/crawl-summary.json`을 그 실행의 일부 수치로 덮어씁니다. 전체 수치가 필요하면 `.venv/bin/python -m crawl --mode full --offline`(캐시만 사용)로 다시 만듭니다. 단, 전체 모드는 `src/content/`의 파일을 모두 다시 쓰므로 손으로 고친 내용이 있으면 덮어씁니다.
-2. **(b) DNS 요청.** 학교 DNS 담당자에게 다음 두 레코드를 함께 요청합니다.
-   - `mpbel.yonsei.ac.kr  CNAME  ympbel.github.io`
+2. **(b) DNS 요청.** 학교 DNS 담당자에게 다음을 함께 요청합니다.
+   - **기존 `mpbel.yonsei.ac.kr` A 레코드(옛 서버 IP)를 삭제하고**, 그 자리에 `mpbel.yonsei.ac.kr  CNAME  ympbel.github.io`를 추가. 같은 이름에는 CNAME과 다른 레코드(A 등)가 함께 있을 수 없으므로 A 레코드를 반드시 지워야 합니다. 같은 이름에 다른 레코드(AAAA, MX, TXT 등)가 있으면 그것도 옮기거나 지워야 하니 담당자에게 확인합니다.
    - `_github-pages-challenge-ympbel.mpbel.yonsei.ac.kr  TXT  <값>` (도메인 인증, 권장). 값은 GitHub 조직 ympbel의 Settings → Pages → Add a domain 화면에 나옵니다. 인증해 두면 다른 GitHub 계정이 이 도메인을 쓸 수 없습니다.
 
    DNS 요청 후 반영까지 며칠 걸릴 수 있으니, (a)는 전환 직전에 다시 실행합니다.
