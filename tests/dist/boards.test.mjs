@@ -132,6 +132,11 @@ test('lecture list and view', () => {
   assert.ok(page('lecture/2018-04-19-1')('.lec_date').text().includes('2018-09-01'));
 });
 
+test('lecture: a single page today, so no pagination and no page/2', () => {
+  assert.ok(!exists('lecture/page/2'));
+  assert.equal(page('lecture')('.pg_wrap').length, 0);
+});
+
 test('gallery placeholder', () => {
   assert.equal(page('notice/gallery')('.preparing').text().trim(), '준비 중입니다.');
 });

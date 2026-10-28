@@ -71,6 +71,9 @@ test('paginatePosts: pinned posts lead page 1 outside the paging, unless kept in
   assert.deepEqual(ids(paginatePosts(posts, false, 2)), [['a', 'b'], ['p', 'c'], ['d', 'e']]);
   assert.deepEqual(ids(paginatePosts([post('p', true)], true, 2)), [['p']]);
   assert.deepEqual(ids(paginatePosts([], true, 2)), [[]]);
+  // Default page size (PAGE_SIZE = 20): 21 posts make a second page, as the `page/[page]` routes generate.
+  const many = Array.from({ length: 21 }, (_, i) => post(String(i)));
+  assert.deepEqual(paginatePosts(many, true).map((page) => page.length), [20, 1]);
 });
 
 test('categorySlug makes a single path segment', () => {

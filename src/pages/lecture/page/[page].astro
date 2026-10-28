@@ -1,0 +1,24 @@
+---
+import { getCollection } from 'astro:content';
+import BoardPage from '../../../components/BoardPage.astro';
+import '../../../styles/legacy/board-lecture.css';
+import { LECTURE, isLocale, paginatePosts, sortPosts, type PostEntry } from '../../../lib/content.ts';
+
+export async function getStaticPaths() {
+  const posts = sortPosts(await getCollection(LECTURE.collection, isLocale('ko')));
+  const pageCount = paginatePosts(posts, true).length;
+  return Array.from({ length: pageCount - 1 }, (_, i) => ({
+    params: { page: String(i + 2) },
+    props: { posts, pageNo: i + 2 },
+  }));
+}
+
+interface Props {
+  posts: PostEntry[];
+  pageNo: number;
+}
+
+const { posts, pageNo } = Astro.props;
+---
+
+<BoardPage board={LECTURE} posts={posts} allPosts={posts} pageNo={pageNo} showEventDate />
