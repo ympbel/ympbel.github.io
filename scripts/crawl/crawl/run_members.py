@@ -5,7 +5,6 @@ from __future__ import annotations
 import posixpath
 import sys
 import urllib.error
-from collections.abc import Iterator
 from pathlib import Path
 from typing import TYPE_CHECKING
 from urllib.parse import urlsplit
@@ -13,36 +12,12 @@ from urllib.parse import urlsplit
 from .config import BOARDS, board_url
 from .fetch import Fetcher
 from .images import shrink_image
-from .markdown import read_frontmatter, write_entry
-from .parse_common import categories, page_count, soup
+from .markdown import write_entry
 from .parse_members import Member, member_filename, original_photo_url, parse_member_list
+from .run_common import known_ids, list_pages
 
 if TYPE_CHECKING:
     from .run import Context
-
-
-def list_pages(fetcher: Fetcher, table: str, refresh: bool) -> Iterator[tuple[str | None, str]]:
-    """(category, html) of every list page: each category tab (`sca=`) in tab order with its own
-    page count, then the unfiltered pages (category None). On a board with tabs the unfiltered
-    pages only add the posts whose category is in no tab (alumni 39 and 40 on the old site)."""
-    def get(**params) -> str:
-        return fetcher.get(board_url(table, **params), refresh=refresh)
-
-    first = get(page=1)
-    for category in categories(soup(first)):
-        html = get(sca=category, page=1)
-        yield category, html
-        for page in range(2, page_count(soup(html)) + 1):
-            yield category, get(sca=category, page=page)
-    yield None, first
-    for page in range(2, page_count(soup(first)) + 1):
-        yield None, get(page=page)
-
-
-def _known_ids(folder: Path) -> set[int]:
-    """legacy_id of every entry in a board folder (`_*.md` templates excluded)."""
-    ids = (read_frontmatter(p).get('legacy_id') for p in folder.glob('*.md') if not p.name.startswith('_'))
-    return {i for i in ids if i is not None}
 
 
 def download_photo(fetcher: Fetcher, thumb_url: str, dest_stem: Path) -> Path | None:
@@ -87,7 +62,7 @@ def run_members(ctx: Context) -> dict[str, int]:
         if spec.kind != 'members':
             continue
         folder = ctx.out / 'src' / 'content' / 'members' / 'ko' / spec.board
-        known = _known_ids(folder) if ctx.mode == 'add' else set()
+        known = known_ids(folder) if ctx.mode == 'add' else set()
         seen: set[int] = set()
         for category, html in list_pages(ctx.fetcher, spec.table, refresh):
             for m in parse_member_list(html, category):

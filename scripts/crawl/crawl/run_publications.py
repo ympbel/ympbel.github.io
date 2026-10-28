@@ -10,35 +10,25 @@ from typing import TYPE_CHECKING
 from .config import BOARDS, board_url
 from .fetch import Fetcher
 from .markdown import write_entry
-from .parse_common import categories, page_count, soup
 from .parse_publications import (Publication, parse_detail_files, parse_publication_detail_year,
                                  parse_publication_rows, publication_filename)
-from .run_members import _known_ids
+from .run_common import known_ids, list_pages
 
 if TYPE_CHECKING:
     from .run import Context
 
 
-def list_pages(fetcher: Fetcher, table: str, refresh: bool) -> Iterator[tuple[int | None, str]]:
-    """(year, html) of every list page: each year tab (`sca=<year>`) in tab order with its own page
-    count, then the unfiltered pages (year None). The unfiltered pages only add the posts filed under
-    a year that has no tab (presentations of 2002-2004 on the old site). A tab that is not a year is
-    skipped with a warning."""
-    def get(**params) -> str:
-        return fetcher.get(board_url(table, **params), refresh=refresh)
-
-    first = get(page=1)
-    for category in categories(soup(first)):
+def year_pages(fetcher: Fetcher, table: str, refresh: bool) -> Iterator[tuple[int | None, str]]:
+    """list_pages with the tab as a year: the unfiltered pages (year None) only add the posts filed
+    under a year that has no tab (presentations of 2002-2004 on the old site). A tab that is not a
+    year is skipped with a warning."""
+    def is_year(category: str) -> bool:
         if not category.isdigit():
             print(f'warning: {table} category {category!r} is not a year, skipped', file=sys.stderr)
-            continue
-        html = get(sca=category, page=1)
-        yield int(category), html
-        for page in range(2, page_count(soup(html)) + 1):
-            yield int(category), get(sca=category, page=page)
-    yield None, first
-    for page in range(2, page_count(soup(first)) + 1):
-        yield None, get(page=page)
+        return category.isdigit()
+
+    for category, html in list_pages(fetcher, table, refresh, tabs=is_year):
+        yield (None if category is None else int(category)), html
 
 
 def _link(ctx: Context, collection: str, p: Publication) -> str | None:
@@ -69,13 +59,13 @@ def run_publications(ctx: Context) -> dict[str, int]:
             continue
         rows: dict[int, tuple[Publication, int | None]] = {}  # wr_id -> (first listing, its tab's year)
         pinned: set[int] = set()
-        for tab_year, html in list_pages(ctx.fetcher, spec.table, refresh):
+        for tab_year, html in year_pages(ctx.fetcher, spec.table, refresh):
             for p in parse_publication_rows(html):
                 rows.setdefault(p.wr_id, (p, tab_year))
                 if p.pinned:
                     pinned.add(p.wr_id)
         folder = ctx.out / 'src' / 'content' / spec.collection / 'ko'
-        known = _known_ids(folder) if ctx.mode == 'add' else set()
+        known = known_ids(folder) if ctx.mode == 'add' else set()
         written = skipped = 0
         for wr_id, (p, tab_year) in rows.items():
             if wr_id in known:
