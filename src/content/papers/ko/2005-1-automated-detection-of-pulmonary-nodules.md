@@ -4,6 +4,7 @@ title: 'Automated Detection of Pulmonary Nodules from MDCT Images: Performance o
 authors: Bae KT, Jin Sung Kim, Y Na, KG Kim, JH Kim
 venue: |-
   Radiology
+
   Jul; 236(1):286-93, 2005
 link: https://pubs.rsna.org/doi/full/10.1148/radiol.2361041286
 pinned: false

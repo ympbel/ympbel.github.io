@@ -36,7 +36,8 @@ def run_publications(ctx: Context) -> dict[str, int]:
     a notice (`pinned`) is marked `공지` only on the unfiltered list, its year tab lists it as a plain
     row. `year` is the tab's, except for a pinned row and a row in no tab: those take it and their
     attachments from their detail page (a pinned row falls back to the tab's year, a row in no tab
-    without one is skipped with a warning)."""
+    without one is skipped with a warning). `legacy_files` are those attachments, then the row's
+    DOWNLOAD buttons not among them (same url)."""
     refresh = ctx.mode == 'add'
     summary: dict[str, int] = {}
     for spec in BOARDS:
@@ -69,6 +70,8 @@ def run_publications(ctx: Context) -> dict[str, int]:
                 frontmatter['link'] = link
             frontmatter['pinned'] = wr_id in pinned
             frontmatter['order'] = wr_id
+            attached = {url for _, url in files}
+            files += [(name, url) for name, url in p.files if url not in attached]
             frontmatter['legacy_files'] = [{'name': name, 'url': url} for name, url in files]
             frontmatter['legacy_url'] = board_url(spec.table, wr_id=wr_id)
             frontmatter['legacy_id'] = wr_id

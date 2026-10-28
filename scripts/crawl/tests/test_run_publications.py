@@ -14,11 +14,13 @@ def nav(table, *cats):
     return f'<nav id="bo_cate"><ul id="bo_cate_ul">{links}</ul></nav>'
 
 
-def row(table, wr_id, title, link=False, pinned=False):
+def row(table, wr_id, title, link=False, pinned=False, download=False):
     num = '<strong>공지</strong>' if pinned else str(wr_id)
     href = board_url(table, wr_id=wr_id).replace('&', '&amp;')
-    button = (f'<a class="btn_set01" href="{BASE_URL}/bbs/link.php?bo_table={table}&amp;wr_id={wr_id}'
-              '&amp;no=1">LINK</a>' if link else '')
+    button = (f"&nbsp;<a href='download.php?bo_table={table}&wr_id={wr_id}&no=0' class='btn_set01'>DOWNLOAD</a>"
+              if download else '')
+    button += (f'<a class="btn_set01" href="{BASE_URL}/bbs/link.php?bo_table={table}&amp;wr_id={wr_id}'
+               '&amp;no=1">LINK</a>' if link else '')
     return (f'<table class="tb_basic_s"><tr class="bg1"><td class="num">{num}</td><td class="name_title">'
             f'<span class="text_title"><a href="{href}">{title}</a></span><br>'
             f'<span class="text_author">Author {wr_id}</span><br><span class="text_journal">'
@@ -38,7 +40,9 @@ YEARS = [str(y) for y in range(2023, 2004, -1)]  # category tabs of the sub4_3 a
 PAGES = {
     # Papers: two year tabs and one that is not a year; 2025 has a second page (from page_count).
     # The unfiltered pages add 5 and 4, filed under a year without a tab: their year is on the detail page.
-    board_url('sub4_1', page=1): nav('sub4_1', '2025', '2024', 'misc') + row('sub4_1', 5, 'Untabbed paper', link=True)
+    # 5's DOWNLOAD button is the attachment of its detail page.
+    board_url('sub4_1', page=1): nav('sub4_1', '2025', '2024', 'misc')
+                                 + row('sub4_1', 5, 'Untabbed paper', link=True, download=True)
                                  + row('sub4_1', 197, 'Repeat of 197') + pager('sub4_1', 2),
     board_url('sub4_1', page=2): row('sub4_1', 4, 'Untabbed without year'),
     board_url('sub4_1', wr_id=5): ('<table><tr><th>Year of publication</th><td>2003</td></tr></table>'
@@ -47,7 +51,7 @@ PAGES = {
     board_url('sub4_1', sca='2025', page=1): 'sub4_1_2025',
     board_url('sub4_1', sca='2025', page=2): row('sub4_1', 182, 'Second page paper', link=True)
                                              + row('sub4_1', 183, 'Duplicate of 183'),
-    board_url('sub4_1', sca='2024', page=1): row('sub4_1', 150, 'Old paper'),
+    board_url('sub4_1', sca='2024', page=1): row('sub4_1', 150, 'Old paper', download=True),
     # Talks: like the old site, the notice 3 is marked 공지 only on the unfiltered list (the fixture)
     # and is a plain row in its tab; filed here under 2023, its detail page (2021) gives the year.
     board_url('sub4_3', page=1): 'sub4_3',
@@ -139,12 +143,20 @@ def test_run_publications_full_mode(tmp_path, capsys):
     for name in ('2025-196-feasibility-of-improving-daily-mvct.md', '2025-195-dosimetric-impact-of-androgen-deprivation.md',
                  '2024-150-old-paper.md'):
         assert 'link' not in read_frontmatter(papers / name)
+    # The list's DOWNLOAD button of a plain row (its detail page is not fetched).
+    assert read_frontmatter(papers / '2024-150-old-paper.md')['legacy_files'] == [
+        {'name': 'DOWNLOAD', 'url': '/bbs/download.php?bo_table=sub4_1&wr_id=150&no=0'}]
+    # A blank venue line (an empty field between two <br>) is kept.
+    blank = papers / '2025-195-dosimetric-impact-of-androgen-deprivation.md'
+    assert read_frontmatter(blank)['venue'] == 'SSRN\n\n31 Mar 2025'
+    assert 'venue: |-\n  SSRN\n\n  31 Mar 2025\n' in blank.read_text(encoding='utf-8')
     # Second page of a tab; the repeat of 183 there is ignored.
     assert read_frontmatter(papers / '2025-182-second-page-paper.md')['link'] == 'https://doi.org/10.1/182'
     assert read_frontmatter(papers / '2025-183-algorithm-for-using-dual-energy.md')['order'] == 183
     assert len(fetcher.resolved) == 23 and len(set(fetcher.resolved)) == 23  # 17 papers, 1 talk, 5 patents
 
-    # Outside every tab: year and files from the detail page; without a year it is not written.
+    # Outside every tab: year and files from the detail page (its DOWNLOAD button, the same file, is
+    # not repeated); without a year it is not written.
     untabbed = read_frontmatter(papers / '2003-5-untabbed-paper.md')
     assert (untabbed['year'], untabbed['pinned'], untabbed['link']) == (2003, False, 'https://doi.org/10.1/5')
     assert untabbed['legacy_files'] == [{'name': 'slides.pdf', 'url': '/bbs/download.php?bo_table=sub4_1&wr_id=5&no=0'}]

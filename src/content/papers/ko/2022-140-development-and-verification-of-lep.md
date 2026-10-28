@@ -4,6 +4,7 @@ title: Development and verification of LEP 300 kilovoltage radiotherapy system f
 authors: Na Hye Kwon, Jinsung Kim, Dong Oh Shin, Dong Wook Kim*, Hyeon Tae Kyeong, Dae Woon Kim, Weonkuu Chung & Dong Ho Shin
 venue: |-
   Journal of the Korean Physical Society
+
   18 August 2022
 link: https://doi.org/10.1007/s40042-022-00572-1
 pinned: false

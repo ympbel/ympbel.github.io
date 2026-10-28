@@ -4,6 +4,7 @@ title: Clinical evaluation of atlas- and deep learning-based automatic segmentat
 authors: Min Seo Choi, Byeong Su Choi, Seung Yeun Chung, Nalee Ki , Jaehee Chun, Yong Bae Kim, Jee Suk Chang , Jin Sung Kim
 venue: |-
   Radiotherapy and Oncology
+
   28 September 2020
 link: https://doi.org/10.1016/j.radonc.2020.09.045
 pinned: false

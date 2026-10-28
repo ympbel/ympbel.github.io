@@ -8,7 +8,9 @@ venue: |-
   2018.04.20~2018.04.21
 pinned: false
 order: 93
-legacy_files: []
+legacy_files:
+- name: DOWNLOAD
+  url: /bbs/download.php?bo_table=sub4_2&wr_id=93&no=0
 legacy_url: http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub4_2&wr_id=93
 legacy_id: 93
 ---

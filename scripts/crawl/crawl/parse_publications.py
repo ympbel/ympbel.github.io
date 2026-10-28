@@ -1,7 +1,7 @@
 """Publication boards (papers, presentations, invited talks, patents): one table row per entry."""
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from urllib.parse import urljoin
 
 from bs4 import Tag
@@ -18,12 +18,15 @@ class Publication:
     venue: str
     link_php: str | None  # the list's LINK button (`bbs/link.php?...`), resolved by the runner
     pinned: bool
+    # The list's DOWNLOAD buttons: (button text, site-root `/bbs/download.php?...` path).
+    files: list[tuple[str, str]] = field(default_factory=list)
 
 
 def _venue(journal: Tag | None) -> str:
     """`.text_journal` as lines: each `<span class="text_vol">` is a value, a class-less `<span>`
     before it on the same line its label (`label: value`), `<br>` ends a line. Text between the
-    spans (`, `) and comments are ignored; empty lines are dropped."""
+    spans (`, `) and comments are ignored. An empty line (an empty field: two `<br>` in a row, or an
+    empty `text_vol`) is kept as '', except after the last non-empty line."""
     if journal is None:
         return ''
     lines: list[str] = []
@@ -43,12 +46,15 @@ def _venue(journal: Tag | None) -> str:
         elif child.name == 'span' and not child.get('class'):
             label = clean_text(child)
     lines.append(' '.join(line))
-    return '\n'.join(text for text in lines if text)
+    while lines and not lines[-1]:
+        lines.pop()
+    return '\n'.join(lines)
 
 
 def parse_publication_rows(html: str) -> list[Publication]:
     """Every `tr.bg0` / `tr.bg1` row of the `table.tb_basic_s` tables of a list page, in page order.
-    The LINK button sits in the next `tr` of the row's table; `pinned` marks a `공지` (notice) row."""
+    The LINK and DOWNLOAD buttons sit in the next `tr` of the row's table; `pinned` marks a `공지`
+    (notice) row."""
     rows = []
     for row in soup(html).select('table.tb_basic_s tr.bg0, table.tb_basic_s tr.bg1'):
         link = row.select_one('.text_title a[href]')
@@ -58,6 +64,7 @@ def parse_publication_rows(html: str) -> list[Publication]:
             raise ValueError(f'publication row without a title link to its post: {row.prettify()[:300]}')
         following = row.find_next_sibling('tr')
         button = following.select_one('td.btn_positon a[href*="link.php"]') if following else None
+        downloads = following.select('td.btn_positon a[href*="download.php"]') if following else []
         rows.append(Publication(
             wr_id=wr_id,
             title=title,
@@ -65,6 +72,7 @@ def parse_publication_rows(html: str) -> list[Publication]:
             venue=_venue(row.select_one('.text_journal')),
             link_php=urljoin(PAGE_URL, button['href'].strip()) if button else None,
             pinned='공지' in clean_text(row.select_one('td.num')),
+            files=[(clean_text(a), path_of(a['href'])) for a in downloads],
         ))
     return rows
 

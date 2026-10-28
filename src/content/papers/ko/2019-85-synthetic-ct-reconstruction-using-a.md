@@ -8,7 +8,9 @@ venue: |-
 link: https://aapm.onlinelibrary.wiley.com/doi/full/10.1002/mp.13716
 pinned: false
 order: 85
-legacy_files: []
+legacy_files:
+- name: DOWNLOAD
+  url: /bbs/download.php?bo_table=sub4_1&wr_id=85&no=0
 legacy_url: http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub4_1&wr_id=85
 legacy_id: 85
 ---

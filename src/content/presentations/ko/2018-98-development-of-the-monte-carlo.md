@@ -9,7 +9,9 @@ venue: |-
 link: https://w3.aapm.org/meetings/2018AM/programInfo/programAbs.php?sid=7817&aid=40417
 pinned: false
 order: 98
-legacy_files: []
+legacy_files:
+- name: DOWNLOAD
+  url: /bbs/download.php?bo_table=sub4_2&wr_id=98&no=0
 legacy_url: http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub4_2&wr_id=98
 legacy_id: 98
 ---

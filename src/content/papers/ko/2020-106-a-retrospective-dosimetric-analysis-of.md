@@ -4,6 +4,7 @@ title: A Retrospective Dosimetric Analysis of the New ESTRO-ACROP Target Volume 
 authors: Kyung Hwan Chang , Jee Suk Chang , Kwangwoo Park , Seung Yeun Chung , Se Young Kim , Ryeong Hwang Park , Min Cheol Han , Jihun Kim , Hojin Kim , Ho Lee , Dong Wook Kim , Yong Bae Kim , Jin Sung Kim and Chae-Seon Hong
 venue: |-
   Frontiers in Oncology
+
   20 October 2020
 link: https://doi.org/10.3389/fonc.2020.578921
 pinned: false

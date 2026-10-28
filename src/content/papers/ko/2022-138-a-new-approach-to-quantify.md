@@ -4,6 +4,7 @@ title: A New Approach to Quantify and Grade Radiation Dermatitis Using Deep-Lear
 authors: Y.I. Park , S.H. Choi, C.-S. Hong*, M.-S. Cho y, J. Son y, M.C. Han, J. Kim, H. Kim, D.W. Kim, J.S. Kim*
 venue: |-
   Clinical Oncology
+
   30 July 2022
 link: https://www.sciencedirect.com/science/article/pii/S0936655522003132
 pinned: false

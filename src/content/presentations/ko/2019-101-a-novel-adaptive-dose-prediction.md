@@ -8,7 +8,9 @@ venue: |-
   Jul. 14-18, 2019
 pinned: false
 order: 101
-legacy_files: []
+legacy_files:
+- name: DOWNLOAD
+  url: /bbs/download.php?bo_table=sub4_2&wr_id=101&no=0
 legacy_url: http://mpbel.yonsei.ac.kr/bbs/board.php?bo_table=sub4_2&wr_id=101
 legacy_id: 101
 ---

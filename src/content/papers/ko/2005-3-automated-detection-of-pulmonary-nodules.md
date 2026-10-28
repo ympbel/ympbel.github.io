@@ -4,6 +4,7 @@ title: 'Automated Detection of Pulmonary Nodules from MDCT Images: Effect of Sli
 authors: Jin Sung Kim, JH Kim, G Cho, Bae KT
 venue: |-
   Radiology
+
   Jul;236(1):295-9, 2005
 link: https://pubs.rsna.org/doi/abs/10.1148/radiol.2361041288
 pinned: false

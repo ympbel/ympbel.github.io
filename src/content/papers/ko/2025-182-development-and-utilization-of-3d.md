@@ -4,6 +4,7 @@ title: Development and Utilization of 3D Anatomy Education Content using Metaver
 authors: Dong Hyeok Choi, Seo Yi Choi, So Hyun Ahn, Rena Lee, Sung Ho Cho
 venue: |-
   bioRxiv
+
   07 June 2024
 link: https://doi.org/10.1101/2024.06.05.597650
 pinned: false

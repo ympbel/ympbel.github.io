@@ -30,6 +30,41 @@ def test_row_without_link():
     assert parse_publication_rows(html) == [Publication(12, 'A patent', 'Kim', 'X', None, False)]
 
 
+def journal_row(wr_id, journal, buttons=''):
+    """One `tb_basic_s` list row as the old skin printed it: a title, an author, the `.text_journal`
+    span left open, then the button row."""
+    return ('<table class="tb_basic_s"><tr class="bg1"><td class="num">1</td><td class="name_title">'
+            f'<span class="text_title"><a href="./board.php?bo_table=sub4_2&amp;wr_id={wr_id}">Title</a></span><br>'
+            f'<span class="text_author">Kim</span><br><span class="text_journal">{journal}</tr>'
+            f'<tr><td colspan="3" class="btn_positon">{buttons}</tr></table>')
+
+
+def test_download_button_recorded_with_link():
+    # No row of the fixtures has a DOWNLOAD button (only 29 rows of older years do): markup of
+    # presentation 98 / paper 84, the relative `download.php` with raw `&` before the LINK.
+    assert not [r for r in parse_publication_rows(fixture('sub4_1_2025')) if r.files]
+    buttons = ("&nbsp;<a href='download.php?bo_table=sub4_2&wr_id=94&no=0' class='btn_set01' target='_blanked'>"
+               "DOWNLOAD</a>\t<a href='http://mpbel.yonsei.ac.kr/bbs/link.php?bo_table=sub4_2&amp;wr_id=94&amp;no=1"
+               "&amp;page=13' target=_blank  class='btn_set01' >LINK</a>")
+    [row] = parse_publication_rows(journal_row(94, '<span class="text_vol">X</span><br>', buttons))
+    assert row.files == [('DOWNLOAD', '/bbs/download.php?bo_table=sub4_2&wr_id=94&no=0')]
+    assert row.link_php == 'http://mpbel.yonsei.ac.kr/bbs/link.php?bo_table=sub4_2&wr_id=94&no=1&page=13'
+
+
+def test_rows_without_download_have_no_files():
+    assert all(r.files == [] for r in parse_publication_rows(fixture('sub4_4')))
+
+
+def test_blank_venue_lines_kept_inside_trailing_dropped():
+    # Paper 195 (fixture): `SSRN, <br> <br>31 Mar 2025 <br>`, the year field empty between the two <br>.
+    rows = {r.wr_id: r for r in parse_publication_rows(fixture('sub4_1_2025'))}
+    assert rows[195].venue == 'SSRN\n\n31 Mar 2025'
+    # An empty text_vol on its own line is a blank line too; the empty lines after the last value are not.
+    journal = ('<span class="text_vol">A</span> <br><span class="text_vol"></span> <br>'
+               '<span class="text_vol">C</span> <br><span class="text_vol"></span> <br><br>')
+    assert parse_publication_rows(journal_row(1, journal))[0].venue == 'A\n\nC'
+
+
 def test_link_comes_from_the_same_table_only():
     # sub4_4: 8 and 7 have an empty btn_positon cell; the next table's LINK must not leak into them.
     rows = parse_publication_rows(fixture('sub4_4'))

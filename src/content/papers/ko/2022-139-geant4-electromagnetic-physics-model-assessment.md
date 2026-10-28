@@ -4,6 +4,7 @@ title: Geant4 electromagnetic physics model assessment for RBE-weighted dose cal
 authors: Hyo Kyeong Kang, Min Cheol Han, Yongdo Yun, Se Hyung Lee, Chan Hyeong Kim & Jin Sung Kim
 venue: |-
   Journal of the Korean Physical Society
+
   08 August 2022
 link: https://doi.org/10.1007/s40042-022-00568-x
 pinned: false
