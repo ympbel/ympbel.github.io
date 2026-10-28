@@ -51,3 +51,13 @@ test('invited talk: pinned entry shows 공지', () => {
   const $ = page('publication/invited-talk');
   assert.equal($('td.num strong').first().text(), '공지');
 });
+
+test('paper: comma after the first venue line, as in the old paper skin', () => {
+  const html = page('publication/paper')('.text_journal').first().html();
+  assert.match(html, /^\s*<span class="text_vol">[^<]*<\/span>, ?<br>/, html);
+});
+
+test('presentation: no comma after venue lines', () => {
+  const html = page('publication/presentation')('.text_journal').first().html();
+  assert.ok(!html.includes('</span>,'), html);
+});

@@ -16,10 +16,12 @@ interface Props {
   heading: string;
   /** Venue lines are `label: value` pairs (patents), rendered as a label span and a `text_vol` value span. */
   labelledVenue?: boolean;
+  /** The first venue line is followed by `, ` (papers: the old skin put a comma after the journal name). */
+  firstLineComma?: boolean;
   locale?: Locale;
 }
 
-const { groups, total, heading, labelledVenue = false, locale = 'ko' } = Astro.props;
+const { groups, total, heading, labelledVenue = false, firstLineComma = false, locale = 'ko' } = Astro.props;
 
 const anchorOf = (year: number) => `y-${year}`;
 const tabs = groups.map(({ year }) => ({ label: String(year), href: `#${anchorOf(year)}`, active: false }));
@@ -83,7 +85,7 @@ function venueLines(venue: string): Array<{ label?: string; value: string }> {
                         <span class="text_author">{entry.data.authors}</span>
                         <br />
                         <span class="text_journal">
-                          {venueLines(entry.data.venue).map(({ label, value }) => (
+                          {venueLines(entry.data.venue).map(({ label, value }, i) => (
                             <>
                               {label !== undefined && (
                                 <>
@@ -91,6 +93,7 @@ function venueLines(venue: string): Array<{ label?: string; value: string }> {
                                 </>
                               )}
                               <span class="text_vol">{value}</span>
+                              {firstLineComma && i === 0 && ', '}
                               <br />
                             </>
                           ))}

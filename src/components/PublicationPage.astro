@@ -21,5 +21,12 @@ const total = items.filter((e) => !e.data.pinned).length;
 ---
 
 <SubLayout title={pub.label} sectionKey="publication" currentHref={`/publication/${kind}/`} locale={locale}>
-  <PubList groups={groups} total={total} heading={`${pub.label} 카테고리`} labelledVenue={kind === 'patent'} locale={locale} />
+  <PubList
+    groups={groups}
+    total={total}
+    heading={`${pub.label} 카테고리`}
+    labelledVenue={kind === 'patent'}
+    firstLineComma={kind === 'paper'}
+    locale={locale}
+  />
 </SubLayout>
