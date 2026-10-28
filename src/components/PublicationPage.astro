@@ -1,0 +1,25 @@
+---
+// Shared body of the four publication pages. Each page file imports its own board skin CSS (Astro bundles CSS
+// per page from static imports), so this component imports none.
+import { getCollection } from 'astro:content';
+import SubLayout from '../layouts/SubLayout.astro';
+import PubList from './PubList.astro';
+import { PUB_KINDS, groupByYear, isLocale, sortPublications } from '../lib/content.ts';
+
+interface Props {
+  kind: (typeof PUB_KINDS)[number]['kind'];
+}
+
+const { kind } = Astro.props;
+const locale = 'ko';
+const pub = PUB_KINDS.find((p) => p.kind === kind);
+if (!pub) throw new Error(`unknown publication kind ${kind}`);
+
+const items = sortPublications(await getCollection(pub.collection, isLocale(locale)));
+const groups = groupByYear(items);
+const total = items.filter((e) => !e.data.pinned).length;
+---
+
+<SubLayout title={pub.label} sectionKey="publication" currentHref={`/publication/${kind}/`} locale={locale}>
+  <PubList groups={groups} total={total} heading={`${pub.label} 카테고리`} labelledVenue={kind === 'patent'} locale={locale} />
+</SubLayout>

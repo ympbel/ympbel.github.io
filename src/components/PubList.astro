@@ -1,0 +1,118 @@
+---
+// The old publication board list (patent skins): year tabs, then one `tb_basic` table with a year heading row per
+// group and a nested `tb_basic_s` table per entry. All text is rendered escaped.
+import type { CollectionEntry } from 'astro:content';
+import CategoryTabs from './CategoryTabs.astro';
+import type { Locale } from '../lib/content.ts';
+import { t } from '../i18n/index.ts';
+
+type Entry = CollectionEntry<'papers' | 'presentations' | 'talks' | 'patents'>;
+
+interface Props {
+  groups: Array<{ year: number; items: Entry[] }>;
+  /** Number of the first numbered row: the count of non-pinned entries (pinned entries take no number). */
+  total: number;
+  /** Hidden heading of the year tabs, e.g. `Paper 카테고리`. */
+  heading: string;
+  /** Venue lines are `label: value` pairs (patents), rendered as a label span and a `text_vol` value span. */
+  labelledVenue?: boolean;
+  locale?: Locale;
+}
+
+const { groups, total, heading, labelledVenue = false, locale = 'ko' } = Astro.props;
+
+const anchorOf = (year: number) => `y-${year}`;
+const tabs = groups.map(({ year }) => ({ label: String(year), href: `#${anchorOf(year)}`, active: false }));
+
+// Display order: pinned entries first inside their year (stable). Rows alternate bg1/bg0 across the whole list;
+// non-pinned rows count down from `total` to 1, pinned rows show 공지 instead.
+let num = total;
+let index = 0;
+const sections = groups.map(({ year, items }) => ({
+  year,
+  rows: [...items.filter((e) => e.data.pinned), ...items.filter((e) => !e.data.pinned)].map((entry) => ({
+    entry,
+    num: entry.data.pinned ? undefined : num--,
+    bg: index++ % 2 === 0 ? 'bg1' : 'bg0',
+  })),
+}));
+
+/** Non-empty venue lines; with `labelledVenue`, `label: value` lines are split at the first `: `. */
+function venueLines(venue: string): Array<{ label?: string; value: string }> {
+  return venue
+    .split('\n')
+    .filter((line) => line.trim() !== '')
+    .map((line) => {
+      const at = labelledVenue ? line.indexOf(': ') : -1;
+      return at < 0 ? { value: line } : { label: line.slice(0, at), value: line.slice(at + 2) };
+    });
+}
+---
+
+<CategoryTabs tabs={tabs} variant="board" heading={heading} />
+<div id="bo_list">
+  <div class="publication_oldver">
+    <table class="tb_basic">
+      {
+        sections.map(({ year, rows }) => (
+          <>
+            <tr>
+              <td colspan="3" class="title">
+                <div class="year_title" id={anchorOf(year)}>
+                  {year}
+                </div>
+              </td>
+            </tr>
+            {rows.map(({ entry, num, bg }) => (
+              <tr>
+                <td colspan="3">
+                  <table class="tb_basic_s">
+                    <colgroup>
+                      <col width="50px" />
+                      <col />
+                    </colgroup>
+                    <tr class={bg}>
+                      <td class="num">{num === undefined ? <strong>{t(locale).board.pinned}</strong> : num}</td>
+                      <td class="name_title">
+                        <span class="text_title">
+                          <a href={entry.data.link} target={entry.data.link ? '_blank' : undefined}>
+                            {entry.data.title}
+                          </a>
+                        </span>
+                        <br />
+                        <span class="text_author">{entry.data.authors}</span>
+                        <br />
+                        <span class="text_journal">
+                          {venueLines(entry.data.venue).map(({ label, value }) => (
+                            <>
+                              {label !== undefined && (
+                                <>
+                                  <span>{label}</span>{' '}
+                                </>
+                              )}
+                              <span class="text_vol">{value}</span>
+                              <br />
+                            </>
+                          ))}
+                        </span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="3" class="btn_positon">
+                        {entry.data.link && (
+                          <a href={entry.data.link} target="_blank" class="btn_set01">
+                            LINK
+                          </a>
+                        )}
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            ))}
+          </>
+        ))
+      }
+    </table>
+  </div>
+</div>

@@ -2,6 +2,14 @@ export type Locale = 'ko' | 'en';
 
 export const PAGE_SIZE = 20;
 
+/** The four publication boards: route segment under `/publication/`, content collection and page title. */
+export const PUB_KINDS = [
+  { kind: 'paper', collection: 'papers', label: 'Paper' },
+  { kind: 'presentation', collection: 'presentations', label: 'Presentation' },
+  { kind: 'invited-talk', collection: 'talks', label: 'Invited talk' },
+  { kind: 'patent', collection: 'patents', label: 'Patent' },
+] as const;
+
 /** Ascending comparison for numbers or strings; equal values (including Infinity) give 0. */
 function asc<V extends number | string>(a: V, b: V): number {
   return a < b ? -1 : a > b ? 1 : 0;
