@@ -79,6 +79,6 @@ class _Converter(MarkdownConverter):
 
 def html_to_markdown(html: str) -> str:
     text = _Converter(heading_style='ATX', strip=['span', 'font']).convert(html)
-    # Two bold runs side by side (`**a****b**`) render as literal asterisks: close, space, open.
-    text = re.sub(r'(?<=[^\s*])\*{4}(?=[^\s*])', '** **', text)
+    # Two bold runs side by side (`**a****b**`) render as literal asterisks: merge them into one.
+    text = re.sub(r'(?<=[^\s*])\*{4}(?=[^\s*])', '', text)
     return re.sub(r'\n{3,}', '\n\n', text)

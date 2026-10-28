@@ -52,7 +52,7 @@ def test_html_to_markdown_escapes_angle_brackets():
 def test_html_to_markdown_merges_adjacent_bold():
     md = html_to_markdown('<p><b>PROs :</b><b>Hyo</b></p>')
     assert '****' not in md
-    assert md == '**PROs :** **Hyo**'
+    assert md == '**PROs :Hyo**'  # one run, the text unchanged
     # Bold inside bold is one run.
     assert html_to_markdown('<p><b><b>- Topic : X</b> </b></p><p><strong><b>Y</b></strong></p>') == '**- Topic : X**\n\n**Y**'
 
@@ -67,5 +67,5 @@ def test_html_to_markdown_drops_empty_bold():
 def test_html_to_markdown_bold_across_line_breaks():
     # A bold run cannot span a blank line: one run per line (seminar 199).
     assert html_to_markdown('<p><b>- Presenter : Kim<br><br>- Topic :</b><b>Unfolding</b></p>') == (
-        '**- Presenter : Kim**  \n  \n**- Topic :** **Unfolding**')
+        '**- Presenter : Kim**  \n  \n**- Topic :Unfolding**')
 
