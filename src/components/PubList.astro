@@ -39,15 +39,15 @@ const sections = groups.map(({ year, items }) => ({
   })),
 }));
 
-/** Non-empty venue lines; with `labelledVenue`, `label: value` lines are split at the first `: `. */
+/** Venue lines up to the last non-empty one; a blank line (an empty field) is kept as `value: ''`. With
+ * `labelledVenue`, `label: value` lines are split at the first `: `. */
 function venueLines(venue: string): Array<{ label?: string; value: string }> {
-  return venue
-    .split('\n')
-    .filter((line) => line.trim() !== '')
-    .map((line) => {
-      const at = labelledVenue ? line.indexOf(': ') : -1;
-      return at < 0 ? { value: line } : { label: line.slice(0, at), value: line.slice(at + 2) };
-    });
+  const lines = venue.split('\n').map((line) => (line.trim() === '' ? '' : line));
+  while (lines.length > 0 && lines[lines.length - 1] === '') lines.pop();
+  return lines.map((line) => {
+    const at = labelledVenue ? line.indexOf(': ') : -1;
+    return at < 0 ? { value: line } : { label: line.slice(0, at), value: line.slice(at + 2) };
+  });
 }
 ---
 
@@ -94,6 +94,7 @@ function venueLines(venue: string): Array<{ label?: string; value: string }> {
                               )}
                               <span class="text_vol">{value}</span>
                               {firstLineComma && i === 0 && ', '}
+                              {value === '' && ' '}
                               <br />
                             </>
                           ))}

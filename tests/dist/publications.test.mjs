@@ -61,3 +61,15 @@ test('presentation: no comma after venue lines', () => {
   const html = page('publication/presentation')('.text_journal').first().html();
   assert.ok(!html.includes('</span>,'), html);
 });
+
+test('paper: a blank venue line renders as an empty text_vol line, as in the old skin', () => {
+  // Paper 195: `SSRN\n\n31 Mar 2025` (an empty field between journal and date; old markup `SSRN, <br> <br>31 Mar 2025`).
+  const $ = page('publication/paper');
+  const rows = $('.tb_basic_s').filter((_, table) =>
+    $(table).find('.text_title a').text().trim().toLowerCase().startsWith('dosimetric impact of androgen deprivation'),
+  );
+  assert.equal(rows.length, 1);
+  const html = rows.find('.text_journal').html();
+  assert.ok(html.includes('<span class="text_vol"></span>'), html);
+  assert.match(html, /SSRN<\/span>, ?<br>\s*<span class="text_vol"><\/span> <br>\s*<span class="text_vol">31 Mar 2025<\/span>/, html);
+});
