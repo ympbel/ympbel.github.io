@@ -102,6 +102,11 @@ def test_run_members_full_mode(tmp_path, capsys):
         'order': 1, 'legacy_url': board_url('sub2_3', wr_id=19), 'legacy_id': 19}
     assert list(first) == ['board', 'category', 'name', 'photo', 'fields', 'order', 'legacy_url', 'legacy_id']
     assert (researchers / 'gowoon-yang-19.md').read_text(encoding='utf-8').endswith('---\n\n\n')
+    # A card with a LINK button: `link` right after `photo` (19 above has none, so no key).
+    linked = read_frontmatter(researchers / 'gahee-son-55.md')
+    assert linked['link'] == BASE_URL + '/bbs/link.php?bo_table=sub2_3&wr_id=55&no=1&page=1'
+    assert list(linked) == ['board', 'category', 'name', 'photo', 'link', 'fields', 'order', 'legacy_url',
+                            'legacy_id']
     images = tmp_path / 'public' / 'images' / 'members'
     assert (images / 'researchers' / '19.png').read_bytes() == ORIGINAL
     assert PHOTO_19 in fetcher.bytes_requested

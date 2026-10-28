@@ -13,6 +13,7 @@ export const memberSchema = z.object({
   category: z.string().optional(),
   name: z.string().min(1),
   photo: z.string().optional(),
+  link: z.string().optional(),
   fields: z.array(z.object({ label: z.string().default(''), value: z.string() })).default([]),
   order: z.number().int(),
   legacy_url: z.string().optional(),

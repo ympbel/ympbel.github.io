@@ -3,6 +3,7 @@ board: researchers
 category: Affiliate
 name: 이혜진 Hyejin Lee
 photo: /images/members/researchers/56.jpg
+link: http://mpbel.yonsei.ac.kr/bbs/link.php?bo_table=sub2_3&wr_id=56&no=1&sca=Affiliate&page=1
 fields:
 - label: Grade
   value: M.S. Student

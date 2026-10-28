@@ -82,3 +82,22 @@ def test_multi_paragraph_values_keep_line_breaks():
     # A trailing <br> inside the paragraph adds no empty line.
     researchers = {m.wr_id: dict(m.fields) for m in parse_member_list(fixture('sub2_3_p1'))}
     assert researchers[55]['Research Interest'] == 'Monte Carlo simulation, Medical Physics'
+
+
+def test_member_link_button():
+    # Old-site markup after div.cnt: <div id="" class="link01"><a href='…/bbs/link.php?…' target=_blank
+    # class='btn_set01' >LINK</a></div>; the block is empty on cards without a link.
+    html = ('<div class="mb_peple"><div class="cntWrap"><div class="cnt"><div class="mb_name"><h3>'
+            '<a href="./board.php?bo_table=sub2_3&amp;wr_id=7">A</a></h3></div><dl></dl></div>'
+            '<div id="" class="link01"><a href=" ./link.php?bo_table=sub2_3&amp;wr_id=7&amp;no=1 "'
+            " target=_blank class='btn_set01' >LINK</a><a href='/second'>x</a></div></div></div>")
+    [m] = parse_member_list(html)
+    assert m.link == BASE_URL + '/bbs/link.php?bo_table=sub2_3&wr_id=7&no=1'
+
+    members = {m.wr_id: m for m in parse_member_list(fixture('sub2_3_p1'))}
+    assert members[19].link is None
+    assert members[55].link == BASE_URL + '/bbs/link.php?bo_table=sub2_3&wr_id=55&no=1&page=1'
+    assert sum(m.link is not None for m in members.values()) == 5
+    no_block = ('<div class="mb_peple"><div class="cnt"><div class="mb_name"><h3>'
+                '<a href="./board.php?bo_table=sub2_2&amp;wr_id=5">B</a></h3></div></div></div>')
+    assert parse_member_list(no_block)[0].link is None

@@ -7,6 +7,9 @@ test('member requires name and order', () => {
   const ok = memberSchema.safeParse({ board: 'researchers', order: 1, name: '양고운 Gowoon Yang' });
   assert.equal(ok.success, true);
   assert.deepEqual(ok.data?.fields, []);
+  const linked = memberSchema.safeParse({ board: 'researchers', name: 'x', order: 1, link: 'https://example.org' });
+  assert.equal(linked.success, true);
+  assert.equal(linked.data?.link, 'https://example.org');
 });
 
 test('publication coerces defaults', () => {

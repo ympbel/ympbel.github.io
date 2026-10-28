@@ -3,6 +3,7 @@ board: alumni
 category: Graduate
 name: 천재희 Jaehee Chun
 photo: /images/members/alumni/21.png
+link: http://mpbel.yonsei.ac.kr/bbs/link.php?bo_table=sub2_4&wr_id=21&no=1&sca=Graduate&page=1
 fields:
 - label: E-mail
   value: cjhsmile@gmail.com

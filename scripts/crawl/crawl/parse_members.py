@@ -16,6 +16,7 @@ class Member:
     photo_url: str | None
     fields: list[tuple[str, str]]
     category: str | None
+    link: str | None = None  # the card's LINK button (`div.link01 a`), on the old site a `bbs/link.php?...`
 
 
 def parse_member_list(html: str, category: str | None = None) -> list[Member]:
@@ -24,7 +25,8 @@ def parse_member_list(html: str, category: str | None = None) -> list[Member]:
     `fields` pairs each `dt` of the card's first `dl` with the `dd` after it; a `dd` without a
     `dt` gets label '' (collaborator cards leave the label empty), an empty value is dropped.
     Values keep one line per paragraph or `<br>` (block_text); the Word-paste markup some values
-    carry (`<dd><dd><p><span>`) still gives a single line.
+    carry (`<dd><dd><p><span>`) still gives a single line. `link` is the absolute href of the first
+    anchor in the card's `div.link01` (empty on cards without a LINK button).
     """
     members = []
     for card in soup(html).select('div.mb_peple'):
@@ -46,7 +48,9 @@ def parse_member_list(html: str, category: str | None = None) -> list[Member]:
             if value:
                 fields.append((label, value))
             label = ''
-        members.append(Member(wr_id, name, photo_url, fields, category))
+        button = card.select_one('div.link01 a[href]')
+        link_url = urljoin(PAGE_URL, button['href'].strip()) if button else None
+        members.append(Member(wr_id, name, photo_url, fields, category, link_url))
     return members
 
 

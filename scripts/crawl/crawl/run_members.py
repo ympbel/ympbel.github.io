@@ -78,6 +78,8 @@ def run_members(ctx: Context) -> dict[str, int]:
                 frontmatter['name'] = m.name
                 if photo := _photo(ctx, spec.board, m):
                     frontmatter['photo'] = photo
+                if m.link is not None:
+                    frontmatter['link'] = m.link
                 frontmatter['fields'] = [{'label': label, 'value': value} for label, value in m.fields]
                 frontmatter['order'] = len(seen)
                 frontmatter['legacy_url'] = board_url(spec.table, wr_id=m.wr_id)
